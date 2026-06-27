@@ -13,7 +13,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   }),
   providers: [
     Resend({
-      from: 'onboarding@resend.dev' // dev sender; works without domain verification
+      from: 'onboarding@resend.dev'
     })
-  ]
+  ],
+  pages: {
+    verifyRequest: '/verify-request'
+  }
 })

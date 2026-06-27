@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
 import { db } from '@/db'
 import { subscriptions } from '@/db/schema'
-import { SubscriptionForm } from '@/app/subscription-form'
+import { SubscriptionForm } from '@/components/subscriptions/subscription-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { and, eq } from 'drizzle-orm'
 import { auth } from '@/auth'
