@@ -1,15 +1,14 @@
 import { redirect } from 'next/navigation'
 import { eq } from 'drizzle-orm'
 import { auth, signOut } from '@/auth'
-import Link from 'next/link'
 import { db } from '@/db'
 import { subscriptions } from '@/db/schema'
-import { computeNextRenewal } from '@/lib/billing'
-import { SubscriptionForm } from './subscription-form'
-import { deleteSubscription } from './actions'
+import { SubscriptionItem } from '@/components/subscriptions/subscription-item'
+import { SubscriptionForm } from '@/components/subscriptions/subscription-form'
 import { Button } from '@/components/ui/button'
 import { ModeToggle } from '@/components/mode-toggle'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { DashboardLayout } from '@/components/dashboard-layout'
 
 export default async function Home() {
   const session = await auth()
@@ -31,7 +30,7 @@ export default async function Home() {
   }, 0)
 
   return (
-    <main className="p-8 max-w-2xl mx-auto space-y-8">
+    <DashboardLayout>
       <div>
         <h1 className="text-2xl font-bold">My subscriptions</h1>
         <p className="text-muted-foreground">
@@ -64,38 +63,9 @@ export default async function Home() {
 
       <ul className="space-y-3">
         {subs.map((sub) => {
-          const next = computeNextRenewal(
-            sub.anchorDate,
-            sub.cycle,
-            sub.intervalCount
-          )
-          return (
-            <li key={sub.id}>
-              <Card>
-                <CardContent className="flex items-center justify-between gap-4 py-4">
-                  <div>
-                    <p className="font-medium">{sub.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {(sub.amount / 100).toFixed(2)} {sub.currency} /{' '}
-                      {sub.cycle} · next {next.toLocaleDateString('en-GB')}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button asChild variant="outline-primary" size="sm">
-                      <Link href={`/subscriptions/${sub.id}/edit`}>Edit</Link>
-                    </Button>
-                    <form action={deleteSubscription.bind(null, sub.id)}>
-                      <Button variant="destructive" size="sm" type="submit">
-                        Delete
-                      </Button>
-                    </form>
-                  </div>
-                </CardContent>
-              </Card>
-            </li>
-          )
+          return <SubscriptionItem key={sub.id} subscription={sub} />
         })}
       </ul>
-    </main>
+    </DashboardLayout>
   )
 }
