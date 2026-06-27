@@ -2,77 +2,79 @@ import { describe, it, expect } from 'vitest'
 import { computeNextRenewal, addCycles } from './billing'
 
 describe('addCycles', () => {
-  it('rabote la fin de mois (31 jan + 1 mois = 28 fév)', () => {
-    expect(addCycles(new Date(2026, 0, 31), 'monthly', 1)).toEqual(
-      new Date(2026, 1, 28)
+  it('truncates end-of-month (Jan 31 + 1 month = Feb 28)', () => {
+    const start = new Date(2026, 0, 31) // Jan 31
+    // + 1 month
+    expect(addCycles(start, 'monthly', 1)).toEqual(
+      new Date(2026, 1, 28) // Feb 28
     )
   })
 
-  it('ajoute des semaines', () => {
-    expect(addCycles(new Date(2026, 0, 1), 'weekly', 2)).toEqual(
-      new Date(2026, 0, 15)
-    )
+  it('adds weeks', () => {
+    const start = new Date(2026, 0, 1) // Jan 1
+    // + 2 weeks
+    expect(addCycles(start, 'weekly', 2)).toEqual(new Date(2026, 0, 15)) // Jan 15
   })
 })
 
 describe('computeNextRenewal', () => {
-  it("renvoie la prochaine échéance mensuelle après aujourd'hui", () => {
-    const anchor = new Date(2026, 0, 15) // 15 jan
-    const now = new Date(2026, 2, 20) // 20 mars
+  it('returns the next monthly renewal after today', () => {
+    const anchor = new Date(2026, 0, 15) // Jan 15
+    const now = new Date(2026, 2, 20) // Mar 20
     expect(computeNextRenewal(anchor, 'monthly', 1, now)).toEqual(
-      new Date(2026, 3, 15) // 15 avril
+      new Date(2026, 3, 15) // Apr 15
     )
   })
 
-  it("renvoie aujourd'hui si l'échéance tombe pile aujourd'hui", () => {
-    const anchor = new Date(2026, 0, 15)
-    const now = new Date(2026, 2, 15) // 15 mars pile
+  it('returns today if the renewal is exactly today', () => {
+    const anchor = new Date(2026, 0, 15) // Jan 15
+    const now = new Date(2026, 2, 15) // Mar 15
     expect(computeNextRenewal(anchor, 'monthly', 1, now)).toEqual(
-      new Date(2026, 2, 15)
+      new Date(2026, 2, 15) // Mar 15
     )
   })
 
-  it("renvoie l'ancre si elle est encore dans le futur", () => {
-    const anchor = new Date(2026, 11, 1) // 1er déc
-    const now = new Date(2026, 0, 1) // 1er jan
+  it("returns the anchor if it's still in the future", () => {
+    const anchor = new Date(2026, 11, 1) // Dec 1
+    const now = new Date(2026, 0, 1) // Jan 1
     expect(computeNextRenewal(anchor, 'monthly', 1, now)).toEqual(
       new Date(2026, 11, 1)
     )
   })
 
-  it('ne dérive PAS : un abo du 31 redonne le 31 les mois à 31 jours', () => {
-    const anchor = new Date(2026, 0, 31) // 31 jan
-    // En février : rabote au 28
+  it('does NOT drift: a Jan 31 subscription returns the 31st for 31-day months', () => {
+    const anchor = new Date(2026, 0, 31) // Jan 31
+    // In February: truncate to 28
     expect(
       computeNextRenewal(anchor, 'monthly', 1, new Date(2026, 1, 15))
     ).toEqual(new Date(2026, 1, 28))
-    // En mars : redonne bien le 31 (pas le 28)
+    // In March: returns 31 (not 28)
     expect(
       computeNextRenewal(anchor, 'monthly', 1, new Date(2026, 2, 1))
     ).toEqual(new Date(2026, 2, 31))
   })
 
-  it('gère le 29 février annuel sur les bissextiles', () => {
-    const anchor = new Date(2024, 1, 29) // 29 fév 2024 (bissextile)
-    // 2025 non bissextile -> 28 fév
+  it('handles annual Feb 29 on leap years', () => {
+    const anchor = new Date(2024, 1, 29) // Feb 29 2024 (leap year)
+    // 2025 non-leap year -> Feb 28
     expect(
       computeNextRenewal(anchor, 'yearly', 1, new Date(2025, 0, 1))
     ).toEqual(new Date(2025, 1, 28))
-    // 2028 bissextile -> on retrouve le 29 (parce qu'on calcule depuis l'ancre)
+    // 2028 leap year -> returns 29 again (because we calculate from the anchor)
     expect(
       computeNextRenewal(anchor, 'yearly', 1, new Date(2027, 6, 1))
     ).toEqual(new Date(2028, 1, 29))
   })
 
-  it('gère le trimestriel (intervalCount = 3)', () => {
+  it('handles quarterly interval (intervalCount = 3)', () => {
     const anchor = new Date(2026, 0, 15)
-    const now = new Date(2026, 3, 20) // 20 avril
+    const now = new Date(2026, 3, 20) // Apr 20
     expect(computeNextRenewal(anchor, 'monthly', 3, now)).toEqual(
-      new Date(2026, 6, 15) // 15 juillet
+      new Date(2026, 6, 15) // Jul 15
     )
   })
 
-  it('rejette un intervalCount invalide', () => {
+  it('rejects an invalid intervalCount', () => {
     expect(() => computeNextRenewal(new Date(), 'monthly', 0)).toThrow()
   })
 })
