@@ -1,15 +1,16 @@
+import Link from 'next/link'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import Link from 'next/link'
 import { computeNextRenewal } from './billing'
 import { Subscription } from '@/db/schema'
 import { deleteSubscription } from './actions'
 
-export function SubscriptionItem({
-  subscription
-}: {
+interface SubscriptionItemProps {
   subscription: Subscription
-}) {
+}
+
+export function SubscriptionItem({ subscription }: SubscriptionItemProps) {
   const nextRenewalDate = computeNextRenewal(
     subscription.anchorDate,
     subscription.cycle,

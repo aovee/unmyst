@@ -1,9 +1,11 @@
 'use client'
 
-import { Logo } from '@/components/logo'
+import { useActionState } from 'react'
 import Link from 'next/link'
-import { login, type ActionState } from '@/components/auth/actions'
+
 import { cn } from '@/lib/utils'
+import { Logo } from '@/components/logo'
+import { login, type ActionState } from '@/components/auth/actions'
 import { Button } from '@/components/ui/button'
 import {
   Field,
@@ -16,13 +18,16 @@ import {
 import { Input } from '@/components/ui/input'
 import { PendingFieldset } from '@/components/pending-fieldset'
 import { SubmitButton } from '@/components/submit-button'
-import { useActionState } from 'react'
+
+type LoginFormProps = React.ComponentProps<'div'> & {
+  callbackUrl?: string
+}
 
 export function LoginForm({
   className,
   callbackUrl,
   ...props
-}: React.ComponentProps<'div'> & { callbackUrl?: string }) {
+}: LoginFormProps) {
   const initialState: ActionState = { ok: false, error: null }
   const [state, formAction] = useActionState(login, initialState)
 

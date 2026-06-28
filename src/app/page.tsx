@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation'
+
 import { auth } from '@/auth'
 import { DashboardLayout } from '@/components/dashboard-layout'
-import { ChartAreaInteractive } from '@/components/chart-area-interactive'
-import { DataTable } from '@/components/data-table'
-import { SectionCards } from '@/components/section-cards'
+import { ChartAreaInteractive } from '@/components/dashboard/chart-area-interactive'
+import { DataTable } from '@/components/dashboard/data-table'
+import { SectionCards } from '@/components/dashboard/section-cards'
 
 import data from './dashboard/data.json'
 
