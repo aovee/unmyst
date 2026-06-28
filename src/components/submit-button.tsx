@@ -2,12 +2,15 @@
 
 import { useFormStatus } from 'react-dom'
 import { Loader2Icon } from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
+
+type SubmitButtonProps = React.ComponentProps<typeof Button>
 
 export function SubmitButton({
   children,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: SubmitButtonProps) {
   const { pending } = useFormStatus()
 
   return (

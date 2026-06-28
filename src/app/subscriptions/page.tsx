@@ -10,7 +10,7 @@ import { ModeToggle } from '@/components/mode-toggle'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DashboardLayout } from '@/components/dashboard-layout'
 
-export default async function Home() {
+export default async function SubscriptionsPage() {
   const session = await auth()
   if (!session?.user?.id) redirect('/login')
 

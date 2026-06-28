@@ -2,10 +2,9 @@
 
 import { useFormStatus } from 'react-dom'
 
-export function PendingFieldset({
-  children,
-  ...props
-}: React.ComponentProps<'fieldset'>) {
+type PendingFieldsetProps = React.ComponentProps<'fieldset'>
+
+export function PendingFieldset({ children, ...props }: PendingFieldsetProps) {
   const { pending } = useFormStatus()
 
   return (

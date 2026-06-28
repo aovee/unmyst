@@ -21,9 +21,6 @@ export function Logo({
         width={width}
         height={height}
         {...props}
-        // Caller className wins, so size can be controlled with a height class
-        // (e.g. `h-5 w-auto`). Rendered size is CSS-driven, not the width/height
-        // props — those only set the intrinsic aspect ratio (to avoid layout shift).
         className={cn('w-auto dark:hidden', className)}
         priority
       />

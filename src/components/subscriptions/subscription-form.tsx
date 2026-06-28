@@ -3,6 +3,7 @@
 import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { format } from 'date-fns'
+
 import {
   createSubscription,
   updateSubscription,
@@ -31,11 +32,11 @@ function SubmitButton({ isEdit }: { isEdit: boolean }) {
   )
 }
 
-export function SubscriptionForm({
-  subscription
-}: {
+interface SubscriptionFormProps {
   subscription?: Subscription
-}) {
+}
+
+export function SubscriptionForm({ subscription }: SubscriptionFormProps) {
   const isEdit = Boolean(subscription)
   const action = isEdit ? updateSubscription : createSubscription
   const [state, formAction] = useActionState(action, initialState)

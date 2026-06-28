@@ -1,17 +1,20 @@
 import { notFound, redirect } from 'next/navigation'
+import { and, eq } from 'drizzle-orm'
+
 import { db } from '@/db'
 import { subscriptions } from '@/db/schema'
 import { SubscriptionForm } from '@/components/subscriptions/subscription-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { and, eq } from 'drizzle-orm'
 import { auth } from '@/auth'
 import { DashboardLayout } from '@/components/dashboard-layout'
 
+interface EditSubscriptionPageProps {
+  params: Promise<{ id: string }>
+}
+
 export default async function EditSubscriptionPage({
   params
-}: {
-  params: Promise<{ id: string }>
-}) {
+}: EditSubscriptionPageProps) {
   const { id } = await params
 
   const session = await auth()

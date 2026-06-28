@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
+
 import { ThemeProvider } from '@/components/theme-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import './globals.css'

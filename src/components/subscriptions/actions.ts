@@ -1,11 +1,12 @@
 'use server'
 
-import { z } from 'zod'
+import { and, eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
+
 import { db } from '@/db'
 import { subscriptions } from '@/db/schema'
-import { and, eq } from 'drizzle-orm'
 import { auth } from '@/auth'
 
 const SubscriptionSchema = z.object({
