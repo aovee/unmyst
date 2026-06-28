@@ -3,12 +3,13 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { CreditCardIcon, type LucideIcon } from 'lucide-react'
+import { CreditCardIcon, House, type LucideIcon } from 'lucide-react'
 
 import { Logo } from '@/components/logo'
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -17,6 +18,7 @@ import {
   SidebarMenuItem,
   SidebarRail
 } from '@/components/ui/sidebar'
+import { NavUser } from '@/components/nav-user'
 
 type NavItem = {
   title: string
@@ -26,7 +28,8 @@ type NavItem = {
 
 // Only real, existing routes. Add new entries here as routes are built.
 const navMain: NavItem[] = [
-  { title: 'Subscriptions', url: '/', icon: CreditCardIcon }
+  { title: 'Dashboard', url: '/', icon: House },
+  { title: 'Subscriptions', url: '/subscriptions', icon: CreditCardIcon }
 ]
 
 /** Active when the path matches exactly, or is nested under a non-root route. */
@@ -35,13 +38,20 @@ function isActiveRoute(pathname: string, url: string) {
   return pathname === url || pathname.startsWith(`${url}/`)
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & {
+  user: React.ComponentProps<typeof NavUser>['user']
+}) {
   const pathname = usePathname()
 
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <Logo className="me-auto h-10 w-auto" />
+        <Link href="/">
+          <Logo className="me-auto h-10 w-auto" />
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -65,6 +75,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={user} />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

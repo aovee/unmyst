@@ -20,14 +20,16 @@ import { useActionState } from 'react'
 
 export function LoginForm({
   className,
+  callbackUrl,
   ...props
-}: React.ComponentProps<'div'>) {
+}: React.ComponentProps<'div'> & { callbackUrl?: string }) {
   const initialState: ActionState = { ok: false, error: null }
   const [state, formAction] = useActionState(login, initialState)
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <form action={formAction}>
+        <input type="hidden" name="redirectTo" value={callbackUrl ?? '/'} />
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
             <Link href="/">
