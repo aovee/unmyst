@@ -5,6 +5,7 @@ import { SubscriptionForm } from '@/components/subscriptions/subscription-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { and, eq } from 'drizzle-orm'
 import { auth } from '@/auth'
+import { DashboardLayout } from '@/components/dashboard-layout'
 
 export default async function EditSubscriptionPage({
   params
@@ -14,7 +15,10 @@ export default async function EditSubscriptionPage({
   const { id } = await params
 
   const session = await auth()
-  if (!session?.user?.id) redirect('/login')
+  if (!session?.user?.id) {
+    const callbackUrl = encodeURIComponent(`/subscriptions/${id}/edit`)
+    redirect(`/login?callbackUrl=${callbackUrl}`)
+  }
 
   const [subscription] = await db
     .select()
@@ -26,7 +30,7 @@ export default async function EditSubscriptionPage({
   if (!subscription) notFound()
 
   return (
-    <main className="p-8 max-w-md mx-auto">
+    <DashboardLayout>
       <Card>
         <CardHeader>
           <CardTitle>Edit subscription</CardTitle>
@@ -35,6 +39,6 @@ export default async function EditSubscriptionPage({
           <SubscriptionForm subscription={subscription} />
         </CardContent>
       </Card>
-    </main>
+    </DashboardLayout>
   )
 }

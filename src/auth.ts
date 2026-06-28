@@ -13,7 +13,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   }),
   providers: [
     Resend({
-      from: 'onboarding@resend.dev'
+      from: process.env.EMAIL_FROM
     })
   ],
   pages: {
