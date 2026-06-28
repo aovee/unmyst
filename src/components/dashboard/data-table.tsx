@@ -404,7 +404,7 @@ export function DataTable({ data: initialData }: DataTableProps) {
       defaultValue="outline"
       className="w-full flex-col justify-start gap-6"
     >
-      <div className="flex items-center justify-between px-4 lg:px-6">
+      <div className="flex items-center justify-between">
         <Label htmlFor="view-selector" className="sr-only">
           View
         </Label>
@@ -476,7 +476,7 @@ export function DataTable({ data: initialData }: DataTableProps) {
       </div>
       <TabsContent
         value="outline"
-        className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
+        className="relative flex flex-col gap-4 overflow-auto"
       >
         <div className="overflow-hidden rounded-lg border">
           <DndContext

@@ -1,13 +1,13 @@
 'use client'
 
 import { Fragment } from 'react'
+import { useTheme } from 'next-themes'
 import {
-  BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
+  Moon,
   Sparkles,
+  Sun,
   type LucideIcon
 } from 'lucide-react'
 
@@ -18,7 +18,11 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import {
@@ -39,6 +43,7 @@ export interface NavUserProps {
 
 export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar()
+  const { setTheme } = useTheme()
 
   const initials =
     (user.name || user.email || '?')
@@ -53,14 +58,27 @@ export function NavUser({ user }: NavUserProps) {
     leadingIcon?: LucideIcon
     trailingIcon?: LucideIcon
     onSelect?: () => void
+    children?: MenuItem[]
   }
 
   const groups: MenuItem[][] = [
-    [{ title: 'Upgrade to Pro', leadingIcon: Sparkles }],
     [
-      { title: 'Account', leadingIcon: BadgeCheck },
-      { title: 'Billing', leadingIcon: CreditCard },
-      { title: 'Notifications', leadingIcon: Bell }
+      {
+        title: 'Theme',
+        leadingIcon: Sparkles,
+        children: [
+          {
+            title: 'Light',
+            leadingIcon: Sun,
+            onSelect: () => setTheme('light')
+          },
+          {
+            title: 'Dark',
+            leadingIcon: Moon,
+            onSelect: () => setTheme('dark')
+          }
+        ]
+      }
     ],
     [{ title: 'Log out', leadingIcon: LogOut, onSelect: () => logout() }]
   ]
@@ -111,17 +129,38 @@ export function NavUser({ user }: NavUserProps) {
               <Fragment key={index}>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  {group.map((child) => (
-                    <DropdownMenuItem
-                      key={child.title}
-                      onSelect={child.onSelect}
-                    >
-                      {child.leadingIcon && <child.leadingIcon />}
-                      {child.title}
-                      {child.trailingIcon && (
-                        <child.trailingIcon className="ms-auto" />
+                  {group.map((item) => (
+                    <Fragment key={item.title}>
+                      {item.onSelect && (
+                        <DropdownMenuItem onSelect={item.onSelect}>
+                          {item.leadingIcon && <item.leadingIcon />}
+                          {item.title}
+                          {item.trailingIcon && (
+                            <item.trailingIcon className="ms-auto" />
+                          )}
+                        </DropdownMenuItem>
                       )}
-                    </DropdownMenuItem>
+
+                      {item.children && item.children?.length > 0 && (
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            {item.title}
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              {item.children.map((child) => (
+                                <DropdownMenuItem
+                                  key={child.title}
+                                  onSelect={child.onSelect}
+                                >
+                                  {child.title}
+                                </DropdownMenuItem>
+                              ))}
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                      )}
+                    </Fragment>
                   ))}
                 </DropdownMenuGroup>
               </Fragment>
