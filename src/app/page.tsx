@@ -15,7 +15,7 @@ export default async function Home() {
   return (
     <DashboardLayout>
       <SectionCards />
-      <div className="px-4 lg:px-6">
+      <div>
         <ChartAreaInteractive />
       </div>
       <DataTable data={data} />

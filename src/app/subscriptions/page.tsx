@@ -1,12 +1,10 @@
 import { redirect } from 'next/navigation'
 import { eq } from 'drizzle-orm'
-import { auth, signOut } from '@/auth'
+import { auth } from '@/auth'
 import { db } from '@/db'
 import { subscriptions } from '@/db/schema'
 import { SubscriptionItem } from '@/components/subscriptions/subscription-item'
 import { SubscriptionForm } from '@/components/subscriptions/subscription-form'
-import { Button } from '@/components/ui/button'
-import { ModeToggle } from '@/components/mode-toggle'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DashboardLayout } from '@/components/dashboard-layout'
 
@@ -36,20 +34,6 @@ export default async function SubscriptionsPage() {
         <p className="text-muted-foreground">
           Monthly total: {(monthlyTotal / 100).toFixed(2)} €
         </p>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <ModeToggle />
-        <form
-          action={async () => {
-            'use server'
-            await signOut({ redirectTo: '/login' })
-          }}
-        >
-          <Button variant="outline" size="sm" type="submit">
-            Sign out
-          </Button>
-        </form>
       </div>
 
       <Card>
