@@ -8,7 +8,6 @@ import { withEvlog, useLogger } from '@/lib/evlog'
 
 export type ActionState = { ok: boolean; error: string | null }
 
-/** Clears the session and returns the user to the login page. */
 export async function logout() {
   await signOut({ redirectTo: '/login' })
 }
@@ -17,7 +16,6 @@ const LoginSchema = z.object({
   email: z.email('Enter a valid email address')
 })
 
-/** Only allow same-site relative paths so `redirectTo` can't become an open redirect. */
 function safeRedirect(target: string | null | undefined): string {
   if (target && target.startsWith('/') && !target.startsWith('//'))
     return target
@@ -26,7 +24,7 @@ function safeRedirect(target: string | null | undefined): string {
 
 const sendMagicLink = withEvlog(async (email: string, redirectTo: string) => {
   const log = useLogger()
-  log.set({ action: 'login', email, redirectTo })
+  log.set({ action: 'login', email, callbackUrl: redirectTo })
   // `redirectTo` becomes the callbackUrl baked into the magic link — it's where
   // Auth.js sends the user AFTER they click the link and the token is verified.
   // `redirect: false` only stops signIn from redirecting now (so we can send the
@@ -35,14 +33,13 @@ const sendMagicLink = withEvlog(async (email: string, redirectTo: string) => {
   log.set({ result: 'magic-link-sent' })
 })
 
-export async function login(
+export async function loginWithEmail(
   _prev: ActionState,
   formData: FormData
 ): Promise<ActionState> {
   const parsed = LoginSchema.safeParse({
     email: String(formData.get('email') ?? '').trim()
   })
-  console.log(parsed)
   if (!parsed.success) {
     return {
       ok: false,

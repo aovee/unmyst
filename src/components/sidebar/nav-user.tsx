@@ -153,7 +153,11 @@ export function NavUser({ user }: NavUserProps) {
                                   key={child.title}
                                   onSelect={child.onSelect}
                                 >
+                                  {child.leadingIcon && <child.leadingIcon />}
                                   {child.title}
+                                  {child.trailingIcon && (
+                                    <child.trailingIcon className="ms-auto" />
+                                  )}
                                 </DropdownMenuItem>
                               ))}
                             </DropdownMenuSubContent>
