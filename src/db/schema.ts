@@ -82,3 +82,13 @@ export const verificationTokens = pgTable(
   },
   (vt) => [primaryKey({ columns: [vt.identifier, vt.token] })]
 )
+
+// Fixed-window counters for throttling abuse-prone endpoints (e.g. the magic
+// link action). `key` encodes both the endpoint and the dimension being limited,
+// e.g. "magic-link:email:foo@bar.com" or "magic-link:ip:1.2.3.4". A row lives
+// only as long as its window; expired rows are reset in place on the next hit.
+export const rateLimits = pgTable('rate_limit', {
+  key: text('key').primaryKey(),
+  count: integer('count').notNull().default(0),
+  expiresAt: timestamp('expires_at', { mode: 'date' }).notNull()
+})

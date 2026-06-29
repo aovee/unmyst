@@ -2,9 +2,22 @@
 
 import { z } from 'zod'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 
 import { signIn, signOut } from '@/auth'
 import { withEvlog, useLogger } from '@/lib/evlog'
+import { checkRateLimit } from '@/lib/rate-limit'
+
+const MAGIC_LINK_WINDOW_SECONDS = 10 * 60
+const MAGIC_LINK_PER_EMAIL = 5
+const MAGIC_LINK_PER_IP = 15
+
+async function clientIp(): Promise<string> {
+  const h = await headers()
+  const forwarded = h.get('x-forwarded-for')
+  if (forwarded) return forwarded.split(',')[0]!.trim()
+  return h.get('x-real-ip')?.trim() || 'unknown'
+}
 
 export type ActionState = { ok: boolean; error: string | null }
 
@@ -25,10 +38,6 @@ function safeRedirect(target: string | null | undefined): string {
 const sendMagicLink = withEvlog(async (email: string, redirectTo: string) => {
   const log = useLogger()
   log.set({ action: 'login', email, callbackUrl: redirectTo })
-  // `redirectTo` becomes the callbackUrl baked into the magic link — it's where
-  // Auth.js sends the user AFTER they click the link and the token is verified.
-  // `redirect: false` only stops signIn from redirecting now (so we can send the
-  // user to /verify-request below); it does not affect that callbackUrl.
   await signIn('resend', { email, redirectTo, redirect: false })
   log.set({ result: 'magic-link-sent' })
 })
@@ -47,9 +56,28 @@ export async function loginWithEmail(
     }
   }
 
-  // Where to land after the magic link is verified. Defaults to '/'; a hidden
-  // <input name="redirectTo"> on the form (e.g. from ?callbackUrl=) can override it.
   const redirectTo = safeRedirect(formData.get('redirectTo')?.toString())
+
+  const email = parsed.data.email.toLowerCase()
+  const ip = await clientIp()
+  const [byEmail, byIp] = await Promise.all([
+    checkRateLimit(
+      `magic-link:email:${email}`,
+      MAGIC_LINK_PER_EMAIL,
+      MAGIC_LINK_WINDOW_SECONDS
+    ),
+    checkRateLimit(
+      `magic-link:ip:${ip}`,
+      MAGIC_LINK_PER_IP,
+      MAGIC_LINK_WINDOW_SECONDS
+    )
+  ])
+  if (!byEmail.ok || !byIp.ok) {
+    return {
+      ok: false,
+      error: 'Too many requests. Please wait a few minutes and try again.'
+    }
+  }
 
   try {
     await sendMagicLink(parsed.data.email, redirectTo)
@@ -61,7 +89,5 @@ export async function loginWithEmail(
     }
   }
 
-  // Outside the try/catch and the withEvlog wrapper: redirect throws
-  // NEXT_REDIRECT, which must propagate (and stay out of error telemetry).
   redirect('/verify-request')
 }
