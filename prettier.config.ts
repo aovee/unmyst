@@ -4,7 +4,6 @@ const config: Config = {
   trailingComma: 'none',
   semi: false,
   singleQuote: true,
-  ignorePatterns: [],
   printWidth: 80
 }
 
