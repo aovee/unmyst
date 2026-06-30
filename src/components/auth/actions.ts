@@ -42,27 +42,17 @@ const sendMagicLink = withEvlog(async (email: string, redirectTo: string) => {
   log.set({ result: 'magic-link-sent' })
 })
 
-export async function loginWithEmail(
-  _prev: ActionState,
-  formData: FormData
+// Shared by login and resend: throttle (per-email + per-IP) then send. Returns
+// a status instead of redirecting so each caller can decide what to do next.
+async function sendThrottledMagicLink(
+  email: string,
+  redirectTo: string
 ): Promise<ActionState> {
-  const parsed = LoginSchema.safeParse({
-    email: String(formData.get('email') ?? '').trim()
-  })
-  if (!parsed.success) {
-    return {
-      ok: false,
-      error: parsed.error.issues[0]?.message ?? 'Invalid email'
-    }
-  }
-
-  const redirectTo = safeRedirect(formData.get('redirectTo')?.toString())
-
-  const email = parsed.data.email.toLowerCase()
+  const key = email.toLowerCase()
   const ip = await clientIp()
   const [byEmail, byIp] = await Promise.all([
     checkRateLimit(
-      `magic-link:email:${email}`,
+      `magic-link:email:${key}`,
       MAGIC_LINK_PER_EMAIL,
       MAGIC_LINK_WINDOW_SECONDS
     ),
@@ -80,14 +70,63 @@ export async function loginWithEmail(
   }
 
   try {
-    await sendMagicLink(parsed.data.email, redirectTo)
+    await sendMagicLink(email, redirectTo)
   } catch (err) {
-    console.error('login failed', err)
+    console.error('magic link send failed', err)
     return {
       ok: false,
       error: 'Could not send the magic link. Please try again.'
     }
   }
 
-  redirect('/verify-request')
+  return { ok: true, error: null }
+}
+
+// Carry the email (and non-default callbackUrl) to /verify-request so the page
+// can offer a working "Resend" without re-prompting for the address.
+function verifyRequestPath(email: string, redirectTo: string): string {
+  const params = new URLSearchParams({ email })
+  if (redirectTo !== '/') params.set('redirectTo', redirectTo)
+  return `/verify-request?${params.toString()}`
+}
+
+export async function loginWithEmail(
+  _prev: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const parsed = LoginSchema.safeParse({
+    email: String(formData.get('email') ?? '').trim()
+  })
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: parsed.error.issues[0]?.message ?? 'Invalid email'
+    }
+  }
+
+  const redirectTo = safeRedirect(formData.get('redirectTo')?.toString())
+  const result = await sendThrottledMagicLink(parsed.data.email, redirectTo)
+  if (!result.ok) return result
+
+  redirect(verifyRequestPath(parsed.data.email, redirectTo))
+}
+
+// Resend from /verify-request: same throttle + send, but returns status inline
+// (no redirect) so the button can show "sent" / rate-limit feedback in place.
+export async function resendMagicLink(
+  _prev: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const parsed = LoginSchema.safeParse({
+    email: String(formData.get('email') ?? '').trim()
+  })
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: parsed.error.issues[0]?.message ?? 'Invalid email'
+    }
+  }
+
+  const redirectTo = safeRedirect(formData.get('redirectTo')?.toString())
+  return sendThrottledMagicLink(parsed.data.email, redirectTo)
 }
