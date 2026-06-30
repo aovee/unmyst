@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment } from 'react'
+import { Fragment, type Dispatch, type SetStateAction } from 'react'
 import { useTheme } from 'next-themes'
 import {
   ChevronsUpDown,
@@ -19,6 +19,8 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
@@ -43,7 +45,7 @@ export interface NavUserProps {
 
 export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar()
-  const { setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
 
   const initials =
     (user.name || user.email || '?')
@@ -57,6 +59,9 @@ export function NavUser({ user }: NavUserProps) {
     title: string
     leadingIcon?: LucideIcon
     trailingIcon?: LucideIcon
+    type?: 'radio' | 'link'
+    value?: string
+    onValueChange?: Dispatch<SetStateAction<string>>
     onSelect?: () => void
     children?: MenuItem[]
   }
@@ -66,21 +71,31 @@ export function NavUser({ user }: NavUserProps) {
       {
         title: 'Theme',
         leadingIcon: Sparkles,
+        type: 'radio',
+        value: theme,
+        onValueChange: setTheme,
         children: [
           {
             title: 'Light',
             leadingIcon: Sun,
-            onSelect: () => setTheme('light')
+            value: 'light'
           },
           {
             title: 'Dark',
             leadingIcon: Moon,
-            onSelect: () => setTheme('dark')
+            value: 'dark'
           }
         ]
       }
     ],
-    [{ title: 'Log out', leadingIcon: LogOut, onSelect: () => logout() }]
+    [
+      {
+        title: 'Log out',
+        leadingIcon: LogOut,
+        type: 'link',
+        onSelect: () => logout()
+      }
+    ]
   ]
 
   return (
@@ -125,13 +140,14 @@ export function NavUser({ user }: NavUserProps) {
                 </div>
               </div>
             </DropdownMenuLabel>
+
             {groups.map((group, index) => (
               <Fragment key={index}>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   {group.map((item) => (
                     <Fragment key={item.title}>
-                      {item.onSelect && (
+                      {item.type === 'link' && (
                         <DropdownMenuItem onSelect={item.onSelect}>
                           {item.leadingIcon && <item.leadingIcon />}
                           {item.title}
@@ -141,29 +157,39 @@ export function NavUser({ user }: NavUserProps) {
                         </DropdownMenuItem>
                       )}
 
-                      {item.children && item.children?.length > 0 && (
-                        <DropdownMenuSub>
-                          <DropdownMenuSubTrigger>
-                            {item.title}
-                          </DropdownMenuSubTrigger>
-                          <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                              {item.children.map((child) => (
-                                <DropdownMenuItem
-                                  key={child.title}
-                                  onSelect={child.onSelect}
+                      {item.type === 'radio' &&
+                        item.children &&
+                        item.children?.length > 0 && (
+                          <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>
+                              {item.title}
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                              <DropdownMenuSubContent>
+                                <DropdownMenuRadioGroup
+                                  className="min-w-32"
+                                  value={item.value}
+                                  onValueChange={item.onValueChange}
                                 >
-                                  {child.leadingIcon && <child.leadingIcon />}
-                                  {child.title}
-                                  {child.trailingIcon && (
-                                    <child.trailingIcon className="ms-auto" />
-                                  )}
-                                </DropdownMenuItem>
-                              ))}
-                            </DropdownMenuSubContent>
-                          </DropdownMenuPortal>
-                        </DropdownMenuSub>
-                      )}
+                                  {item.children.map((child) => (
+                                    <DropdownMenuRadioItem
+                                      key={child.title}
+                                      value={child.value ?? ''}
+                                    >
+                                      {child.leadingIcon && (
+                                        <child.leadingIcon />
+                                      )}
+                                      {child.title}
+                                      {child.trailingIcon && (
+                                        <child.trailingIcon className="ms-auto" />
+                                      )}
+                                    </DropdownMenuRadioItem>
+                                  ))}
+                                </DropdownMenuRadioGroup>
+                              </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                          </DropdownMenuSub>
+                        )}
                     </Fragment>
                   ))}
                 </DropdownMenuGroup>
