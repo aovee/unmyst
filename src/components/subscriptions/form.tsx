@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useEffect, type ReactNode } from 'react'
 import { useFormStatus } from 'react-dom'
 import { format } from 'date-fns'
 
@@ -20,26 +20,43 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { CheckIcon, Loader2Icon } from 'lucide-react'
 
 const initialState: ActionState = { ok: false, error: null }
 
-function SubmitButton({ isEdit }: { isEdit: boolean }) {
+export function SubmitButton() {
   const { pending } = useFormStatus()
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? 'Saving…' : isEdit ? 'Save changes' : 'Add subscription'}
+      {pending ? <Loader2Icon /> : <CheckIcon />}
+      {pending ? 'Saving…' : 'Confirm'}
     </Button>
   )
 }
 
 interface SubscriptionFormProps {
   subscription?: Subscription
+  /** Called after a successful create (e.g. to close a dialog). */
+  onSuccess?: () => void
+  /**
+   * Rendered inside the <form>, replacing the default submit button.
+   * Place a <SubmitButton /> here so useFormStatus() keeps working.
+   */
+  footer?: ReactNode
 }
 
-export function SubscriptionForm({ subscription }: SubscriptionFormProps) {
+export function SubscriptionForm({
+  subscription,
+  onSuccess,
+  footer
+}: SubscriptionFormProps) {
   const isEdit = Boolean(subscription)
   const action = isEdit ? updateSubscription : createSubscription
   const [state, formAction] = useActionState(action, initialState)
+
+  useEffect(() => {
+    if (state.ok && !isEdit) onSuccess?.()
+  }, [state.ok, isEdit, onSuccess])
 
   return (
     <form action={formAction} className="space-y-4">
@@ -108,9 +125,12 @@ export function SubscriptionForm({ subscription }: SubscriptionFormProps) {
         />
       </div>
 
-      <SubmitButton isEdit={isEdit} />
       {state.error && <p className="text-sm text-destructive">{state.error}</p>}
-      {state.ok && !isEdit && <p className="text-sm text-green-600">Added!</p>}
+      {state.ok && !isEdit && !onSuccess && (
+        <p className="text-sm text-green-600">Added!</p>
+      )}
+
+      {footer ?? <SubmitButton />}
     </form>
   )
 }

@@ -3,7 +3,7 @@ import { and, eq } from 'drizzle-orm'
 
 import { db } from '@/db'
 import { subscriptions } from '@/db/schema'
-import { SubscriptionForm } from '@/components/subscriptions/subscription-form'
+import { SubscriptionForm } from '@/components/subscriptions/form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { auth } from '@/auth'
 import { DashboardLayout } from '@/components/dashboard-layout'
