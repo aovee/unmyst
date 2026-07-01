@@ -92,8 +92,8 @@ export function SubscriptionRow({ subscription }: SubscriptionRowProps) {
         {formatCurrency(subscription.amount, undefined, locale)}
       </TableCell>
       <TableCell className="text-left">/ {displayCycle}</TableCell>
-      <TableCell className="text-right max-w-10">
-        <div className="flex items-center justify-end gap-1 transition-all duration-300 opacity-0 group-hover:opacity-100">
+      <TableCell className="text-right max-w-20">
+        <div className="flex items-center justify-end gap-1 transition-all duration-300 opacity-100 sm:opacity-0 group-hover:opacity-100">
           <Button asChild variant="ghost" size="icon" className="size-8">
             <Link href={`/subscriptions/${subscription.id}/edit`}>
               <span className="sr-only">Edit</span>
