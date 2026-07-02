@@ -3,6 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { PencilIcon, Trash2Icon } from 'lucide-react'
 import Link from 'next/link'
+import { toast } from 'sonner'
 
 import { Subscription } from '@/db/schema'
 import { type Locale } from '@/lib/locale'
@@ -20,6 +21,7 @@ import {
 } from '@/components/ui/dialog'
 import { Checkbox } from '@/components/ui/checkbox'
 import { computeNextRenewal } from './billing'
+import { EditSubscriptionDialog } from './edit-dialog'
 import { deleteSubscription } from './actions'
 
 function displayCycle({ cycle, intervalCount }: Subscription): string {
@@ -34,23 +36,33 @@ function SubscriptionActionsCell({
 }) {
   const handleDelete = async () => {
     await deleteSubscription(subscription.id)
+    toast.success('Subscription deleted')
   }
 
   return (
     <div className="flex items-center justify-end gap-1 transition-all duration-300 opacity-100 lg:opacity-0 group-hover:opacity-100">
-      <Button asChild variant="ghost" size="icon" className="size-8">
-        <Link href={`/subscriptions/${subscription.id}/edit`}>
-          <span className="sr-only">Edit</span>
-          <PencilIcon />
-        </Link>
-      </Button>
+      <EditSubscriptionDialog
+        subscription={subscription}
+        trigger={
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-8 hover:cursor-pointer"
+          >
+            <span className="sr-only">Edit</span>
+            <PencilIcon />
+          </Button>
+        }
+      />
       <Dialog>
         <DialogTrigger asChild>
-          <Button asChild variant="ghost" size="icon" className="size-8">
-            <div className="hover:cursor-pointer">
-              <span className="sr-only">Delete</span>
-              <Trash2Icon className="text-destructive" />
-            </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-8 hover:cursor-pointer"
+          >
+            <span className="sr-only">Delete</span>
+            <Trash2Icon className="text-destructive" />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-sm">

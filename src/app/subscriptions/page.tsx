@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { eq } from 'drizzle-orm'
+import { desc, eq } from 'drizzle-orm'
 
 import { auth } from '@/auth'
 import { db } from '@/db'
@@ -17,6 +17,7 @@ export default async function SubscriptionsPage() {
     .select()
     .from(subscriptions)
     .where(eq(subscriptions.userId, session.user.id))
+    .orderBy(desc(subscriptions.anchorDate))
 
   return (
     <DashboardLayout>
