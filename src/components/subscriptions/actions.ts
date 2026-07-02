@@ -2,7 +2,6 @@
 
 import { and, eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 import { db } from '@/db'
@@ -53,7 +52,8 @@ export async function createSubscription(
     console.error('createSubscription failed', err)
     return { ok: false, error: 'Could not save. Please try again.' }
   }
-  revalidatePath('/')
+
+  revalidatePath('/subscriptions')
   return { ok: true, error: null }
 }
 
@@ -85,8 +85,9 @@ export async function updateSubscription(
     console.error('updateSubscription failed', err)
     return { ok: false, error: 'Could not update. Please try again.' }
   }
-  revalidatePath('/')
-  redirect('/')
+
+  revalidatePath('/subscriptions')
+  return { ok: true, error: null }
 }
 
 export async function deleteSubscription(id: string): Promise<void> {
@@ -98,5 +99,5 @@ export async function deleteSubscription(id: string): Promise<void> {
     .where(
       and(eq(subscriptions.id, id), eq(subscriptions.userId, session.user.id))
     )
-  revalidatePath('/')
+  revalidatePath('/subscriptions')
 }

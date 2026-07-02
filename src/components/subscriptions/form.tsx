@@ -1,8 +1,9 @@
 'use client'
 
-import { useActionState, useEffect, type ReactNode } from 'react'
+import { useActionState, useEffect, useRef, type ReactNode } from 'react'
 import { useFormStatus } from 'react-dom'
 import { format } from 'date-fns'
+import { toast } from 'sonner'
 
 import {
   createSubscription,
@@ -54,9 +55,22 @@ export function SubscriptionForm({
   const action = isEdit ? updateSubscription : createSubscription
   const [state, formAction] = useActionState(action, initialState)
 
+  // Read onSuccess through a ref so an unstable inline callback from the parent
+  // (e.g. `() => setOpen(false)`) isn't a reactive dependency below. Otherwise
+  // calling onSuccess() re-renders the parent, which hands down a new onSuccess
+  // reference and re-fires this effect while state.ok is still true — a double
+  // toast.
+  const onSuccessRef = useRef(onSuccess)
   useEffect(() => {
-    if (state.ok && !isEdit) onSuccess?.()
-  }, [state.ok, isEdit, onSuccess])
+    onSuccessRef.current = onSuccess
+  })
+
+  // `state` is a fresh object per submission, so this runs once per result.
+  useEffect(() => {
+    if (!state.ok) return
+    toast.success(isEdit ? 'Subscription updated' : 'Subscription created')
+    onSuccessRef.current?.()
+  }, [state, isEdit])
 
   return (
     <form action={formAction} className="space-y-4">

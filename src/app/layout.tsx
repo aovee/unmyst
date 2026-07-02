@@ -4,6 +4,7 @@ import { GeistSans } from 'geist/font/sans'
 import { ThemeProvider } from '@/components/theme-provider'
 import { LocaleProvider } from '@/components/locale-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { Toaster } from '@/components/ui/sonner'
 import { DEFAULT_LOCALE } from '@/lib/locale'
 import './globals.css'
 
@@ -33,6 +34,7 @@ export default async function RootLayout({
               disableTransitionOnChange
             >
               {children}
+              <Toaster />
             </ThemeProvider>
           </TooltipProvider>
         </LocaleProvider>
