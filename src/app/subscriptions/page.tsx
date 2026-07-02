@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm'
 import { auth } from '@/auth'
 import { db } from '@/db'
 import { subscriptions } from '@/db/schema'
-import { SubscriptionList } from '@/components/subscriptions/list'
+import { SubscriptionsTable } from '@/components/subscriptions/table'
 import { DashboardLayout } from '@/components/dashboard-layout'
 import { AddSubscriptionDialog } from '@/components/subscriptions/add-dialog'
 import { SubscriptionDataCards } from '@/components/subscriptions/data-cards'
@@ -27,7 +27,7 @@ export default async function SubscriptionsPage() {
 
       <SubscriptionDataCards subscriptions={subs} />
 
-      <SubscriptionList subscriptions={subs} />
+      <SubscriptionsTable subscriptions={subs} />
     </DashboardLayout>
   )
 }
