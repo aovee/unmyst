@@ -7,37 +7,29 @@ const props = defineProps<{
 }>()
 
 const locale = useLocale()
+const { logoUrl } = useServiceLogo()
 const currency = computed(() => props.subscriptions[0]?.currency ?? 'EUR')
 const max = computed(() => props.limit ?? 6)
 
-interface Row {
-  name: string
-  amount: number // monthly, cents
+function initials(name: string): string {
+  return name.trim().charAt(0).toUpperCase() || '?'
 }
 
-const rows = computed<Row[]>(() =>
-  props.subscriptions
+const rows = computed(() => {
+  const ranked = props.subscriptions
     .map(s => ({
       name: s.name,
       amount: monthlyAmount(s.amount, s.cycle, s.intervalCount)
     }))
     .sort((a, b) => b.amount - a.amount)
     .slice(0, max.value)
-)
 
-const categories: Record<string, BulletLegendItemInterface> = {
-  amount: { name: 'Per month', color: 'var(--color-unmyst-500)' }
-}
-
-const valueFormatter = (v: number) =>
-  new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currency.value,
-    maximumFractionDigits: 0
-  }).format(v / 100)
-
-// ~44px per bar so the chart height tracks the number of rows.
-const height = computed(() => Math.max(160, rows.value.length * 44))
+  const peak = ranked[0]?.amount ?? 0
+  return ranked.map(r => ({
+    ...r,
+    width: peak > 0 ? `${Math.max(4, (r.amount / peak) * 100)}%` : '0%'
+  }))
+})
 </script>
 
 <template>
@@ -52,34 +44,36 @@ const height = computed(() => Math.max(160, rows.value.length * 44))
       </div>
     </template>
 
-    <BarChart
-      v-if="rows.length"
-      :data="rows"
-      :height="height"
-      x-axis="name"
-      :y-axis="['amount']"
-      :categories="categories"
-      :orientation="Orientation.Horizontal"
-      :x-formatter="valueFormatter"
-      :y-formatter="valueFormatter"
-      :radius="4"
-      hide-legend
-    >
-      <template #tooltip="{ values }">
-        <div class="rounded-md bg-default px-2.5 py-1.5 text-xs shadow-lg ring ring-default">
-          <div class="font-medium">
-            {{ values?.name }}
+    <div v-if="rows.length" class="flex flex-col gap-3.5">
+      <div
+        v-for="row in rows"
+        :key="row.name"
+        class="flex items-center gap-3"
+      >
+        <UAvatar
+          :src="logoUrl(row.name) ?? undefined"
+          :text="initials(row.name)"
+          :alt="row.name"
+          size="sm"
+          class="shrink-0 bg-elevated"
+        />
+        <div class="min-w-0 flex-1">
+          <div class="flex items-baseline justify-between gap-2 text-sm">
+            <span class="truncate font-medium">{{ row.name }}</span>
+            <span class="shrink-0 tabular-nums font-medium">
+              {{ formatCurrency(row.amount, currency, locale) }}
+              <span class="text-xs text-muted">/mo</span>
+            </span>
           </div>
-          <div class="text-muted tabular-nums">
-            {{ values ? formatCurrency(values.amount, currency, locale) : '' }} / month
+          <div class="mt-1.5 h-2 overflow-hidden rounded-full bg-elevated">
+            <div
+              class="h-full rounded-full bg-primary transition-[width] duration-500"
+              :style="{ width: row.width }"
+            />
           </div>
         </div>
-      </template>
-
-      <template #fallback>
-        <div class="w-full animate-pulse rounded-md bg-elevated" :style="{ height: `${height}px` }" />
-      </template>
-    </BarChart>
+      </div>
+    </div>
 
     <div v-else class="py-6 text-center text-sm text-muted">
       No subscriptions yet.
