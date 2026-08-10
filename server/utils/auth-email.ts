@@ -38,7 +38,7 @@ function layout({
   // a PNG referenced by absolute URL (built from the magic link's origin, so it
   // points at the same host the user requested from); SVG isn't email-safe. The
   // `alt` keeps the brand name visible when images are blocked.
-  const logoSrc = `${new URL(url).origin}/logo.png`
+  const logoSrc = `${new URL(url).origin}/logo-full-light.png`
   return `<!doctype html>
 <html lang="en">
   <body style="margin:0;padding:0;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
