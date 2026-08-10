@@ -7,14 +7,49 @@ const emit = defineEmits<{ refresh: [] }>()
 
 const locale = useLocale()
 const toast = useToast()
+const { logoUrl } = useServiceLogo()
+
+function initials(name: string): string {
+  return name.trim().charAt(0).toUpperCase() || '?'
+}
 
 const columns: TableColumn<Subscription>[] = [
-  { accessorKey: 'name', header: 'Service' },
-  { accessorKey: 'anchorDate', header: 'Started on' },
-  { id: 'nextRenewal', header: 'Next billing' },
-  { accessorKey: 'amount', header: 'Amount', meta: { class: { th: 'text-right', td: 'text-right' } } },
-  { id: 'cycle', header: 'Cycle' },
-  { id: 'actions', header: '', meta: { class: { th: 'w-20', td: 'w-20' } } }
+  {
+    accessorKey: 'name',
+    header: 'Service'
+  },
+  {
+    accessorKey: 'anchorDate',
+    header: 'Started on'
+  },
+  {
+    id: 'nextRenewal',
+    header: 'Next billing'
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Amount',
+    meta: {
+      class: {
+        th: 'text-right',
+        td: 'text-right'
+      }
+    }
+  },
+  {
+    id: 'cycle',
+    header: 'Cycle'
+  },
+  {
+    id: 'actions',
+    header: '',
+    meta: {
+      class: {
+        th: 'w-20',
+        td: 'w-20'
+      }
+    }
+  }
 ]
 
 function displayCycle(s: Subscription): string {
@@ -62,10 +97,19 @@ async function confirmDelete() {
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-md border border-border">
+  <UCard variant="outline">
     <UTable :data="subscriptions" :columns="columns" :ui="{ tr: 'group' }">
       <template #name-cell="{ row }">
-        <span class="font-medium">{{ row.original.name }}</span>
+        <div class="flex items-center gap-3">
+          <UAvatar
+            :src="logoUrl(row.original.name) ?? undefined"
+            :text="initials(row.original.name)"
+            :alt="row.original.name"
+            size="sm"
+            class="shrink-0 bg-elevated"
+          />
+          <span class="font-medium">{{ row.original.name }}</span>
+        </div>
       </template>
 
       <template #anchorDate-cell="{ row }">
@@ -82,7 +126,9 @@ async function confirmDelete() {
         </div>
       </template>
 
-      <template #cycle-cell="{ row }">/ {{ displayCycle(row.original) }}</template>
+      <template #cycle-cell="{ row }">
+        / {{ displayCycle(row.original) }}
+      </template>
 
       <template #actions-cell="{ row }">
         <div
@@ -110,7 +156,9 @@ async function confirmDelete() {
       </template>
 
       <template #empty>
-        <div class="py-8 text-center text-muted-foreground">No results.</div>
+        <div class="py-8 text-center text-muted-foreground">
+          No results.
+        </div>
       </template>
     </UTable>
 
@@ -139,5 +187,5 @@ async function confirmDelete() {
         </div>
       </template>
     </UModal>
-  </div>
+  </UCard>
 </template>

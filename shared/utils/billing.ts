@@ -2,6 +2,30 @@ import { addMonths, addWeeks, addYears, startOfDay, isBefore } from 'date-fns'
 
 export type Cycle = 'weekly' | 'monthly' | 'yearly'
 
+export const CYCLES_PER_YEAR: Record<Cycle, number> = {
+  weekly: 52,
+  monthly: 12,
+  yearly: 1
+}
+
+/** Yearly-normalized amount (same unit as `amount`, e.g. cents). */
+export function annualAmount(
+  amount: number,
+  cycle: Cycle,
+  intervalCount: number
+): number {
+  return (amount * CYCLES_PER_YEAR[cycle]) / intervalCount
+}
+
+/** Monthly-normalized amount (same unit as `amount`, e.g. cents). */
+export function monthlyAmount(
+  amount: number,
+  cycle: Cycle,
+  intervalCount: number
+): number {
+  return annualAmount(amount, cycle, intervalCount) / 12
+}
+
 export function addCycles(anchor: Date, cycle: Cycle, count: number): Date {
   switch (cycle) {
     case 'weekly':

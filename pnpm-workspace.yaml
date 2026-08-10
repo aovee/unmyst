@@ -1,5 +1,7 @@
 allowBuilds:
-  esbuild: true
-  sharp: true
-  unrs-resolver: true
-  vue-demi: true
+  '@parcel/watcher': false
+  '@tailwindcss/oxide': false
+  esbuild: false
+  maplibre-gl: false
+  unrs-resolver: false
+  vue-demi: false

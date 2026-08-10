@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ layout: 'security' })
+
 const route = useRoute()
 const callbackUrl = computed(() => {
   const cb = route.query.callbackUrl

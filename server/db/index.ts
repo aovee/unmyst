@@ -9,8 +9,6 @@ function createDb() {
   return drizzle({ client: sql, schema })
 }
 
-// Lazily initialise so importing `db` (e.g. via server/utils re-exports pulled
-// into unrelated route bundles) doesn't connect until a query actually runs.
 let _db: DrizzleClient | undefined
 export const db: DrizzleClient = new Proxy({} as DrizzleClient, {
   get(_target, prop, receiver) {

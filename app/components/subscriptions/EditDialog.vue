@@ -15,7 +15,7 @@ function onSuccess() {
   <UModal
     v-model:open="open"
     title="Edit Subscription"
-    description='Edit infos about your subscription then click "Confirm".'
+    description="Edit infos about your subscription then click &quot;Confirm&quot;."
   >
     <template #body>
       <SubscriptionsSubscriptionForm :subscription="subscription" @success="onSuccess">

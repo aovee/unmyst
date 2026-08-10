@@ -23,11 +23,11 @@ async function onSubmit() {
       }
     })
   } catch (e) {
-    const err = e as { data?: { message?: string }; statusMessage?: string }
-    error.value =
-      err.data?.message ??
-      err.statusMessage ??
-      'Something went wrong. Try again.'
+    const err = e as { data?: { message?: string }, statusMessage?: string }
+    error.value
+      = err.data?.message
+        ?? err.statusMessage
+        ?? 'Something went wrong. Try again.'
   } finally {
     pending.value = false
   }
@@ -40,9 +40,11 @@ async function onSubmit() {
       <div class="flex flex-col gap-6">
         <div class="flex flex-col items-center gap-2 text-center">
           <NuxtLink to="/">
-            <Logo />
+            <AppLogo />
           </NuxtLink>
-          <h1 class="text-xl font-bold">Welcome to Unmyst</h1>
+          <h1 class="text-xl font-bold">
+            Welcome to Unmyst
+          </h1>
           <p class="text-sm text-muted-foreground">
             Don't have an account?
             <NuxtLink
@@ -65,8 +67,13 @@ async function onSubmit() {
               class="w-full"
             />
           </UFormField>
-          <UButton type="submit" block :loading="pending" class="mt-2">
-            {{ pending ? 'Sending…' : 'Login' }}
+          <UButton
+            type="submit"
+            block
+            :loading="pending"
+            class="mt-2"
+          >
+            {{ pending ? "Sending…" : "Login" }}
           </UButton>
         </fieldset>
 

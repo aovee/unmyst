@@ -84,7 +84,7 @@ export default defineEventHandler(async (event) => {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${resendKey}`,
+        'Authorization': `Bearer ${resendKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ from, to: email, subject, html, text })

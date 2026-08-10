@@ -26,11 +26,11 @@ async function onSubmit() {
       }
     })
   } catch (e) {
-    const err = e as { data?: { message?: string }; statusMessage?: string }
-    error.value =
-      err.data?.message ??
-      err.statusMessage ??
-      'Something went wrong. Try again.'
+    const err = e as { data?: { message?: string }, statusMessage?: string }
+    error.value
+      = err.data?.message
+        ?? err.statusMessage
+        ?? 'Something went wrong. Try again.'
   } finally {
     pending.value = false
   }
@@ -46,7 +46,9 @@ async function onSubmit() {
             <UIcon name="i-lucide-gallery-vertical-end" class="size-6" />
             <span class="sr-only">Unmyst</span>
           </NuxtLink>
-          <h1 class="text-xl font-bold">Welcome to Unmyst</h1>
+          <h1 class="text-xl font-bold">
+            Welcome to Unmyst
+          </h1>
           <p class="text-sm text-muted-foreground">
             Already have an account?
             <NuxtLink
@@ -69,7 +71,12 @@ async function onSubmit() {
               class="w-full"
             />
           </UFormField>
-          <UButton type="submit" block :loading="pending" class="mt-2">
+          <UButton
+            type="submit"
+            block
+            :loading="pending"
+            class="mt-2"
+          >
             {{ pending ? 'Sending…' : 'Create Account' }}
           </UButton>
         </fieldset>

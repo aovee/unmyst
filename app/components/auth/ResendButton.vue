@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ email: string; redirectTo?: string }>()
+const props = defineProps<{ email: string, redirectTo?: string }>()
 
 const pending = ref(false)
 const sent = ref(false)
@@ -16,7 +16,7 @@ async function resend() {
     })
     sent.value = true
   } catch (e) {
-    const err = e as { data?: { message?: string }; statusMessage?: string }
+    const err = e as { data?: { message?: string }, statusMessage?: string }
     error.value = err.data?.message ?? err.statusMessage ?? 'Could not resend.'
   } finally {
     pending.value = false
@@ -40,6 +40,8 @@ async function resend() {
     <p v-if="sent" class="mt-2 text-sm text-primary">
       A new link is on its way to you.
     </p>
-    <p v-if="error" class="mt-2 text-sm text-error">{{ error }}</p>
+    <p v-if="error" class="mt-2 text-sm text-error">
+      {{ error }}
+    </p>
   </div>
 </template>

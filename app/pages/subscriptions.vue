@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Subscription } from '~~/server/db/schema'
 
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ middleware: 'auth' })
+
 useHead({ title: 'Subscriptions · Unmyst' })
 
 const { data: subs, refresh } = await useFetch<Subscription[]>('/api/subscriptions', {
@@ -10,14 +11,23 @@ const { data: subs, refresh } = await useFetch<Subscription[]>('/api/subscriptio
 </script>
 
 <template>
-  <div class="@container/main flex flex-col gap-4 md:gap-6">
-    <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold">My subscriptions</h1>
-      <SubscriptionsAddDialog @saved="refresh" />
-    </div>
+  <UDashboardPanel id="subscriptions">
+    <template #header>
+      <UDashboardNavbar title="Subscriptions">
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
 
-    <SubscriptionsDataCards :subscriptions="subs" />
+        <template #right>
+          <SubscriptionsAddDialog @saved="refresh" />
+        </template>
+      </UDashboardNavbar>
+    </template>
 
-    <SubscriptionsTable :subscriptions="subs" @refresh="refresh" />
-  </div>
+    <template #body>
+      <SubscriptionsTable :subscriptions="subs" @refresh="refresh" />
+
+      <LogoAttribution class="mt-4" />
+    </template>
+  </UDashboardPanel>
 </template>

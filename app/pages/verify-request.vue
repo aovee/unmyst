@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ layout: 'security' })
+
 const route = useRoute()
 
 function first(v: string | string[] | undefined): string | undefined {
@@ -15,10 +17,12 @@ const redirectTo = computed(() =>
   <div class="flex flex-col gap-6">
     <div class="flex flex-col items-center gap-2">
       <NuxtLink to="/">
-        <Logo />
+        <AppLogo />
       </NuxtLink>
       <div class="flex flex-col items-center gap-4 text-center">
-        <h1 class="text-xl font-bold">Verify your email</h1>
+        <h1 class="text-xl font-bold">
+          Verify your email
+        </h1>
         <p class="text-sm text-muted-foreground">
           An activation link has been sent to your email address. Please check your
           inbox and click on the link to complete the activation process.

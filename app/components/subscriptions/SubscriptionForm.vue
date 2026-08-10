@@ -46,7 +46,7 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
     })
     emit('success')
   } catch (e) {
-    const err = e as { data?: { message?: string }; statusMessage?: string }
+    const err = e as { data?: { message?: string }, statusMessage?: string }
     toast.add({
       title: err.data?.message ?? err.statusMessage ?? 'Could not save. Please try again.',
       color: 'error'

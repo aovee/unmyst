@@ -34,7 +34,7 @@ describe('computeNextRenewal', () => {
     )
   })
 
-  it("returns the anchor if it's still in the future", () => {
+  it('returns the anchor if it\'s still in the future', () => {
     const anchor = new Date(2026, 11, 1) // Dec 1
     const now = new Date(2026, 0, 1) // Jan 1
     expect(computeNextRenewal(anchor, 'monthly', 1, now)).toEqual(

@@ -1,8 +1,5 @@
 import { z } from 'zod'
 
-// Form-facing shape: `amount` is in euros (what the user types) and `anchorDate`
-// is a yyyy-mm-dd string (native <input type="date">). The server converts euros
-// → integer cents and the string → Date before persisting.
 export const SubscriptionInputSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),
   amount: z.number().positive('Price must be a positive number'), // euros
