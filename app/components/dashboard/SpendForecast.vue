@@ -75,18 +75,6 @@ const monthFormatter = (i: number) => forecast.value[Math.round(i)]?.label ?? ''
       </div>
     </template>
 
-    <!-- <BarChart
-      :data="forecast"
-      :height="260"
-      x-axis="label"
-      :y-axis="['amount']"
-      :categories="categories"
-      :x-formatter="monthFormatter"
-      :y-formatter="axisFormatter"
-      :y-num-ticks="4"
-      :radius="4"
-      hide-legend
-    /> -->
     <AreaChart
       :data="forecast"
       :height="260"
