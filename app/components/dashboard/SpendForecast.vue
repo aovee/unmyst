@@ -58,6 +58,9 @@ const axisFormatter = (v: number) =>
     currency: currency.value,
     maximumFractionDigits: 0
   }).format(v / 100)
+
+// The x scale is indexed (0..11); map each tick back to its month label.
+const monthFormatter = (i: number) => forecast.value[Math.round(i)]?.label ?? ''
 </script>
 
 <template>
@@ -72,31 +75,31 @@ const axisFormatter = (v: number) =>
       </div>
     </template>
 
-    <BarChart
+    <!-- <BarChart
       :data="forecast"
       :height="260"
       x-axis="label"
       :y-axis="['amount']"
       :categories="categories"
+      :x-formatter="monthFormatter"
       :y-formatter="axisFormatter"
       :y-num-ticks="4"
       :radius="4"
       hide-legend
-    >
-      <template #tooltip="{ values }">
-        <div class="rounded-md bg-default px-2.5 py-1.5 text-xs shadow-lg ring ring-default">
-          <div class="font-medium">
-            {{ values?.label }}
-          </div>
-          <div class="text-muted tabular-nums">
-            {{ values ? formatCurrency(values.amount, currency, locale) : '' }}
-          </div>
-        </div>
-      </template>
-
-      <template #fallback>
-        <div class="h-[260px] w-full animate-pulse rounded-md bg-elevated" />
-      </template>
-    </BarChart>
+    /> -->
+    <AreaChart
+      :data="forecast"
+      :height="260"
+      :categories="categories"
+      :x-formatter="monthFormatter"
+      :y-formatter="axisFormatter"
+      :legend-position="LegendPosition.BottomCenter"
+      :hide-legend="false"
+      :y-grid-line="true"
+      :x-grid-line="true"
+      :y-domain-line="false"
+      :x-domain-line="false"
+      :y-num-ticks="4"
+    />
   </UCard>
 </template>
