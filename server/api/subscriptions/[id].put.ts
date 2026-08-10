@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Missing subscription id' })
   }
 
-  const result = await readValidatedBody(event, (b) =>
+  const result = await readValidatedBody(event, b =>
     SubscriptionInputSchema.safeParse(b)
   )
   if (!result.success) {
@@ -16,7 +16,6 @@ export default defineEventHandler(async (event) => {
       statusMessage: result.error.issues[0]?.message ?? 'Invalid input'
     })
   }
-
   try {
     await db
       .update(subscriptions)
