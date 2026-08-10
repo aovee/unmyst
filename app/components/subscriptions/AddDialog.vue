@@ -12,7 +12,7 @@ function onSuccess() {
   <UModal
     v-model:open="open"
     title="New Subscription"
-    description='Fill out infos about your newly subscribed service and click "Confirm".'
+    description="Fill out infos about your newly subscribed service and click &quot;Confirm&quot;."
   >
     <UButton icon="i-lucide-plus" color="neutral" variant="outline">
       Add Subscription
