@@ -9,7 +9,11 @@ type AuthEmailParams = {
   host: string
 }
 
-type RenderedEmail = { subject: string; html: string; text: string }
+type RenderedEmail = {
+  subject: string
+  html: string
+  text: string
+}
 
 const APP_NAME = 'Unmyst'
 const BRAND = '#41aea6'
