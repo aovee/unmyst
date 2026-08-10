@@ -21,8 +21,37 @@
 :root {
   --ui-bg: oklch(1 0 0);
   --ui-radius: 0.225rem;
+  --vis-tooltip-title-color: var(--ui-text) !important;
+  --vis-tooltip-title-border-bottom: 1px solid var(--ui-border) !important;
+  --vis-tooltip-label-color: var(--ui-text-muted) !important;
+  --vis-donut-background-color: var(--ui-bg-elevated) !important;
+  --vis-legend-spacing: 0.75rem;
+  --vis-axis-grid-color: var(--ui-border) !important;
+  --vis-axis-tick-label-color: var(--ui-text-muted) !important;
+  --vis-axis-label-color: var(--ui-text-toned) !important;
+  --vis-legend-label-color: var(--ui-text-toned) !important;
+  --vis-tooltip-padding: 0 !important;
+  --vis-tooltip-background-color: var(--ui-bg) !important;
+  --vis-tooltip-border-color: var(--ui-border) !important;
+  --vis-tooltip-text-color: var(--ui-text-toned) !important;
+  --vis-legend-spacing: 1rem;
 }
 
 .dark {
   --ui-bg: oklch(0.145 0 0);
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
 }
