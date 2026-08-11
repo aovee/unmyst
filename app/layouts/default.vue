@@ -19,10 +19,19 @@ const links = [[{
   onSelect: () => {
     open.value = false
   }
+}, {
+  label: 'About',
+  icon: 'i-lucide-info',
+  to: '/about',
+  onSelect: () => {
+    open.value = false
+  }
 }]] satisfies NavigationMenuItem[][]
 
 onMounted(async () => {
-  const cookie = useCookie('cookie-consent')
+  const cookie = useCookie('cookie-consent', {
+    maxAge: 60 * 60 * 24 * 365
+  })
   if (cookie.value === 'accepted') {
     return
   }
@@ -70,13 +79,13 @@ onMounted(async () => {
           popover
         />
 
-        <UNavigationMenu
+        <!-- <UNavigationMenu
           :collapsed="collapsed"
           :items="links[1]"
           orientation="vertical"
           tooltip
           class="mt-auto"
-        />
+        /> -->
       </template>
 
       <template #footer="{ collapsed }">
