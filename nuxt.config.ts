@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxthub/core',
     'nuxt-auth-utils',
-    'nuxt-charts'
+    'nuxt-charts',
+    'nuxt-email-renderer'
   ],
 
   devtools: {

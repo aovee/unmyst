@@ -16,9 +16,6 @@ const redirectTo = computed(() =>
 <template>
   <div class="flex flex-col gap-6">
     <div class="flex flex-col items-center gap-2">
-      <NuxtLink to="/">
-        <AppLogo />
-      </NuxtLink>
       <div class="flex flex-col items-center gap-4 text-center">
         <h1 class="text-xl font-bold">
           Verify your email

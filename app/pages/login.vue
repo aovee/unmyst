@@ -9,5 +9,5 @@ const callbackUrl = computed(() => {
 </script>
 
 <template>
-  <AuthLoginForm :callback-url="callbackUrl ?? undefined" />
+  <AuthForm mode="login" :callback-url="callbackUrl ?? undefined" />
 </template>

@@ -35,7 +35,7 @@ const features = [{
     <template #body>
       <div class="max-w-3xl space-y-8">
         <div class="space-y-3">
-          <AppLogo />
+          <AppLogo size="xl" />
           <p class="text-lg text-toned">
             unmyst takes the mystery out of your subscriptions. It gives you a
             single, clear view of everything you pay for on a recurring basis —

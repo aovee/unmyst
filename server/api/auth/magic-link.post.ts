@@ -78,8 +78,8 @@ export default defineEventHandler(async (event) => {
 
   const host = new URL(url).host
   const { subject, html, text } = existing
-    ? signInEmail({ url, host })
-    : signUpEmail({ url, host })
+    ? await signInEmail({ url, host })
+    : await signUpEmail({ url, host })
 
   try {
     const res = await fetch('https://api.resend.com/emails', {
