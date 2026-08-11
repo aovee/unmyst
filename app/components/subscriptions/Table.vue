@@ -57,11 +57,21 @@ function displayCycle(s: Subscription): string {
   return s.intervalCount > 1 ? `${s.intervalCount} ${unit}s` : unit
 }
 
+function nextRenewalDate(s: Subscription): Date {
+  return computeNextRenewal(new Date(s.anchorDate), s.cycle, s.intervalCount)
+}
+
 function nextBilling(s: Subscription): string {
-  return formatDate(
-    computeNextRenewal(new Date(s.anchorDate), s.cycle, s.intervalCount),
-    locale
-  )
+  return formatRelativeDate(nextRenewalDate(s), locale)
+}
+
+// "Trial — 6 days left" display state. Warning-coloured when the trial will
+// convert on its own, neutral otherwise (a manual trial is harmless).
+function trialLabel(s: Subscription): string {
+  const left = trialDaysLeft(s)
+  if (left === null) return ''
+  if (left === 0) return 'Trial — ends today'
+  return `Trial — ${left} day${left === 1 ? '' : 's'} left`
 }
 
 // Edit / delete modal wiring.
@@ -97,8 +107,13 @@ async function confirmDelete() {
 </script>
 
 <template>
-  <UCard variant="outline">
-    <UTable :data="subscriptions" :columns="columns" :ui="{ tr: 'group' }">
+  <div>
+    <UTable
+      :data="subscriptions"
+      :columns="columns"
+      class="flex-1"
+      :ui="{ tr: 'group' }"
+    >
       <template #name-cell="{ row }">
         <div class="flex items-center gap-3">
           <UAvatar
@@ -117,12 +132,30 @@ async function confirmDelete() {
       </template>
 
       <template #nextRenewal-cell="{ row }">
-        {{ nextBilling(row.original) }}
+        <UBadge
+          v-if="isInTrial(row.original)"
+          :color="row.original.automaticConversion ? 'warning' : 'neutral'"
+          :variant="row.original.automaticConversion ? 'subtle' : 'outline'"
+          :icon="row.original.automaticConversion ? 'i-lucide-alert-triangle' : 'i-lucide-hourglass'"
+          :title="`Trial ends ${formatDate(trialEndDate(row.original)!, locale)}`"
+        >
+          {{ trialLabel(row.original) }}
+        </UBadge>
+        <span v-else :title="formatDate(nextRenewalDate(row.original), locale)">
+          {{ nextBilling(row.original) }}
+        </span>
       </template>
 
       <template #amount-cell="{ row }">
         <div class="text-right">
           {{ formatCurrency(row.original.amount, row.original.currency, locale) }}
+          <div v-if="isInTrial(row.original)" class="text-xs text-muted">
+            after trial
+          </div>
+          <div v-else-if="isShared(row.original)" class="text-xs text-muted">
+            your share
+            {{ formatCurrency(personalAmount(row.original), row.original.currency, locale) }}
+          </div>
         </div>
       </template>
 
@@ -187,5 +220,5 @@ async function confirmDelete() {
         </div>
       </template>
     </UModal>
-  </UCard>
+  </div>
 </template>
