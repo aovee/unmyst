@@ -83,8 +83,7 @@ const footerStyle = { fontSize: '12px', color: '#a1a1aa', margin: '24px 0 0' }
           <EImg
             :src="logoSrc"
             :alt="APP_NAME"
-            width="48"
-            height="48"
+            height="60"
           />
 
           <EHeading :style="headingStyle">
