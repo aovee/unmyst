@@ -1,4 +1,5 @@
 import { eq } from 'drizzle-orm'
+import { users } from '@nuxthub/db/schema'
 
 export default defineOAuthGoogleEventHandler({
   config: {

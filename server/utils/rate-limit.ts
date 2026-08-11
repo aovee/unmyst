@@ -1,4 +1,5 @@
 import { sql } from 'drizzle-orm'
+import { rateLimits } from '@nuxthub/db/schema'
 
 export type RateLimitResult = {
   /** Whether this request is within the allowed budget for the window. */

@@ -1,4 +1,5 @@
 import { eq, lt } from 'drizzle-orm'
+import { users, verificationTokens } from '@nuxthub/db/schema'
 
 function safeRedirect(target: string | null | undefined): string {
   if (target && target.startsWith('/') && !target.startsWith('//')) return target

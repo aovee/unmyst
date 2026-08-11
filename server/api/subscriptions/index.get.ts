@@ -1,4 +1,5 @@
 import { desc, eq } from 'drizzle-orm'
+import { subscriptions } from '@nuxthub/db/schema'
 
 export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)

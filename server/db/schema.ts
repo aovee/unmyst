@@ -5,6 +5,7 @@ import {
   uuid,
   text,
   integer,
+  boolean,
   date,
   timestamp
 } from 'drizzle-orm/pg-core'
@@ -18,7 +19,18 @@ export const subscriptions = pgTable('subscriptions', {
   currency: text('currency').notNull().default('EUR'),
   cycle: cycleEnum('cycle').notNull(),
   intervalCount: integer('interval_count').notNull().default(1),
+  // Number of people the cost is split equally between (including the owner).
+  // 1 = not shared. The user's own share is `amount / shareCount`.
+  shareCount: integer('share_count').notNull().default(1),
   anchorDate: date('anchor_date', { mode: 'date' }).notNull(), // 1st billing date, source of truth
+  // Free-trial tracking. `trialDurationDays` null = no trial; the trial end date
+  // is derived (`anchorDate + trialDurationDays`), never stored, so it can't drift
+  // when the anchor is edited. `automaticConversion` = a payment method is attached
+  // and the trial will convert on its own. `trialEndNotifiedAt` dedupes the
+  // (deferred) "trial ending" alert so it can't fire twice.
+  trialDurationDays: integer('trial_duration_days'),
+  automaticConversion: boolean('automatic_conversion').notNull().default(false),
+  trialEndNotifiedAt: timestamp('trial_end_notified_at'),
   category: text('category'),
   url: text('url'),
   notes: text('notes'),

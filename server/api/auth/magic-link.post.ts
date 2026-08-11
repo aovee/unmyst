@@ -1,6 +1,7 @@
 import { randomBytes } from 'node:crypto'
 import { z } from 'zod'
 import { eq } from 'drizzle-orm'
+import { users, verificationTokens } from '@nuxthub/db/schema'
 
 const MAGIC_LINK_WINDOW_SECONDS = 10 * 60
 const MAGIC_LINK_PER_EMAIL = 5
@@ -53,8 +54,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const config = useRuntimeConfig(event)
-  const resendKey = config.resendKey || process.env.AUTH_RESEND_KEY
-  const from = config.emailFrom || process.env.EMAIL_FROM
+  const resendKey = config.resendKey || process.env.RESEND_KEY
+  const from = config.emailFrom || process.env.RESEND_EMAIL_FROM
 
   // Mint a one-time token and persist it (identifier carries the redirect so the
   // verify handler can honour it without a second round-trip).
