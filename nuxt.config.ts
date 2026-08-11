@@ -41,6 +41,12 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2026-06-30',
 
+  hub: {
+    db: {
+      dialect: 'postgresql'
+    }
+  },
+
   eslint: {
     config: {
       stylistic: {
