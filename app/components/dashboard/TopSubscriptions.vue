@@ -19,7 +19,7 @@ const rows = computed(() => {
   const ranked = props.subscriptions
     .map(s => ({
       name: s.name,
-      amount: monthlyAmount(s.amount, s.cycle, s.intervalCount)
+      amount: monthlyAmount(personalAmount(s), s.cycle, s.intervalCount)
     }))
     .sort((a, b) => b.amount - a.amount)
     .slice(0, max.value)

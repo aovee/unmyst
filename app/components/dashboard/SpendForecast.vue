@@ -39,7 +39,7 @@ const forecast = computed<MonthBucket[]>(() => {
       const idx
         = (date.getFullYear() - start.getFullYear()) * 12
           + (date.getMonth() - start.getMonth())
-      if (idx >= 0 && idx < 12) buckets[idx]!.amount += s.amount
+      if (idx >= 0 && idx < 12) buckets[idx]!.amount += personalAmount(s)
       k += s.intervalCount
       date = addCycles(base, s.cycle, k)
     }
@@ -69,7 +69,7 @@ const monthFormatter = (i: number) => forecast.value[Math.round(i)]?.label ?? ''
       <div class="flex items-center gap-2">
         <UIcon name="i-lucide-chart-column" class="size-4 text-primary" />
         <h3 class="text-sm font-medium">
-          Next 12 months
+          Spending trends
         </h3>
         <span class="text-sm text-muted">What you'll actually be billed each month</span>
       </div>

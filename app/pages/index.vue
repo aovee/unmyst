@@ -3,7 +3,7 @@ import type { Subscription } from '~~/server/db/schema'
 
 definePageMeta({ middleware: 'auth' })
 
-useHead({ title: 'Subscriptions · Unmyst' })
+useHead({ title: 'Dashboard' })
 
 const { data: subs } = await useFetch<Subscription[]>('/api/subscriptions', {
   default: () => []
@@ -12,26 +12,25 @@ const { data: subs } = await useFetch<Subscription[]>('/api/subscriptions', {
 
 <template>
   <UDashboardPanel id="home">
-    <template #body>
-      <DashboardSubscriptionsData :subscriptions="subs" />
+    <template #header>
+      <UDashboardNavbar title="Dashboard">
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
+    </template>
 
-      <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <template #body>
+      <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <DashboardActuallyBilled :subscriptions="subs" class="col-span-2" />
+
+        <DashboardSpendForecast :subscriptions="subs" />
+        <DashboardTopSubscriptions :subscriptions="subs" />
+
+        <DashboardAveragedOutSubscriptions :subscriptions="subs" class="col-span-2" />
+
         <DashboardUpcomingRenewals :subscriptions="subs" />
         <DashboardRenewalCalendar :subscriptions="subs" />
-        <DashboardSpendForecast :subscriptions="subs" class="lg:col-span-2" />
-        <DashboardTopSubscriptions :subscriptions="subs" class="lg:col-span-2" />
-      </div>
-
-      <div class="mt-4 flex justify-end">
-        <UButton
-          to="/subscriptions"
-          icon="i-lucide-list"
-          color="neutral"
-          variant="outline"
-          trailing-icon="i-lucide-arrow-right"
-        >
-          Manage subscriptions
-        </UButton>
       </div>
     </template>
   </UDashboardPanel>

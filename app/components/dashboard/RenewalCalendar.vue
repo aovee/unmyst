@@ -47,10 +47,14 @@ const calendar = computed(() => {
       d = addCycles(base, s.cycle, k)
     }
     while (!isAfter(d, monthEnd)) {
-      const key = format(d, 'yyyy-MM-dd')
-      const list = byDay.get(key) ?? []
-      list.push({ name: s.name, amount: s.amount })
-      byDay.set(key, list)
+      // A renewal that lands inside the free-trial window costs 0 — don't plot it.
+      const due = amountDueOn(s, d)
+      if (due > 0) {
+        const key = format(d, 'yyyy-MM-dd')
+        const list = byDay.get(key) ?? []
+        list.push({ name: s.name, amount: due })
+        byDay.set(key, list)
+      }
       k += s.intervalCount
       d = addCycles(base, s.cycle, k)
     }

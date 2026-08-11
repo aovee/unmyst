@@ -3,7 +3,7 @@ import type { Subscription } from '~~/server/db/schema'
 
 definePageMeta({ middleware: 'auth' })
 
-useHead({ title: 'Subscriptions · Unmyst' })
+useHead({ title: 'Subscriptions' })
 
 const { data: subs, refresh } = await useFetch<Subscription[]>('/api/subscriptions', {
   default: () => []
