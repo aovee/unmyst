@@ -2,7 +2,6 @@
 withDefaults(defineProps<{
   collapsed?: boolean
   to?: string
-  solo?: boolean
 }>(), {
   collapsed: false,
   solo: false
@@ -13,13 +12,14 @@ const ULink = resolveComponent('ULink')
 
 <template>
   <component :is="to ? ULink : 'div'" :to="to" class="flex items-center gap-2">
-    <UAvatar v-if="collapsed" src="/logo-solo.svg" />
     <UColorModeImage
-      v-else
-      :light="solo ? '/logo-solo.svg' : '/logo-full-light.svg'"
-      :dark="solo ? '/logo-solo.svg' : '/logo-full-dark.svg'"
-      :width="150"
-      :height="40"
+      light="/unmyst-mark-light.svg"
+      dark="/unmyst-mark-dark.svg"
+      :height="42"
+      :width="42"
     />
+    <div v-if="!collapsed" class="font-title text-highlighted text-2xl">
+      unmyst
+    </div>
   </component>
 </template>

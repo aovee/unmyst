@@ -3,7 +3,9 @@
 @import "@nuxt/ui";
 
 @theme static {
-  --font-sans: 'Google Sans';
+  --font-sans: 'Inter Tight';
+  --font-title: 'Manrope';
+  --font-numbers: 'Spline Sans Mono';
   
   --color-unmyst-50: oklch(0.959 0.05 188.66); /* #ccfdf8 */
   --color-unmyst-100: oklch(0.918 0.11 188.3); /* #84fcf2 */

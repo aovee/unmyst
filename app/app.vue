@@ -10,11 +10,12 @@ useHead({
     { key: 'theme-color', name: 'theme-color', content: color }
   ],
   link: [
-    { rel: 'icon', href: '/favicon.svg' }
+    { rel: 'icon', href: '/unmyst-favicon-32.png' }
   ],
   htmlAttrs: {
     lang: 'en'
-  }
+  },
+  titleTemplate: '%s - Unmyst'
 })
 
 const title = 'Unmyst'
