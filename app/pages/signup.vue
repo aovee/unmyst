@@ -1,6 +1,8 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'security' })
 
+useHead({ title: 'Sign up' })
+
 const route = useRoute()
 const callbackUrl = computed(() => {
   const cb = route.query.callbackUrl
