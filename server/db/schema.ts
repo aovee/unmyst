@@ -14,7 +14,8 @@ export const cycleEnum = pgEnum('cycle', ['weekly', 'monthly', 'yearly'])
 
 export const subscriptions = pgTable('subscriptions', {
   id: uuid('id').primaryKey().defaultRandom(),
-  name: text('name').notNull(),
+  service: text('service').notNull(),
+  description: text('description'),
   amount: integer('amount').notNull(), // in cents (integer)
   currency: text('currency').notNull().default('EUR'),
   cycle: cycleEnum('cycle').notNull(),

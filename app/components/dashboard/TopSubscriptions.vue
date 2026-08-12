@@ -18,7 +18,7 @@ function initials(name: string): string {
 const rows = computed(() => {
   const ranked = props.subscriptions
     .map(s => ({
-      name: s.name,
+      name: s.service,
       amount: monthlyAmount(personalAmount(s), s.cycle, s.intervalCount)
     }))
     .sort((a, b) => b.amount - a.amount)
@@ -35,11 +35,13 @@ const rows = computed(() => {
 <template>
   <UCard variant="outline">
     <template #header>
-      <div class="flex items-center gap-2">
-        <UIcon name="i-lucide-trophy" class="size-4 text-primary" />
-        <h3 class="text-sm font-medium">
-          Top subscriptions
-        </h3>
+      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
+        <div class="flex items-center gap-2">
+          <UIcon name="i-lucide-trophy" class="size-4 text-primary" />
+          <h3 class="text-sm font-medium">
+            Top subscriptions
+          </h3>
+        </div>
         <span class="text-sm text-muted">Priciest, normalized per month</span>
       </div>
     </template>

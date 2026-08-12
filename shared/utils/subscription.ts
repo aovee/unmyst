@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 export const SubscriptionInputSchema = z.object({
-  name: z.string().trim().min(1, 'Name is required'),
+  service: z.string().trim().min(1, 'Service is required'),
+  description: z.string().trim().nullable().default(null),
   amount: z.number().positive('Price must be a positive number'), // euros
   currency: z.string().trim().min(1).default('EUR'),
   cycle: z.enum(['weekly', 'monthly', 'yearly']),
@@ -24,7 +25,10 @@ export type SubscriptionInput = z.infer<typeof SubscriptionInputSchema>
 /** Normalise validated form input into DB column values. */
 export function toDbValues(input: SubscriptionInput) {
   return {
-    name: input.name,
+    service: input.service,
+    // Optional free-text note; blank strings collapse to null so the column
+    // stays "unset" rather than storing an empty string.
+    description: input.description?.trim() ? input.description.trim() : null,
     amount: Math.round(input.amount * 100), // euros → cents
     currency: input.currency,
     cycle: input.cycle,

@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import type { Subscription } from '~~/server/db/schema'
+
+defineProps<{ subscription: Subscription }>()
 const emit = defineEmits<{ saved: [] }>()
-const open = ref(false)
+const open = defineModel<boolean>('open', { default: false })
 
 function onSuccess() {
   open.value = false
@@ -11,21 +14,17 @@ function onSuccess() {
 <template>
   <UModal
     v-model:open="open"
-    title="New Subscription"
-    description="Fill out infos about your newly subscribed service and click &quot;Confirm&quot;."
+    title="Edit Subscription"
+    description="Edit infos about your subscription then click &quot;Confirm&quot;."
   >
-    <UButton icon="i-lucide-plus" color="neutral" variant="outline">
-      Add Subscription
-    </UButton>
-
     <template #body>
-      <SubscriptionsSubscriptionForm @success="onSuccess">
+      <SubscriptionForm :subscription="subscription" @success="onSuccess">
         <template #cancel>
           <UButton color="neutral" variant="outline" @click="open = false">
             Cancel
           </UButton>
         </template>
-      </SubscriptionsSubscriptionForm>
+      </SubscriptionForm>
     </template>
   </UModal>
 </template>

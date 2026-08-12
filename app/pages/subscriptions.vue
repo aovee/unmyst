@@ -19,13 +19,21 @@ const { data: subs, refresh } = await useFetch<Subscription[]>('/api/subscriptio
         </template>
 
         <template #right>
-          <SubscriptionsAddDialog @saved="refresh" />
+          <SubscriptionAddDialog @saved="refresh" />
         </template>
       </UDashboardNavbar>
+
+      <!-- <DataToolbar>
+        <DataToolbarCard
+          title="per month"
+          value="€123.5"
+          description="all plans levelled to a month"
+        />
+      </DataToolbar> -->
     </template>
 
     <template #body>
-      <SubscriptionsTable :subscriptions="subs" @refresh="refresh" />
+      <SubscriptionTable :subscriptions="subs" @refresh="refresh" />
 
       <LogoAttribution class="mt-4" />
     </template>

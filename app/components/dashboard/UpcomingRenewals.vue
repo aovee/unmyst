@@ -72,7 +72,7 @@ function relativeLabel(inDays: number): string {
 <template>
   <UCard variant="outline">
     <template #header>
-      <div class="flex items-center justify-between gap-4">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-calendar-clock" class="size-4 text-primary" />
           <h3 class="text-sm font-medium">
@@ -95,15 +95,15 @@ function relativeLabel(inDays: number): string {
         class="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0"
       >
         <UAvatar
-          :src="logoUrl(r.sub.name) ?? undefined"
-          :text="initials(r.sub.name)"
-          :alt="r.sub.name"
+          :src="logoUrl(r.sub.service) ?? undefined"
+          :text="initials(r.sub.service)"
+          :alt="r.sub.service"
           size="sm"
           class="shrink-0 bg-elevated"
         />
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-1.5">
-            <span class="truncate text-sm font-medium">{{ r.sub.name }}</span>
+            <span class="truncate text-sm font-medium">{{ r.sub.service }}</span>
             <UIcon
               v-if="r.isTrialEnd && r.sub.automaticConversion"
               name="i-lucide-alert-triangle"

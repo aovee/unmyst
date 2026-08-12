@@ -21,13 +21,13 @@ const { data: subs } = await useFetch<Subscription[]>('/api/subscriptions', {
     </template>
 
     <template #body>
-      <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <DashboardActuallyBilled :subscriptions="subs" class="col-span-2" />
+      <div class="grid grid-cols-1 gap-8 xl:grid-cols-2">
+        <DashboardActuallyBilled :subscriptions="subs" class="col-span-1 xl:col-span-2" />
 
         <DashboardSpendForecast :subscriptions="subs" />
         <DashboardTopSubscriptions :subscriptions="subs" />
 
-        <DashboardAveragedOutSubscriptions :subscriptions="subs" class="col-span-2" />
+        <DashboardAveragedOutSubscriptions :subscriptions="subs" class="col-span-1 xl:col-span-2" />
 
         <DashboardUpcomingRenewals :subscriptions="subs" />
         <DashboardRenewalCalendar :subscriptions="subs" />

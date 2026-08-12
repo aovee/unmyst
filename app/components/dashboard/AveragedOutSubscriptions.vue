@@ -44,7 +44,7 @@ const sinceStart = computed(() => {
 
       return {
         startDate: isOlder ? anchor : acc.startDate,
-        firstSubName: isOlder ? s.name : acc.firstSubName,
+        firstSubName: isOlder ? s.service : acc.firstSubName,
         // Still in a free trial → nothing paid yet, so it adds 0 to the total.
         total: acc.total + cycles * currentAmount(s)
       }
@@ -57,11 +57,13 @@ const sinceStart = computed(() => {
 <template>
   <div class="flex flex-col gap-6">
     <section class="flex flex-col gap-3">
-      <div class="flex items-center gap-2">
-        <UIcon name="i-lucide-scale" class="size-4 text-primary" />
-        <h3 class="text-sm font-medium">
-          Averaged out
-        </h3>
+      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
+        <div class="flex items-center gap-2">
+          <UIcon name="i-lucide-scale" class="size-4 text-primary" />
+          <h3 class="text-sm font-medium">
+            Averaged out
+          </h3>
+        </div>
         <span class="text-sm text-muted">Everything spread evenly — an estimate for budgeting</span>
       </div>
 

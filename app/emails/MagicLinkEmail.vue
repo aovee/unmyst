@@ -49,7 +49,7 @@ const headingStyle = {
   fontSize: '18px',
   fontWeight: '600',
   color: '#18181b',
-  margin: '16px 0 12px'
+  margin: '20px 0 12px'
 }
 const introStyle = { fontSize: '14px', lineHeight: '22px', color: '#52525b', margin: '0 0 24px' }
 const buttonStyle = {
@@ -83,7 +83,7 @@ const footerStyle = { fontSize: '12px', color: '#a1a1aa', margin: '24px 0 0' }
           <EImg
             :src="logoSrc"
             :alt="APP_NAME"
-            height="60"
+            height="50"
           />
 
           <EHeading :style="headingStyle">

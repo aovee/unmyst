@@ -15,6 +15,13 @@
       "when": 1786444210865,
       "tag": "0001_lazy_ben_urich",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786551100969,
+      "tag": "0002_mixed_magus",
+      "breakpoints": true
     }
   ]
 }

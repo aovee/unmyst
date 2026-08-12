@@ -66,28 +66,29 @@ const monthFormatter = (i: number) => forecast.value[Math.round(i)]?.label ?? ''
 <template>
   <UCard variant="outline">
     <template #header>
-      <div class="flex items-center gap-2">
-        <UIcon name="i-lucide-chart-column" class="size-4 text-primary" />
-        <h3 class="text-sm font-medium">
-          Spending trends
-        </h3>
+      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
+        <div class="flex items-center gap-2">
+          <UIcon name="i-lucide-chart-column" class="size-4 text-primary" />
+          <h3 class="text-sm font-medium">
+            Spending trends
+          </h3>
+        </div>
         <span class="text-sm text-muted">What you'll actually be billed each month</span>
       </div>
     </template>
 
-    <AreaChart
+    <BarChart
       :data="forecast"
       :height="260"
+      x-axis="label"
+      :y-axis="['amount']"
       :categories="categories"
       :x-formatter="monthFormatter"
       :y-formatter="axisFormatter"
-      :legend-position="LegendPosition.BottomCenter"
-      :hide-legend="false"
-      :y-grid-line="true"
-      :x-grid-line="true"
-      :y-domain-line="false"
-      :x-domain-line="false"
       :y-num-ticks="4"
+      :radius="4"
+      hide-legend
+      :group-padding="0"
     />
   </UCard>
 </template>

@@ -3,7 +3,7 @@
 @import "@nuxt/ui";
 
 @theme static {
-  --font-sans: 'DM Sans';
+  --font-sans: 'Inter';
   --font-title: 'Manrope';
   --font-numbers: 'Spline Sans Mono';
   

@@ -33,11 +33,13 @@ const billed = computed(() => {
 <template>
   <div class="flex flex-col gap-6">
     <section class="flex flex-col gap-3">
-      <div class="flex items-center gap-2">
-        <UIcon name="i-lucide-receipt" class="size-4 text-primary" />
-        <h3 class="text-sm font-medium">
-          Actually billed
-        </h3>
+      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
+        <div class="flex items-center gap-2">
+          <UIcon name="i-lucide-receipt" class="size-4 text-primary" />
+          <h3 class="text-sm font-medium">
+            Actually billed
+          </h3>
+        </div>
         <span class="text-sm text-muted">Real charges, grouped by how often they recur</span>
       </div>
 
@@ -47,14 +49,18 @@ const billed = computed(() => {
           :key="card.title"
           class="bg-linear-to-t from-primary/10"
         >
-          <div class="text-2xl font-semibold tabular-nums md:text-3xl font-numbers">
-            {{ card.value }}
-          </div>
-          <div class="mt-1 text-sm text-muted">
-            {{ card.title }}
-          </div>
-          <div class="mt-4 text-sm text-muted">
-            {{ card.caption }}
+          <div class="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-4 items-center justify-between">
+            <div class="text-2xl font-semibold tabular-nums md:text-3xl font-numbers">
+              {{ card.value }}
+            </div>
+            <div class="flex flex-col items-end sm:items-start xl:items-end">
+              <div class="text-sm text-muted">
+                {{ card.title }}
+              </div>
+              <div class="text-sm text-primary">
+                {{ card.caption }}
+              </div>
+            </div>
           </div>
         </UCard>
       </div>

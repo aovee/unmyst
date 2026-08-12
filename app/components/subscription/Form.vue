@@ -17,7 +17,8 @@ const cycleOptions = [
 
 // Form state mirrors SubscriptionInputSchema (amount in euros, anchorDate string).
 const state = reactive<Partial<SubscriptionInput>>({
-  name: props.subscription?.name ?? '',
+  service: props.subscription?.service ?? '',
+  description: props.subscription?.description ?? '',
   amount: props.subscription ? props.subscription.amount / 100 : undefined,
   currency: props.subscription?.currency ?? 'EUR',
   cycle: props.subscription?.cycle ?? 'monthly',
@@ -104,8 +105,16 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
     class="space-y-4"
     @submit="onSubmit"
   >
-    <UFormField label="Name" name="name">
-      <UInput v-model="state.name" placeholder="Netflix" class="w-full" />
+    <UFormField label="Service" name="service">
+      <UInput v-model="state.service" placeholder="Netflix" class="w-full" />
+    </UFormField>
+
+    <UFormField label="Description" name="description">
+      <UInput
+        v-model="state.description"
+        placeholder="Family plan"
+        class="w-full"
+      />
     </UFormField>
 
     <UFormField label="Price (€)" name="amount">

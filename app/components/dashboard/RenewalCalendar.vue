@@ -52,7 +52,7 @@ const calendar = computed(() => {
       if (due > 0) {
         const key = format(d, 'yyyy-MM-dd')
         const list = byDay.get(key) ?? []
-        list.push({ name: s.name, amount: due })
+        list.push({ name: s.service, amount: due })
         byDay.set(key, list)
       }
       k += s.intervalCount
@@ -99,13 +99,13 @@ const compact = (cents: number) =>
 <template>
   <UCard variant="outline">
     <template #header>
-      <div class="flex items-center justify-between gap-4">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-calendar-days" class="size-4 text-primary" />
           <h3 class="text-sm font-medium">
             Renewal calendar
           </h3>
-          <span class="text-sm text-muted">{{ calendar.label }}</span>
+          <span class="text-sm text-muted">- {{ calendar.label }}</span>
         </div>
         <div class="text-sm text-muted">
           <span class="font-semibold text-default tabular-nums">

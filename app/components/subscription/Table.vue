@@ -15,7 +15,7 @@ function initials(name: string): string {
 
 const columns: TableColumn<Subscription>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'service',
     header: 'Service'
   },
   {
@@ -114,16 +114,21 @@ async function confirmDelete() {
       class="flex-1"
       :ui="{ tr: 'group' }"
     >
-      <template #name-cell="{ row }">
+      <template #service-cell="{ row }">
         <div class="flex items-center gap-3">
           <UAvatar
-            :src="logoUrl(row.original.name) ?? undefined"
-            :text="initials(row.original.name)"
-            :alt="row.original.name"
+            :src="logoUrl(row.original.service) ?? undefined"
+            :text="initials(row.original.service)"
+            :alt="row.original.service"
             size="sm"
             class="shrink-0 bg-elevated"
           />
-          <span class="font-medium">{{ row.original.name }}</span>
+          <div class="flex flex-col">
+            <span class="font-medium">{{ row.original.service }}</span>
+            <span v-if="row.original.description" class="text-xs text-muted">
+              {{ row.original.description }}
+            </span>
+          </div>
         </div>
       </template>
 
@@ -196,7 +201,7 @@ async function confirmDelete() {
     </UTable>
 
     <!-- Edit modal (single instance, retargeted per row) -->
-    <SubscriptionsEditDialog
+    <SubscriptionEditDialog
       v-if="editSub"
       v-model:open="editOpen"
       :subscription="editSub"
