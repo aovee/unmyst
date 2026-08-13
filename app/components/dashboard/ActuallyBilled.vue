@@ -24,7 +24,8 @@ const billed = computed(() => {
       value: formatCurrency(total),
       caption: count
         ? `${count} ${cycle} ${count === 1 ? 'plan' : 'plans'}`
-        : `No ${cycle} plans`
+        : `No ${cycle} plans`,
+      hero: cycle === 'monthly'
     }
   })
 })
@@ -36,21 +37,21 @@ const billed = computed(() => {
       <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-receipt" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium">
+          <h3 class="text-sm font-medium text-highlighted">
             Actually billed
           </h3>
         </div>
-        <span class="text-sm text-muted">Real charges, grouped by how often they recur</span>
+        <span class="text-sm">Real charges, grouped by how often they recur</span>
       </div>
 
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <UCard
           v-for="card in billed"
           :key="card.title"
-          class="bg-linear-to-t from-primary/10"
+          :class="card.hero ? 'bg-primary-900' : 'bg-transparent'"
         >
           <div class="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-4 items-center justify-between">
-            <div class="text-2xl font-semibold tabular-nums md:text-3xl font-numbers">
+            <div class="text-2xl font-semibold md:text-3xl text-highlighted">
               {{ card.value }}
             </div>
             <div class="flex flex-col items-end sm:items-start xl:items-end">

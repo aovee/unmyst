@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { differenceInCalendarDays } from 'date-fns'
 import type { Subscription } from '~~/server/db/schema'
 
 const props = defineProps<{
@@ -16,50 +15,9 @@ function initials(name: string): string {
 
 const horizon = computed(() => props.windowDays ?? 30)
 
-interface Renewal {
-  sub: Subscription
-  date: Date
-  inDays: number
-  amount: number
-  isTrialEnd: boolean
-}
-
-const renewals = computed<Renewal[]>(() => {
-  const today = new Date()
-  const items: Renewal[] = []
-
-  for (const s of props.subscriptions) {
-    if (isInTrial(s)) {
-      // While on trial there's no charge — the next real event is the trial
-      // ending (the first paid charge), so surface that instead.
-      const end = trialEndDate(s)!
-      items.push({
-        sub: s,
-        date: end,
-        inDays: differenceInCalendarDays(end, today),
-        amount: personalAmount(s),
-        isTrialEnd: true
-      })
-      continue
-    }
-
-    const date = computeNextRenewal(new Date(s.anchorDate), s.cycle, s.intervalCount, today)
-    items.push({
-      sub: s,
-      date,
-      inDays: differenceInCalendarDays(date, today),
-      amount: personalAmount(s),
-      isTrialEnd: false
-    })
-  }
-
-  return items
-    .filter(r => r.inDays >= 0 && r.inDays <= horizon.value)
-    .sort((a, b) => a.date.getTime() - b.date.getTime())
-})
-
-const total = computed(() =>
-  renewals.value.reduce((sum, r) => sum + r.amount, 0)
+const { renewals, total } = useUpcomingRenewals(
+  () => props.subscriptions,
+  { windowDays: horizon }
 )
 
 function relativeLabel(inDays: number): string {
@@ -75,7 +33,7 @@ function relativeLabel(inDays: number): string {
       <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-calendar-clock" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium">
+          <h3 class="text-sm font-medium text-highlighted">
             Upcoming renewals
           </h3>
         </div>

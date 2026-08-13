@@ -1,23 +1,36 @@
 <script setup lang="ts">
-import type { Subscription } from '~~/server/db/schema'
+import { format } from 'date-fns'
 
-definePageMeta({ middleware: 'auth' })
+definePageMeta({ middleware: 'auth', layout: 'dashboard' })
 
 useHead({ title: 'Dashboard' })
 
-const { data: subs } = await useFetch<Subscription[]>('/api/subscriptions', {
-  default: () => []
+const { subscriptions: subs } = await useSubscriptions()
+
+const { count: renewingSoon } = useUpcomingRenewals(subs, { windowDays: 30 })
+
+const navbarOptions = computed<{ title: string, description: string }>(() => {
+  return {
+    title: format(new Date(), 'MMMM yyyy'),
+    description: `${subs.value.length} active subscriptions · ${renewingSoon.value} renewing in the next 30 days`
+  }
 })
 </script>
 
 <template>
   <UDashboardPanel id="home">
     <template #header>
-      <UDashboardNavbar title="Dashboard">
-        <template #leading>
-          <UDashboardSidebarCollapse />
+      <AppNavbar v-bind="navbarOptions">
+        <template #right>
+          <UButton
+            to="/subscriptions"
+            label="All subscriptions"
+            size="md"
+            variant="outline"
+            trailing-icon="i-lucide-chevron-right"
+          />
         </template>
-      </UDashboardNavbar>
+      </AppNavbar>
     </template>
 
     <template #body>

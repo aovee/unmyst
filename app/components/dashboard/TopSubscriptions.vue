@@ -38,7 +38,7 @@ const rows = computed(() => {
       <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-trophy" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium">
+          <h3 class="text-sm font-medium text-highlighted">
             Top subscriptions
           </h3>
         </div>

@@ -60,7 +60,7 @@ const sinceStart = computed(() => {
       <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-scale" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium">
+          <h3 class="text-sm font-medium text-highlighted">
             Averaged out
           </h3>
         </div>
@@ -77,10 +77,10 @@ const sinceStart = computed(() => {
           ]"
         >
           <div
-            class="font-semibold tabular-nums text-muted font-numbers"
+            class="font-semibold text-highlighted"
             :class="card.hero ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl'"
           >
-            ≈ {{ card.value }}
+            <span class="text-muted text-xl">≈</span> {{ card.value }}
           </div>
           <div class="text-sm text-muted">
             {{ card.title }}

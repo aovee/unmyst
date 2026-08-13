@@ -1,6 +1,4 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'security' })
-
 useHead({ title: 'Sign up' })
 
 const route = useRoute()

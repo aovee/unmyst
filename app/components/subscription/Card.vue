@@ -81,13 +81,13 @@ const cycle = computed<string>(() => {
         / {{ cycle }}
       </div>
       <div class="text-end">
-        <span class="font-numbers text-2xl">{{ formatCurrency(sub.amount, sub.currency, locale) }}</span>
+        <span class="text-2xl">{{ formatCurrency(sub.amount, sub.currency, locale) }}</span>
         <div v-if="isInTrial(sub)" class="text-xs text-muted">
           after trial
         </div>
         <div v-else-if="isShared(sub)" class="text-xs text-muted">
           your share
-          <span class="font-numbers">{{ formatCurrency(personalAmount(sub), sub.currency, locale) }}</span>
+          <span>{{ formatCurrency(personalAmount(sub), sub.currency, locale) }}</span>
         </div>
       </div>
     </div>

@@ -102,7 +102,7 @@ const compact = (cents: number) =>
       <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-calendar-days" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium">
+          <h3 class="text-sm font-medium text-highlighted">
             Renewal calendar
           </h3>
           <span class="text-sm text-muted">- {{ calendar.label }}</span>
@@ -139,7 +139,7 @@ const compact = (cents: number) =>
           :class="[
             cell.inMonth ? '' : 'opacity-40',
             cell.isToday ? 'ring-1 ring-primary' : '',
-            cell.items.length ? 'ring-1 ring-default' : ''
+            cell.items.length ? 'ring-1 ring-default' : 'ring-1 ring-muted/30'
           ]"
           :style="{ backgroundColor: tint(cell) }"
         >

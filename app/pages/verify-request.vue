@@ -1,6 +1,4 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'security' })
-
 useHead({ title: 'Verify your email' })
 
 const route = useRoute()

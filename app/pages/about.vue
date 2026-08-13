@@ -1,7 +1,7 @@
 <script setup lang="ts">
-definePageMeta({ middleware: 'auth' })
-
 useHead({ title: 'About' })
+
+definePageMeta({ layout: 'dashboard' })
 
 const features = [{
   icon: 'i-lucide-credit-card',
