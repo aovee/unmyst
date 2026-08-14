@@ -1,5 +1,6 @@
 <script setup lang="ts">
-useHead({ title: 'Verify your email' })
+const { t } = useI18n()
+useHead({ title: () => t('verify.title') })
 
 const route = useRoute()
 
@@ -18,11 +19,10 @@ const redirectTo = computed(() =>
     <div class="flex flex-col items-center gap-2">
       <div class="flex flex-col items-center gap-4 text-center">
         <h1 class="text-xl font-bold">
-          Verify your email
+          {{ $t('verify.title') }}
         </h1>
         <p class="text-sm text-muted-foreground">
-          An activation link has been sent to your email address. Please check your
-          inbox and click on the link to complete the activation process.
+          {{ $t('verify.body') }}
         </p>
       </div>
       <div class="mt-5 text-center">
@@ -32,9 +32,9 @@ const redirectTo = computed(() =>
           :redirect-to="redirectTo"
         />
         <p v-else class="text-sm text-muted-foreground">
-          Didn't get the mail?
+          {{ $t('verify.noMail') }}
           <NuxtLink to="/login" class="text-primary underline-offset-4 hover:underline">
-            Try again
+            {{ $t('verify.tryAgain') }}
           </NuxtLink>
         </p>
       </div>

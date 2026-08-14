@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { format } from 'date-fns'
+import { useDebounceFn } from '@vueuse/core'
 
 definePageMeta({ middleware: 'auth', layout: 'dashboard' })
-
-useHead({ title: 'Subscriptions' })
 
 const { subscriptions: subs, refresh } = await useSubscriptions()
 
 const locale = useLocale()
+const { t } = useI18n()
+
+useHead({ title: () => t('subscriptions.title') })
 
 // Summary figures assume a single currency; fall back to the first sub's.
 const currency = computed(() => subs.value[0]?.currency ?? 'EUR')
@@ -38,20 +39,63 @@ const { nextCharge, renewals: next30, total: next30Total } = useUpcomingRenewals
 const next30Max = computed(() => Math.max(1, ...next30.value.map(r => r.amount)))
 
 function chargeLabel(inDays: number): string {
-  if (inDays === 0) return 'today'
-  if (inDays === 1) return 'tomorrow'
-  return `in ${inDays} days`
+  if (inDays === 0) return t('relative.today').toLowerCase()
+  if (inDays === 1) return t('relative.tomorrow').toLowerCase()
+  return t('relative.inDays', inDays)
 }
 
-const search = ref<string>('')
+function formatChargeDate(date: Date): string {
+  return new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short' })
+    .format(date)
+}
+
+const searchTerm = ref<string>('')
+const query = ref<string>('')
+const loading = ref<boolean>(false)
+
+const applyQuery = useDebounceFn((value: string) => {
+  query.value = value.trim().toLowerCase()
+  loading.value = false
+}, 300)
+
+function onSearch(value: string) {
+  loading.value = true
+  applyQuery(value)
+}
+
+const periodFilter = ref<PeriodFilter['value']>('all')
+const periodFilters = computed<PeriodFilter[]>(() => [
+  { label: t('filters.all'), value: 'all' },
+  { label: t('cycle.weekly'), value: 'weekly' },
+  { label: t('cycle.monthly'), value: 'monthly' },
+  { label: t('cycle.yearly'), value: 'yearly' }
+])
+
+// Client-side filtering. The period tab (FilterTabs) always applies; the text
+// query narrows further only when something has been typed.
+const filteredSubs = computed(() => {
+  return subs.value.filter((s) => {
+    if (periodFilter.value !== 'all' && s.cycle !== periodFilter.value) {
+      return false
+    }
+
+    if (query.value) {
+      return [s.service, s.description, s.category]
+        .filter(Boolean)
+        .some(field => field!.toLowerCase().includes(query.value))
+    }
+
+    return true
+  })
+})
 </script>
 
 <template>
   <UDashboardPanel id="subscriptions">
     <template #header>
       <AppNavbar
-        title="Subscriptions"
-        description="15 active · levelled to a monthly figure so yearly plans stop hiding"
+        :title="$t('subscriptions.title')"
+        :description="$t('subscriptions.headerDescription', { count: subs.length })"
       >
         <template #right>
           <SubscriptionAddDialog @saved="refresh" />
@@ -60,31 +104,38 @@ const search = ref<string>('')
 
       <DataToolbar>
         <DataToolbarCard
-          title="per month"
+          :title="$t('subscriptions.cards.perMonth')"
           :value="formatCurrency(perMonth, currency, locale)"
-          description="all plans levelled to a month"
+          :description="$t('subscriptions.cards.perMonthDescription')"
         />
 
         <DataToolbarCard
-          title="per year"
+          :title="$t('subscriptions.cards.perYear')"
           :value="formatCurrency(perYear, currency, locale)"
-          :description="`${subs.length} ${subs.length === 1 ? 'service' : 'services'} across ${categoryCount} ${categoryCount === 1 ? 'category' : 'categories'}`"
+          :description="$t('subscriptions.cards.perYearDescription', {
+            services: $t('subscriptions.cards.services', subs.length),
+            categories: $t('subscriptions.cards.categories', categoryCount)
+          })"
         />
 
         <DataToolbarCard
-          title="next charge"
+          :title="$t('subscriptions.cards.nextCharge')"
           :value="nextCharge ? formatCurrency(nextCharge.amount, nextCharge.sub.currency, locale) : '—'"
           :description="
             nextCharge
-              ? `${nextCharge.sub.service} · ${chargeLabel(nextCharge.inDays)}, ${format(nextCharge.date, 'd MMM')}`
-              : 'nothing scheduled'
+              ? $t('subscriptions.cards.nextChargeDescription', {
+                service: nextCharge.sub.service,
+                when: chargeLabel(nextCharge.inDays),
+                date: formatChargeDate(nextCharge.date)
+              })
+              : $t('subscriptions.cards.nextChargeEmpty')
           "
         />
 
-        <DataToolbarCard title="next 30 days">
+        <DataToolbarCard :title="$t('subscriptions.cards.next30Days')">
           <template #content>
-            <div class="uppercase text-xs text-muted tracking-widest font-semibold">
-              next 30 days
+            <div class="title-upper">
+              {{ $t('subscriptions.cards.next30Days') }}
             </div>
 
             <div v-if="next30.length" class="flex items-end gap-1 h-9">
@@ -97,16 +148,18 @@ const search = ref<string>('')
               />
             </div>
             <div v-else class="h-9 flex items-center text-sm text-muted">
-              no renewals
+              {{ $t('subscriptions.cards.noRenewals') }}
             </div>
 
             <div class="text-xs text-muted">
               <template v-if="next30.length">
-                {{ formatCurrency(next30Total, currency, locale) }} due across
-                {{ next30.length }} {{ next30.length === 1 ? 'renewal' : 'renewals' }}
+                {{ $t('subscriptions.cards.next30Due', {
+                  amount: formatCurrency(next30Total, currency, locale),
+                  count: $t('subscriptions.cards.renewals', next30.length)
+                }) }}
               </template>
               <template v-else>
-                nothing due this month
+                {{ $t('subscriptions.cards.nothingDue') }}
               </template>
             </div>
           </template>
@@ -116,22 +169,26 @@ const search = ref<string>('')
       <DataToolbar>
         <DataToolbarCard full-width>
           <template #content>
-            <div class="flex items-center justify-between">
-              <div>
-                <UInput
-                  v-model="search"
-                  type="search"
-                  placeholder="Search subscriptions"
-                  icon="i-lucide-search"
-                  :ui="{
-                    leadingIcon: 'size-3'
-                  }"
-                />
-              </div>
-              <div>
-                <!-- <UTabs :items="items" size="sm" /> -->
-                <FilterTabs />
-              </div>
+            <div class="flex flex-col items-start sm:flex-row sm:items-center justify-between gap-4 w-full">
+              <UInput
+                v-model="searchTerm"
+                :loading="loading"
+                type="search"
+                :placeholder="$t('subscriptions.search')"
+                icon="i-lucide-search"
+                class="min-w-xs w-full sm:w-auto"
+                size="xs"
+                :ui="{
+                  base: 'py-3',
+                  leadingIcon: 'size-3'
+                }"
+                @update:model-value="onSearch"
+              />
+              <FilterTabs
+                v-model="periodFilter"
+                :label="$t('subscriptions.filterBy')"
+                :items="periodFilters"
+              />
             </div>
           </template>
         </DataToolbarCard>
@@ -139,7 +196,7 @@ const search = ref<string>('')
     </template>
 
     <template #body>
-      <SubscriptionTable :subscriptions="subs" @refresh="refresh" />
+      <SubscriptionTable :subscriptions="filteredSubs" @refresh="refresh" />
 
       <LogoAttribution class="mt-4" />
     </template>

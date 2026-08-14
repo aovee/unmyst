@@ -1,8 +1,22 @@
 import { z } from 'zod'
 
+// Suggested categories seeded into the combobox. Users may enter their own,
+// so this is guidance for consistency, not an enforced set.
+export const CATEGORY_SUGGESTIONS = [
+  'Entertainment',
+  'Music',
+  'Productivity',
+  'Software & Tools',
+  'Cloud & Storage',
+  'News & Reading',
+  'Health & Fitness',
+  'Other'
+] as const
+
 export const SubscriptionInputSchema = z.object({
   service: z.string().trim().min(1, 'Service is required'),
   description: z.string().trim().nullable().default(null),
+  category: z.string().trim().nullable().default(null),
   amount: z.number().positive('Price must be a positive number'), // euros
   currency: z.string().trim().min(1).default('EUR'),
   cycle: z.enum(['weekly', 'monthly', 'yearly']),
@@ -29,6 +43,8 @@ export function toDbValues(input: SubscriptionInput) {
     // Optional free-text note; blank strings collapse to null so the column
     // stays "unset" rather than storing an empty string.
     description: input.description?.trim() ? input.description.trim() : null,
+    // Optional category; blank collapses to null so counts/charts ignore it.
+    category: input.category?.trim() ? input.category.trim() : null,
     amount: Math.round(input.amount * 100), // euros → cents
     currency: input.currency,
     cycle: input.cycle,

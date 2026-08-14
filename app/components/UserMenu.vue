@@ -8,6 +8,7 @@ defineProps<{
 const { loggedIn, user, clear } = useUserSession()
 
 const colorMode = useColorMode()
+const { t, locale, locales, setLocale } = useI18n()
 
 const items = computed<DropdownMenuItem[][]>(() => {
   if (!loggedIn.value || !user.value) {
@@ -21,10 +22,10 @@ const items = computed<DropdownMenuItem[][]>(() => {
       src: user.value.image ?? undefined
     }
   }], [{
-    label: 'Appearance',
+    label: t('userMenu.appearance'),
     icon: 'i-lucide-sun-moon',
     children: [{
-      label: 'Light',
+      label: t('userMenu.light'),
       icon: 'i-lucide-sun',
       type: 'checkbox',
       checked: colorMode.value === 'light',
@@ -37,7 +38,7 @@ const items = computed<DropdownMenuItem[][]>(() => {
         e.preventDefault()
       }
     }, {
-      label: 'Dark',
+      label: t('userMenu.dark'),
       icon: 'i-lucide-moon',
       type: 'checkbox',
       checked: colorMode.value === 'dark',
@@ -50,8 +51,24 @@ const items = computed<DropdownMenuItem[][]>(() => {
         e.preventDefault()
       }
     }]
+  }, {
+    label: t('userMenu.language'),
+    icon: 'i-lucide-languages',
+    children: locales.value.map(l => ({
+      label: l.name ?? l.code,
+      type: 'checkbox' as const,
+      checked: locale.value === l.code,
+      onUpdateChecked(checked: boolean) {
+        if (checked) {
+          setLocale(l.code)
+        }
+      },
+      onSelect(e: Event) {
+        e.preventDefault()
+      }
+    }))
   }], [{
-    label: 'Log out',
+    label: t('userMenu.logout'),
     icon: 'i-lucide-log-out',
     onSelect() {
       clear()

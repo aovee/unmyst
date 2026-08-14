@@ -7,7 +7,8 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     'nuxt-auth-utils',
     'nuxt-charts',
-    'nuxt-email-renderer'
+    'nuxt-email-renderer',
+    '@nuxtjs/i18n'
   ],
 
   devtools: {
@@ -62,6 +63,20 @@ export default defineNuxtConfig({
         commaDangle: 'never',
         braceStyle: '1tbs'
       }
+    }
+  },
+
+  i18n: {
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    locales: [
+      { code: 'en', name: 'English', language: 'en-GB', file: 'en.json' },
+      { code: 'fr', name: 'Français', language: 'fr-FR', file: 'fr.json' }
+    ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'unmyst-locale',
+      redirectOn: 'root'
     }
   }
 })

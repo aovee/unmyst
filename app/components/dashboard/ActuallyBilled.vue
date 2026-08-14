@@ -3,6 +3,8 @@ import type { Subscription } from '~~/server/db/schema'
 
 const props = defineProps<{ subscriptions: Subscription[] }>()
 
+const { t } = useI18n()
+
 // "Actually billed": real charges that recur on a given cadence — only the
 // subscriptions whose cycle IS that cadence contribute.
 const billed = computed(() => {
@@ -18,13 +20,12 @@ const billed = computed(() => {
 
   return (['weekly', 'monthly', 'yearly'] as const).map((cycle) => {
     const { total, count } = forCycle(cycle)
-    const period = cycle.replace('ly', '') // week / month / year
     return {
-      title: `Billed each ${period}`,
+      title: t(`dashboard.actuallyBilled.billedEach.${cycle}`),
       value: formatCurrency(total),
       caption: count
-        ? `${count} ${cycle} ${count === 1 ? 'plan' : 'plans'}`
-        : `No ${cycle} plans`,
+        ? t(`dashboard.actuallyBilled.plans.${cycle}`, count)
+        : t(`dashboard.actuallyBilled.noPlans.${cycle}`),
       hero: cycle === 'monthly'
     }
   })
@@ -32,39 +33,35 @@ const billed = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
-    <section class="flex flex-col gap-3">
-      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-receipt" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium text-highlighted">
-            Actually billed
-          </h3>
+  <div>
+    <DashboardSectionContainer
+      icon="i-lucide-receipt"
+      :title="$t('dashboard.actuallyBilled.title')"
+      :description="$t('dashboard.actuallyBilled.description')"
+    >
+      <template #content>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <UCard
+            v-for="card in billed"
+            :key="card.title"
+            :class="card.hero ? 'bg-primary/30 dark:bg-primary-900' : 'bg-transparent'"
+          >
+            <div class="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-4 items-center justify-between">
+              <div class="text-2xl font-semibold md:text-3xl text-highlighted">
+                {{ card.value }}
+              </div>
+              <div class="flex flex-col items-end sm:items-start xl:items-end">
+                <div class="text-sm text-muted">
+                  {{ card.title }}
+                </div>
+                <div class="text-sm text-primary text-end">
+                  {{ card.caption }}
+                </div>
+              </div>
+            </div>
+          </UCard>
         </div>
-        <span class="text-sm">Real charges, grouped by how often they recur</span>
-      </div>
-
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <UCard
-          v-for="card in billed"
-          :key="card.title"
-          :class="card.hero ? 'bg-primary-900' : 'bg-transparent'"
-        >
-          <div class="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-4 items-center justify-between">
-            <div class="text-2xl font-semibold md:text-3xl text-highlighted">
-              {{ card.value }}
-            </div>
-            <div class="flex flex-col items-end sm:items-start xl:items-end">
-              <div class="text-sm text-muted">
-                {{ card.title }}
-              </div>
-              <div class="text-sm text-primary">
-                {{ card.caption }}
-              </div>
-            </div>
-          </div>
-        </UCard>
-      </div>
-    </section>
+      </template>
+    </DashboardSectionContainer>
   </div>
 </template>

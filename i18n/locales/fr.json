@@ -1,0 +1,351 @@
+{
+  "app": {
+    "name": "Unmyst",
+    "description": "Enfin une vue claire sur tous vos abonnements et adhésions au même endroit. Unmyst est un gestionnaire d'abonnements qui vous aide à suivre, gérer et résilier vos abonnements en toute simplicité."
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "subscriptions": "Abonnements",
+    "about": "À propos"
+  },
+  "common": {
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "saving": "Enregistrement…",
+    "sending": "Envoi…",
+    "or": "ou"
+  },
+  "error": {
+    "title": "Page introuvable",
+    "description": "Nous sommes désolés, cette page est introuvable."
+  },
+  "cookie": {
+    "message": "Nous utilisons des cookies internes pour améliorer votre expérience sur notre site.",
+    "accept": "Accepter",
+    "optOut": "Refuser"
+  },
+  "userMenu": {
+    "appearance": "Apparence",
+    "light": "Clair",
+    "dark": "Sombre",
+    "language": "Langue",
+    "logout": "Se déconnecter"
+  },
+  "notifications": {
+    "title": "Notifications"
+  },
+  "logoAttribution": {
+    "text": "Logos fournis par {link}"
+  },
+  "auth": {
+    "welcome": "Bienvenue sur Unmyst",
+    "emailLabel": "E-mail",
+    "google": "Continuer avec Google",
+    "terms": "En continuant, vous acceptez nos {terms} et notre {privacy}.",
+    "termsOfService": "Conditions d'utilisation",
+    "privacyPolicy": "Politique de confidentialité",
+    "genericError": "Une erreur est survenue. Veuillez réessayer.",
+    "login": {
+      "title": "Connexion",
+      "prompt": "Vous n'avez pas de compte ?",
+      "link": "Créer un compte",
+      "submit": "Se connecter",
+      "placeholder": "vous\\@exemple.com"
+    },
+    "signup": {
+      "title": "Inscription",
+      "prompt": "Vous avez déjà un compte ?",
+      "link": "Se connecter",
+      "submit": "Créer un compte",
+      "placeholder": "vous\\@exemple.com"
+    }
+  },
+  "verify": {
+    "title": "Vérifiez votre e-mail",
+    "body": "Un lien d'activation a été envoyé à votre adresse e-mail. Veuillez consulter votre boîte de réception et cliquer sur le lien pour finaliser l'activation.",
+    "noMail": "Vous n'avez pas reçu l'e-mail ?",
+    "tryAgain": "Réessayer",
+    "resend": "Renvoyer",
+    "sent": "Un nouveau lien est en route.",
+    "error": "Impossible de renvoyer l'e-mail."
+  },
+  "relative": {
+    "today": "Aujourd'hui",
+    "tomorrow": "Demain",
+    "inDays": "dans {n} jour | dans {n} jours"
+  },
+  "cycle": {
+    "weekly": "Hebdomadaire",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "unit": {
+      "week": "semaine | semaines",
+      "month": "mois | mois",
+      "year": "an | ans"
+    },
+    "per": {
+      "week": "Par semaine",
+      "month": "Par mois",
+      "year": "Par an"
+    }
+  },
+  "filters": {
+    "all": "Tous"
+  },
+  "front": {
+    "nav": {
+      "howItCounts": "Comment ça compte",
+      "yourData": "Vos données",
+      "limits": "Limites",
+      "openLedger": "Ouvrir le registre"
+    },
+    "footer": {
+      "version": "unmyst {version} · compilé le {date}",
+      "source": "Code source",
+      "report": "Signaler un problème",
+      "licence": "Licence",
+      "madeBy": "Créé par Aovee, parce qu'un tableur avait cessé d'être drôle."
+    }
+  },
+  "about": {
+    "title": "À propos",
+    "hero": {
+      "line1": "Un forfait annuel n'est pas moins cher.",
+      "line2": "Il est simplement plus discret.",
+      "body": "131,88 € une fois par an et 10,99 € chaque mois coûtent la même chose. L'un des deux, vous le remarquez. unmyst met chaque abonnement sur une seule échelle — ce qu'il vous coûte par mois — pour que les plus discrets cessent de se cacher derrière leur cycle de facturation.",
+      "primary": "Voir le registre",
+      "secondary": "Comment le calcul fonctionne"
+    },
+    "stats": {
+      "caption": "Un exemple — le registre d'un membre",
+      "plansValue": "16",
+      "plans": "Abonnements sur une échelle",
+      "typicalValue": "120,51 €",
+      "typical": "Mois type, ramené au mois",
+      "billedValue": "6 sur 16",
+      "billed": "Facturés au mois",
+      "dataValue": "0 €",
+      "data": "Données envoyées ailleurs"
+    },
+    "howItCounts": {
+      "eyebrow": "Comment ça compte",
+      "one": {
+        "title": "Les forfaits annuels divisés par douze",
+        "body": "Chaque abonnement reçoit un montant mensuel ramené au mois : ainsi un prélèvement annuel de 131,88 € voisine avec un forfait mensuel de 23,90 € et la comparaison est honnête. Le prélèvement réel et son cycle restent visibles sur la même ligne.",
+        "example": "World of Warcraft 131,88 € / an → 10,99 € / mois"
+      },
+      "two": {
+        "title": "Facturé et lissé, gardés à part",
+        "body": "Deux chiffres, jamais mélangés. Le montant réellement facturé est ce que votre banque voit le jour venu, pics compris. Le montant lissé répartit tout uniformément — rien n'est facturé ainsi ; il existe pour vous donner un seul chiffre à budgéter.",
+        "example": "Août facturé 122,67 € · lissé ≈120,51 €"
+      },
+      "three": {
+        "title": "Les forfaits partagés comptent votre part",
+        "body": "Enregistrez un partage et votre part devient le chiffre principal partout, avec le prélèvement complet en dessous. Le montant mensuel reflète alors ce qui quitte réellement votre compte.",
+        "example": "Spotify Duo 21,24 € → votre part 7,08 €"
+      }
+    },
+    "ledger": {
+      "eyebrow": "Le registre",
+      "title": "Une seule liste, triée par ordre d'échéance",
+      "body": "Les renouvellements se regroupent en cette semaine, plus tard ce mois-ci et au-delà — chacun avec le montant qui quitte réellement votre compte. Chaque ligne porte le prélèvement réel, le cycle et le montant mensuel ramené côte à côte, pour que rien ne paraisse comparable par accident.",
+      "previewLabel": "Le registre des abonnements",
+      "cols": {
+        "service": "Service",
+        "charge": "Prélèvement",
+        "cycle": "Cycle",
+        "levelled": "Ramené"
+      }
+    },
+    "data": {
+      "eyebrow": "Vos données",
+      "title": "Rien ne quitte votre machine",
+      "body": "unmyst ne se connecte jamais à votre banque. Vous saisissez ce que vous payez ; il fait le calcul. Aucun compte, aucune analyse tierce, aucune donnée de carte — et un export que vous emportez avec vous.",
+      "exportJson": "Exporter en JSON",
+      "importBackup": "Importer une sauvegarde",
+      "tracked": "Abonnements suivis",
+      "trackedValue": "16",
+      "since": "Suivi depuis le",
+      "sinceValue": "13 nov. 2023",
+      "total": "Total enregistré",
+      "totalValue": "1 362,45 €",
+      "storage": "Stockage",
+      "storageValue": "Ce navigateur · 41 Ko",
+      "lastBackup": "Dernière sauvegarde",
+      "lastBackupValue": "9 août 2026"
+    },
+    "limits": {
+      "eyebrow": "Ce qu'il ne fait délibérément pas",
+      "bank": "Se connecter à votre banque ou lire vos transactions — vous saisissez ce que vous payez.",
+      "cancel": "Résilier quoi que ce soit à votre place. Il vous dit quoi résilier ; les clics sont à vous.",
+      "guess": "Deviner les prix. Un forfait non modifié garde le dernier montant que vous lui avez donné.",
+      "oneOff": "Suivre les achats ponctuels. Si ça ne se répète pas, ça n'a pas sa place ici."
+    },
+    "quote": {
+      "text": "Je pensais payer pour quatre choses. Il y en avait seize, et trois d'entre elles étaient le même bureau d'enregistrement.",
+      "attribution": "la raison d'être de cet outil"
+    },
+    "cta": {
+      "title": "Découvrez ce que vous payez vraiment",
+      "body": "Il faut une dizaine de minutes pour saisir une année d'abonnements. La plupart des gens se trompent d'un facteur deux.",
+      "openLedger": "Ouvrir le registre",
+      "dashboard": "Voir le tableau de bord"
+    }
+  },
+  "dashboard": {
+    "navbarDescription": "{count} abonnements actifs · {renewing} à renouveler dans les 30 prochains jours",
+    "allSubscriptions": "Tous les abonnements",
+    "actuallyBilled": {
+      "title": "Réellement facturé",
+      "description": "Prélèvements réels, regroupés par fréquence",
+      "billedEach": {
+        "weekly": "Facturé chaque semaine",
+        "monthly": "Facturé chaque mois",
+        "yearly": "Facturé chaque année"
+      },
+      "plans": {
+        "weekly": "{n} forfait hebdomadaire | {n} forfaits hebdomadaires",
+        "monthly": "{n} forfait mensuel | {n} forfaits mensuels",
+        "yearly": "{n} forfait annuel | {n} forfaits annuels"
+      },
+      "noPlans": {
+        "weekly": "Aucun forfait hebdomadaire",
+        "monthly": "Aucun forfait mensuel",
+        "yearly": "Aucun forfait annuel"
+      }
+    },
+    "spendForecast": {
+      "title": "Tendances de dépenses",
+      "description": "Ce qui vous sera réellement facturé chaque mois",
+      "series": "Dépense"
+    },
+    "topSubscriptions": {
+      "title": "Principaux abonnements",
+      "description": "Les plus chers, ramenés au mois",
+      "perMonth": "/mois",
+      "empty": "Aucun abonnement pour l'instant."
+    },
+    "categoryBreakdown": {
+      "title": "Par catégorie",
+      "description": "Dépense mensuelle, répartie par catégorie",
+      "uncategorized": "Sans catégorie",
+      "perMonth": "/mois",
+      "empty": "Aucun abonnement pour l'instant."
+    },
+    "subscriptionCreep": {
+      "title": "Inflation des abonnements",
+      "description": "Votre coût mensuel au fil des ajouts",
+      "series": "Coût mensuel",
+      "growth": "En hausse de {amount}/mois depuis {since} — désormais {latest}/mois.",
+      "empty": "Pas encore assez d'historique."
+    },
+    "averaged": {
+      "title": "Lissé",
+      "description": "Tout réparti uniformément — une estimation pour votre budget",
+      "perWeek": "Par semaine",
+      "perMonth": "Par mois",
+      "perYear": "Par an",
+      "estimate": "estimation",
+      "sinceStart": "Vous avez payé {total} au total depuis {date}, en commençant par {service}."
+    },
+    "upcomingRenewals": {
+      "title": "Renouvellements à venir",
+      "due": "à payer sous {days} jours",
+      "trialEnds": "Fin de l'essai · ",
+      "trialConverts": "L'essai se convertit automatiquement en abonnement payant",
+      "firstCharge": "premier prélèvement",
+      "of": "sur {amount}",
+      "empty": "Rien à payer dans les {days} prochains jours."
+    },
+    "renewalCalendar": {
+      "title": "Calendrier de renouvellement",
+      "thisMonth": "ce mois-ci",
+      "weekdays": "Lun,Mar,Mer,Jeu,Ven,Sam,Dim"
+    }
+  },
+  "subscriptions": {
+    "title": "Abonnements",
+    "headerDescription": "{count} actifs · ramenés à un montant mensuel pour que les forfaits annuels cessent de se cacher",
+    "search": "Rechercher des abonnements",
+    "filterBy": "Filtrer par",
+    "cards": {
+      "perMonth": "par mois",
+      "perMonthDescription": "tous les forfaits ramenés au mois",
+      "perYear": "par an",
+      "perYearDescription": "{services} dans {categories}",
+      "services": "{n} service | {n} services",
+      "categories": "{n} catégorie | {n} catégories",
+      "nextCharge": "prochain prélèvement",
+      "nextChargeEmpty": "rien de prévu",
+      "nextChargeDescription": "{service} · {when}, {date}",
+      "next30Days": "30 prochains jours",
+      "next30Due": "{amount} à payer sur {count}",
+      "renewals": "{n} renouvellement | {n} renouvellements",
+      "noRenewals": "aucun renouvellement",
+      "nothingDue": "rien à payer ce mois-ci"
+    }
+  },
+  "subscription": {
+    "add": {
+      "button": "Ajouter un abonnement",
+      "title": "Nouvel abonnement",
+      "description": "Renseignez les informations sur le service auquel vous venez de vous abonner, puis cliquez sur « Confirmer »."
+    },
+    "edit": {
+      "title": "Modifier l'abonnement",
+      "description": "Modifiez les informations de votre abonnement, puis cliquez sur « Confirmer »."
+    },
+    "delete": {
+      "title": "Attention",
+      "description": "Voulez-vous vraiment supprimer cet abonnement ? Cette action est irréversible.",
+      "success": "Abonnement supprimé",
+      "error": "Suppression impossible. Veuillez réessayer."
+    },
+    "table": {
+      "service": "Service",
+      "renews": "Renouvellement",
+      "billed": "Facturé",
+      "perMonth": "Par mois",
+      "empty": "Aucun résultat."
+    },
+    "card": {
+      "nextBilling": "Prochaine facturation",
+      "afterTrial": "après l'essai",
+      "yourShare": "votre part"
+    },
+    "trial": {
+      "endsToday": "Essai — se termine aujourd'hui",
+      "daysLeft": "Essai — {n} jour restant | Essai — {n} jours restants",
+      "endsOn": "L'essai se termine le {date}"
+    },
+    "form": {
+      "service": "Service",
+      "servicePlaceholder": "Netflix",
+      "description": "Description",
+      "descriptionPlaceholder": "Forfait famille",
+      "category": "Catégorie",
+      "categoryPlaceholder": "Divertissement",
+      "price": "Prix (€)",
+      "pricePlaceholder": "15,99",
+      "cycle": "Cycle de facturation",
+      "intervalCount": "Tous les N cycles",
+      "shareCount": "Partagé entre",
+      "shareCountHelp": "Nombre de personnes se partageant le coût à parts égales, vous compris. Laissez 1 si c'est uniquement pour vous.",
+      "yourShare": "Votre part :",
+      "firstBillingDate": "Date de première facturation",
+      "trialStartDate": "Date de début de l'essai",
+      "hasTrial": "Commence par un essai gratuit",
+      "hasTrialHelp": "Pendant l'essai, il compte pour 0 € aujourd'hui, mais apparaît quand même dans votre coût récurrent.",
+      "trialLength": "Durée de l'essai (jours)",
+      "trialLengthPlaceholder": "30",
+      "trialEnds": "L'essai se termine le {date}",
+      "automaticConversion": "Se convertit automatiquement en payant",
+      "automaticConversionHelp": "Un moyen de paiement est associé — le prélèvement démarrera à la fin de l'essai.",
+      "saved": "Abonnement mis à jour",
+      "created": "Abonnement créé",
+      "error": "Enregistrement impossible. Veuillez réessayer."
+    }
+  }
+}

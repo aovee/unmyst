@@ -7,6 +7,7 @@ const props = defineProps<{
 }>()
 
 const locale = useLocale()
+const { t } = useI18n()
 const { logoUrl } = useServiceLogo()
 
 function initials(name: string): string {
@@ -21,29 +22,28 @@ const { renewals, total } = useUpcomingRenewals(
 )
 
 function relativeLabel(inDays: number): string {
-  if (inDays === 0) return 'Today'
-  if (inDays === 1) return 'Tomorrow'
-  return `in ${inDays} days`
+  if (inDays === 0) return t('relative.today')
+  if (inDays === 1) return t('relative.tomorrow')
+  return t('relative.inDays', inDays)
 }
 </script>
 
 <template>
   <UCard variant="outline">
     <template #header>
-      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-calendar-clock" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium text-highlighted">
-            Upcoming renewals
-          </h3>
-        </div>
-        <div class="text-sm text-muted">
-          <span class="font-semibold text-default tabular-nums">
-            {{ formatCurrency(total, undefined, locale) }}
-          </span>
-          due in {{ horizon }} days
-        </div>
-      </div>
+      <DashboardSectionHeader
+        icon="i-lucide-calendar-clock"
+        :title="$t('dashboard.upcomingRenewals.title')"
+      >
+        <template #description>
+          <div class="text-sm text-muted">
+            <span class="font-semibold text-default tabular-nums">
+              {{ formatCurrency(total, undefined, locale) }}
+            </span>
+            {{ $t('dashboard.upcomingRenewals.due', { days: horizon }) }}
+          </div>
+        </template>
+      </DashboardSectionHeader>
     </template>
 
     <div v-if="renewals.length" class="flex flex-col divide-y divide-default">
@@ -66,29 +66,28 @@ function relativeLabel(inDays: number): string {
               v-if="r.isTrialEnd && r.sub.automaticConversion"
               name="i-lucide-alert-triangle"
               class="size-3.5 shrink-0 text-warning"
-              :title="'Trial converts to paid automatically'"
+              :title="$t('dashboard.upcomingRenewals.trialConverts')"
             />
           </div>
           <div class="text-xs" :class="r.isTrialEnd ? 'text-warning' : 'text-muted'">
-            <span v-if="r.isTrialEnd">Trial ends · </span>
+            <span v-if="r.isTrialEnd">{{ $t('dashboard.upcomingRenewals.trialEnds') }}</span>
             {{ formatDate(r.date, locale) }} · {{ relativeLabel(r.inDays) }}
           </div>
         </div>
         <div class="shrink-0 text-right text-sm font-medium tabular-nums">
           {{ formatCurrency(r.amount, r.sub.currency, locale) }}
           <div v-if="r.isTrialEnd" class="text-xs font-normal text-muted">
-            first charge
+            {{ $t('dashboard.upcomingRenewals.firstCharge') }}
           </div>
           <div v-else-if="isShared(r.sub)" class="text-xs font-normal text-muted">
-            of
-            {{ formatCurrency(r.sub.amount, r.sub.currency, locale) }}
+            {{ $t('dashboard.upcomingRenewals.of', { amount: formatCurrency(r.sub.amount, r.sub.currency, locale) }) }}
           </div>
         </div>
       </div>
     </div>
 
     <div v-else class="py-6 text-center text-sm text-muted">
-      Nothing due in the next {{ horizon }} days.
+      {{ $t('dashboard.upcomingRenewals.empty', { days: horizon }) }}
     </div>
   </UCard>
 </template>

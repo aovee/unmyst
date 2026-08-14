@@ -2,31 +2,35 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const toast = useToast()
+const { t } = useI18n()
 
 const open = ref(false)
 
-const links = [[{
-  label: 'Dashboard',
+const links = computed<NavigationMenuItem[][]>(() => [[{
+  label: t('nav.dashboard'),
   icon: 'i-lucide-house',
   to: '/',
   onSelect: () => {
     open.value = false
   }
 }, {
-  label: 'Subscriptions',
+  label: t('nav.subscriptions'),
   icon: 'i-lucide-credit-card',
   to: '/subscriptions',
   onSelect: () => {
     open.value = false
   }
-}, {
-  label: 'About',
-  icon: 'i-lucide-info',
-  to: '/about',
-  onSelect: () => {
-    open.value = false
-  }
-}]] satisfies NavigationMenuItem[][]
+}], [
+  // {
+  //   label: t('nav.about'),
+  //   icon: 'i-lucide-info',
+  //   to: '/about',
+  //   target: '_blank',
+  //   onSelect: () => {
+  //     open.value = false
+  //   }
+  // }
+]])
 
 onMounted(async () => {
   const cookie = useCookie('cookie-consent', {
@@ -37,18 +41,18 @@ onMounted(async () => {
   }
 
   toast.add({
-    title: 'We use first-party cookies to enhance your experience on our website.',
+    title: t('cookie.message'),
     duration: 0,
     close: false,
     actions: [{
-      label: 'Accept',
+      label: t('cookie.accept'),
       color: 'neutral',
       variant: 'outline',
       onClick: () => {
         cookie.value = 'accepted'
       }
     }, {
-      label: 'Opt out',
+      label: t('cookie.optOut'),
       color: 'neutral',
       variant: 'ghost'
     }]
@@ -87,6 +91,14 @@ onMounted(async () => {
           orientation="vertical"
           tooltip
           popover
+        />
+
+        <UNavigationMenu
+          :collapsed="collapsed"
+          :items="links[1]"
+          orientation="vertical"
+          tooltip
+          class="mt-auto"
         />
       </template>
 

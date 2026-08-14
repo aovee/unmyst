@@ -1,5 +1,6 @@
 <script setup lang="ts">
-useHead({ title: 'Sign up' })
+const { t } = useI18n()
+useHead({ title: () => t('auth.signup.title') })
 
 const route = useRoute()
 const callbackUrl = computed(() => {

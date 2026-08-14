@@ -6,6 +6,7 @@ const props = defineProps<{
 }>()
 
 const { logoUrl } = useServiceLogo()
+const { t } = useI18n()
 
 const initials = computed<string>(
   () => props.sub.service.trim().charAt(0).toUpperCase() || '?'
@@ -15,8 +16,8 @@ const trialLabel = computed<string>(() => {
   const left = trialDaysLeft(props.sub)
 
   if (left === null) return ''
-  if (left === 0) return 'Trial — ends today'
-  return `Trial — ${left} day${left === 1 ? '' : 's'} left`
+  if (left === 0) return t('subscription.trial.endsToday')
+  return t('subscription.trial.daysLeft', left)
 })
 
 const nextRenewalDate = computed<Date>(() =>
@@ -24,13 +25,15 @@ const nextRenewalDate = computed<Date>(() =>
 )
 
 const locale = useLocale()
-const nextBilling = computed<string>(() => formatRelativeDate(nextRenewalDate.value, locale))
+const nextBilling = computed<string>(() => formatRelativeDate(nextRenewalDate.value, locale.value))
 
 const cycle = computed<string>(() => {
   const { sub } = props
-  const unit = sub.cycle.replace('ly', '')
+  // 'weekly' → 'week', etc.; pluralised via i18n when repeated.
+  const unit = sub.cycle.replace('ly', '') as 'week' | 'month' | 'year'
+  const label = t(`cycle.unit.${unit}`, sub.intervalCount)
 
-  return sub.intervalCount > 1 ? `${sub.intervalCount} ${unit}s` : unit
+  return sub.intervalCount > 1 ? `${sub.intervalCount} ${label}` : label
 })
 </script>
 
@@ -61,7 +64,7 @@ const cycle = computed<string>(() => {
 
     <div class="grid grid-cols-2 gap-6 items-center justify-between">
       <div class="text-muted text-sm">
-        Next billing
+        {{ $t('subscription.card.nextBilling') }}
       </div>
       <div class="text-end">
         <UBadge
@@ -69,7 +72,7 @@ const cycle = computed<string>(() => {
           :color="sub.automaticConversion ? 'warning' : 'neutral'"
           :variant="sub.automaticConversion ? 'subtle' : 'outline'"
           :icon="sub.automaticConversion ? 'i-lucide-alert-triangle' : 'i-lucide-hourglass'"
-          :title="`Trial ends ${formatDate(trialEndDate(sub)!, locale)}`"
+          :title="$t('subscription.trial.endsOn', { date: formatDate(trialEndDate(sub)!, locale) })"
         >
           {{ trialLabel }}
         </UBadge>
@@ -83,10 +86,10 @@ const cycle = computed<string>(() => {
       <div class="text-end">
         <span class="text-2xl">{{ formatCurrency(sub.amount, sub.currency, locale) }}</span>
         <div v-if="isInTrial(sub)" class="text-xs text-muted">
-          after trial
+          {{ $t('subscription.card.afterTrial') }}
         </div>
         <div v-else-if="isShared(sub)" class="text-xs text-muted">
-          your share
+          {{ $t('subscription.card.yourShare') }}
           <span>{{ formatCurrency(personalAmount(sub), sub.currency, locale) }}</span>
         </div>
       </div>

@@ -7,18 +7,40 @@ const props = defineProps<{ subscription?: Subscription }>()
 const emit = defineEmits<{ success: [] }>()
 
 const toast = useToast()
+const { t } = useI18n()
 const isEdit = computed(() => Boolean(props.subscription))
 
-const cycleOptions = [
-  { label: 'Monthly', value: 'monthly' },
-  { label: 'Yearly', value: 'yearly' },
-  { label: 'Weekly', value: 'weekly' }
-]
+const cycleOptions = computed(() => [
+  { label: t('cycle.monthly'), value: 'monthly' },
+  { label: t('cycle.yearly'), value: 'yearly' },
+  { label: t('cycle.weekly'), value: 'weekly' }
+])
+
+// Seed the category combobox with suggestions; include the current value (which
+// may be a custom one) so it renders as selected when editing.
+const categoryItems = ref<string[]>([
+  ...new Set([
+    ...CATEGORY_SUGGESTIONS,
+    ...(props.subscription?.category ? [props.subscription.category] : [])
+  ])
+])
+function onCategoryCreate(value: string) {
+  categoryItems.value.push(value)
+  state.category = value
+}
+// Bridge the nullable state field to UInputMenu, which models `string | undefined`.
+const categoryModel = computed({
+  get: () => state.category ?? undefined,
+  set: (v: string | undefined) => {
+    state.category = v ?? null
+  }
+})
 
 // Form state mirrors SubscriptionInputSchema (amount in euros, anchorDate string).
 const state = reactive<Partial<SubscriptionInput>>({
   service: props.subscription?.service ?? '',
   description: props.subscription?.description ?? '',
+  category: props.subscription?.category ?? null,
   amount: props.subscription ? props.subscription.amount / 100 : undefined,
   currency: props.subscription?.currency ?? 'EUR',
   cycle: props.subscription?.cycle ?? 'monthly',
@@ -52,6 +74,14 @@ const yourShare = computed(() => {
   return formatCurrency(Math.round((state.amount * 100) / shares), state.currency)
 })
 
+// Bridge the nullable state field to UInput, which models `string | undefined`.
+const descriptionModel = computed({
+  get: () => state.description ?? undefined,
+  set: (v: string | undefined) => {
+    state.description = v ?? null
+  }
+})
+
 // Bridge the nullable state field to UInput, which models `number | undefined`.
 const trialDurationModel = computed({
   get: () => state.trialDurationDays ?? undefined,
@@ -82,14 +112,14 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
       await $fetch('/api/subscriptions', { method: 'POST', body: event.data })
     }
     toast.add({
-      title: isEdit.value ? 'Subscription updated' : 'Subscription created',
+      title: isEdit.value ? t('subscription.form.saved') : t('subscription.form.created'),
       color: 'success'
     })
     emit('success')
   } catch (e) {
     const err = e as { data?: { message?: string }, statusMessage?: string }
     toast.add({
-      title: err.data?.message ?? err.statusMessage ?? 'Could not save. Please try again.',
+      title: err.data?.message ?? err.statusMessage ?? t('subscription.form.error'),
       color: 'error'
     })
   } finally {
@@ -105,33 +135,44 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
     class="space-y-4"
     @submit="onSubmit"
   >
-    <UFormField label="Service" name="service">
-      <UInput v-model="state.service" placeholder="Netflix" class="w-full" />
+    <UFormField :label="$t('subscription.form.service')" name="service">
+      <UInput v-model="state.service" :placeholder="$t('subscription.form.servicePlaceholder')" class="w-full" />
     </UFormField>
 
-    <UFormField label="Description" name="description">
+    <UFormField :label="$t('subscription.form.description')" name="description">
       <UInput
-        v-model="state.description"
-        placeholder="Family plan"
+        v-model="descriptionModel"
+        :placeholder="$t('subscription.form.descriptionPlaceholder')"
         class="w-full"
       />
     </UFormField>
 
-    <UFormField label="Price (€)" name="amount">
+    <UFormField :label="$t('subscription.form.category')" name="category">
+      <UInputMenu
+        v-model="categoryModel"
+        :items="categoryItems"
+        create-item
+        :placeholder="$t('subscription.form.categoryPlaceholder')"
+        class="w-full"
+        @create="onCategoryCreate"
+      />
+    </UFormField>
+
+    <UFormField :label="$t('subscription.form.price')" name="amount">
       <UInput
         v-model.number="state.amount"
         type="number"
         step="0.01"
-        placeholder="15.99"
+        :placeholder="$t('subscription.form.pricePlaceholder')"
         class="w-full"
       />
     </UFormField>
 
-    <UFormField label="Billing cycle" name="cycle">
+    <UFormField :label="$t('subscription.form.cycle')" name="cycle">
       <USelect v-model="state.cycle" :items="cycleOptions" class="w-full" />
     </UFormField>
 
-    <UFormField label="Every N cycles" name="intervalCount">
+    <UFormField :label="$t('subscription.form.intervalCount')" name="intervalCount">
       <UInput
         v-model.number="state.intervalCount"
         type="number"
@@ -141,9 +182,9 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
     </UFormField>
 
     <UFormField
-      label="Split between"
+      :label="$t('subscription.form.shareCount')"
       name="shareCount"
-      help="Number of people sharing the cost equally, including you. Leave at 1 if it's all yours."
+      :help="$t('subscription.form.shareCountHelp')"
     >
       <UInput
         v-model.number="state.shareCount"
@@ -152,12 +193,12 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
         class="w-full"
       />
       <p v-if="yourShare" class="mt-1 text-xs text-muted">
-        Your share: <span class="font-medium text-default">{{ yourShare }}</span>
+        {{ $t('subscription.form.yourShare') }} <span class="font-medium text-default">{{ yourShare }}</span>
       </p>
     </UFormField>
 
     <UFormField
-      :label="hasTrial ? 'Trial start date' : 'First billing date'"
+      :label="hasTrial ? $t('subscription.form.trialStartDate') : $t('subscription.form.firstBillingDate')"
       name="anchorDate"
     >
       <UInput v-model="state.anchorDate" type="date" class="w-full" />
@@ -166,29 +207,36 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
     <div class="rounded-lg border border-default p-3">
       <UCheckbox
         v-model="hasTrial"
-        label="Starts with a free trial"
-        help="During the trial it counts as €0 today, but still appears in your run-rate."
+        :label="$t('subscription.form.hasTrial')"
+        :help="$t('subscription.form.hasTrialHelp')"
       />
 
       <div v-if="hasTrial" class="mt-3 space-y-3">
-        <UFormField label="Trial length (days)" name="trialDurationDays">
+        <UFormField :label="$t('subscription.form.trialLength')" name="trialDurationDays">
           <UInput
             v-model.number="trialDurationModel"
             type="number"
             min="1"
-            placeholder="30"
+            :placeholder="$t('subscription.form.trialLengthPlaceholder')"
             class="w-full"
           />
-          <p v-if="trialEndPreview" class="mt-1 text-xs text-muted">
-            Trial ends <span class="font-medium text-default">{{ trialEndPreview }}</span>
-          </p>
+          <i18n-t
+            v-if="trialEndPreview"
+            keypath="subscription.form.trialEnds"
+            tag="p"
+            class="mt-1 text-xs text-muted"
+          >
+            <template #date>
+              <span class="font-medium text-default">{{ trialEndPreview }}</span>
+            </template>
+          </i18n-t>
         </UFormField>
 
         <UFormField name="automaticConversion">
           <UCheckbox
             v-model="state.automaticConversion"
-            label="Converts to paid automatically"
-            help="A payment method is attached — it'll start charging when the trial ends."
+            :label="$t('subscription.form.automaticConversion')"
+            :help="$t('subscription.form.automaticConversionHelp')"
           />
         </UFormField>
       </div>
@@ -197,7 +245,7 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
     <div class="flex justify-between gap-2 pt-2">
       <slot name="cancel" />
       <UButton type="submit" :loading="pending" icon="i-lucide-check">
-        {{ pending ? 'Saving…' : 'Confirm' }}
+        {{ pending ? $t('common.saving') : $t('common.confirm') }}
       </UButton>
     </div>
   </UForm>

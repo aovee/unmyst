@@ -11,7 +11,7 @@ const notifications = [] as Notification[]
 <template>
   <USlideover
     v-model:open="isNotificationsSlideoverOpen"
-    title="Notifications"
+    :title="$t('notifications.title')"
   >
     <template #body>
       <NuxtLink

@@ -16,6 +16,11 @@ export const CYCLES_PER_YEAR: Record<Cycle, number> = {
   yearly: 1
 }
 
+export interface PeriodFilter {
+  label: string
+  value: Cycle | 'all'
+}
+
 export interface Splittable {
   amount: number
   shareCount?: number | null

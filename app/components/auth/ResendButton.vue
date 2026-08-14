@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const props = defineProps<{ email: string, redirectTo?: string }>()
 
+const { t } = useI18n()
+
 const pending = ref(false)
 const sent = ref(false)
 const error = ref<string | null>(null)
@@ -17,7 +19,7 @@ async function resend() {
     sent.value = true
   } catch (e) {
     const err = e as { data?: { message?: string }, statusMessage?: string }
-    error.value = err.data?.message ?? err.statusMessage ?? 'Could not resend.'
+    error.value = err.data?.message ?? err.statusMessage ?? t('verify.error')
   } finally {
     pending.value = false
   }
@@ -27,18 +29,18 @@ async function resend() {
 <template>
   <div>
     <p class="text-sm text-muted-foreground">
-      Didn't get the mail?
+      {{ $t('verify.noMail') }}
       <button
         type="button"
         :disabled="pending"
         class="font-medium underline underline-offset-4 hover:text-primary disabled:opacity-50"
         @click="resend"
       >
-        {{ pending ? 'Sending…' : 'Resend' }}
+        {{ pending ? $t('common.sending') : $t('verify.resend') }}
       </button>
     </p>
     <p v-if="sent" class="mt-2 text-sm text-primary">
-      A new link is on its way to you.
+      {{ $t('verify.sent') }}
     </p>
     <p v-if="error" class="mt-2 text-sm text-error">
       {{ error }}

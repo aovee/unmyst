@@ -17,9 +17,10 @@ import type { Subscription } from '~~/server/db/schema'
 const props = defineProps<{ subscriptions: Subscription[] }>()
 
 const locale = useLocale()
+const { t } = useI18n()
 const currency = computed(() => props.subscriptions[0]?.currency ?? 'EUR')
 
-const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const WEEKDAYS = computed(() => t('dashboard.renewalCalendar.weekdays').split(','))
 
 interface DayCell {
   date: Date
@@ -76,7 +77,9 @@ const calendar = computed(() => {
   const maxAmount = Math.max(0, ...days.map(d => d.amount))
   const monthTotal = days.reduce((sum, d) => (d.inMonth ? sum + d.amount : sum), 0)
 
-  return { days, maxAmount, monthTotal, label: format(today, 'MMMM yyyy') }
+  const label = new Intl.DateTimeFormat(locale.value, { month: 'long', year: 'numeric' })
+    .format(today)
+  return { days, maxAmount, monthTotal, label }
 })
 
 // Subtle primary tint scaled by the day's share of the busiest day (capped so
@@ -89,7 +92,7 @@ function tint(cell: DayCell): string {
 }
 
 const compact = (cents: number) =>
-  new Intl.NumberFormat(locale, {
+  new Intl.NumberFormat(locale.value, {
     style: 'currency',
     currency: currency.value,
     maximumFractionDigits: 0
@@ -99,21 +102,20 @@ const compact = (cents: number) =>
 <template>
   <UCard variant="outline">
     <template #header>
-      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-calendar-days" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium text-highlighted">
-            Renewal calendar
-          </h3>
-          <span class="text-sm text-muted">- {{ calendar.label }}</span>
-        </div>
-        <div class="text-sm text-muted">
-          <span class="font-semibold text-default tabular-nums">
-            {{ formatCurrency(calendar.monthTotal, currency, locale) }}
-          </span>
-          this month
-        </div>
-      </div>
+      <DashboardSectionHeader
+        icon="i-lucide-calendar-days"
+        :title="$t('dashboard.renewalCalendar.title')"
+      >
+        <template #description>
+          <div class="text-sm text-muted">
+            <span>{{ calendar.label }} - </span>
+            <span class="font-semibold text-default tabular-nums">
+              {{ formatCurrency(calendar.monthTotal, currency, locale) }}
+            </span>
+            {{ $t('dashboard.renewalCalendar.thisMonth') }}
+          </div>
+        </template>
+      </DashboardSectionHeader>
     </template>
 
     <div class="grid grid-cols-7 gap-1">

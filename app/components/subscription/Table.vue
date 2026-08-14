@@ -7,38 +7,51 @@ const emit = defineEmits<{ refresh: [] }>()
 
 const locale = useLocale()
 const toast = useToast()
+const { t } = useI18n()
 const { logoUrl } = useServiceLogo()
 
 function initials(name: string): string {
   return name.trim().charAt(0).toUpperCase() || '?'
 }
 
-const columns: TableColumn<Subscription>[] = [
+const columns = computed<TableColumn<Subscription>[]>(() => [
   {
     accessorKey: 'service',
-    header: 'Service'
-  },
-  {
-    accessorKey: 'anchorDate',
-    header: 'Started on'
-  },
-  {
-    id: 'nextRenewal',
-    header: 'Next billing'
-  },
-  {
-    accessorKey: 'amount',
-    header: 'Amount',
+    header: t('subscription.table.service'),
     meta: {
       class: {
-        th: 'text-right',
+        th: 'title-upper min-w-lg'
+      }
+    }
+  },
+  {
+    accessorKey: 'renews',
+    header: t('subscription.table.renews'),
+    meta: {
+      class: {
+        th: 'title-upper'
+      }
+    }
+  },
+  {
+    accessorKey: 'billed',
+    header: t('subscription.table.billed'),
+    meta: {
+      class: {
+        th: 'text-right title-upper',
         td: 'text-right'
       }
     }
   },
   {
-    id: 'cycle',
-    header: 'Cycle'
+    accessorKey: 'per-month',
+    header: t('subscription.table.perMonth'),
+    meta: {
+      class: {
+        th: 'text-right title-upper',
+        td: 'text-right'
+      }
+    }
   },
   {
     id: 'actions',
@@ -50,19 +63,18 @@ const columns: TableColumn<Subscription>[] = [
       }
     }
   }
-]
-
-function displayCycle(s: Subscription): string {
-  const unit = s.cycle.replace('ly', '')
-  return s.intervalCount > 1 ? `${s.intervalCount} ${unit}s` : unit
-}
+])
 
 function nextRenewalDate(s: Subscription): Date {
   return computeNextRenewal(new Date(s.anchorDate), s.cycle, s.intervalCount)
 }
 
 function nextBilling(s: Subscription): string {
-  return formatRelativeDate(nextRenewalDate(s), locale)
+  return formatRelativeDate(nextRenewalDate(s), locale.value)
+}
+
+function getAmountByCycle(s: Subscription): number {
+  return ((s.amount * CYCLES_PER_YEAR[s.cycle]) / s.intervalCount) / CYCLES_PER_YEAR['monthly']
 }
 
 // "Trial — 6 days left" display state. Warning-coloured when the trial will
@@ -70,8 +82,8 @@ function nextBilling(s: Subscription): string {
 function trialLabel(s: Subscription): string {
   const left = trialDaysLeft(s)
   if (left === null) return ''
-  if (left === 0) return 'Trial — ends today'
-  return `Trial — ${left} day${left === 1 ? '' : 's'} left`
+  if (left === 0) return t('subscription.trial.endsToday')
+  return t('subscription.trial.daysLeft', left)
 }
 
 // Edit / delete modal wiring.
@@ -95,11 +107,11 @@ async function confirmDelete() {
   deleting.value = true
   try {
     await $fetch(`/api/subscriptions/${deleteSub.value.id}`, { method: 'DELETE' })
-    toast.add({ title: 'Subscription deleted', color: 'success' })
+    toast.add({ title: t('subscription.delete.success'), color: 'success' })
     deleteOpen.value = false
     emit('refresh')
   } catch {
-    toast.add({ title: 'Could not delete. Please try again.', color: 'error' })
+    toast.add({ title: t('subscription.delete.error'), color: 'error' })
   } finally {
     deleting.value = false
   }
@@ -124,48 +136,64 @@ async function confirmDelete() {
             class="shrink-0 bg-elevated"
           />
           <div class="flex flex-col">
-            <span class="font-medium">{{ row.original.service }}</span>
-            <span v-if="row.original.description" class="text-xs text-muted">
-              {{ row.original.description }}
+            <span class="truncate text-sm text-highlighted font-semibold">{{ row.original.service }}
+              <span v-if="row.original.description" class="text-xs text-muted">
+                - {{ row.original.description }}
+              </span>
+            </span>
+            <span v-if="row.original.category" class="text-xs text-dimmed">
+              {{ row.original.category }}
             </span>
           </div>
         </div>
       </template>
 
-      <template #anchorDate-cell="{ row }">
-        {{ formatDate(new Date(row.original.anchorDate), locale) }}
-      </template>
-
-      <template #nextRenewal-cell="{ row }">
-        <UBadge
-          v-if="isInTrial(row.original)"
-          :color="row.original.automaticConversion ? 'warning' : 'neutral'"
-          :variant="row.original.automaticConversion ? 'subtle' : 'outline'"
-          :icon="row.original.automaticConversion ? 'i-lucide-alert-triangle' : 'i-lucide-hourglass'"
-          :title="`Trial ends ${formatDate(trialEndDate(row.original)!, locale)}`"
-        >
-          {{ trialLabel(row.original) }}
-        </UBadge>
-        <span v-else :title="formatDate(nextRenewalDate(row.original), locale)">
-          {{ nextBilling(row.original) }}
-        </span>
-      </template>
-
-      <template #amount-cell="{ row }">
-        <div class="text-right">
-          {{ formatCurrency(row.original.amount, row.original.currency, locale) }}
-          <div v-if="isInTrial(row.original)" class="text-xs text-muted">
-            after trial
+      <template #renews-cell="{ row }">
+        <div class="flex flex-col">
+          <div class="text-highlighted font-semibold">
+            <UBadge
+              v-if="isInTrial(row.original)"
+              :color="row.original.automaticConversion ? 'warning' : 'neutral'"
+              :variant="row.original.automaticConversion ? 'subtle' : 'outline'"
+              :icon="row.original.automaticConversion ? 'i-lucide-alert-triangle' : 'i-lucide-hourglass'"
+              :title="$t('subscription.trial.endsOn', { date: formatDate(trialEndDate(row.original)!, locale) })"
+            >
+              {{ trialLabel(row.original) }}
+            </UBadge>
+            <span v-else :title="formatDate(nextRenewalDate(row.original), locale)">
+              {{ nextBilling(row.original) }}
+            </span>
           </div>
-          <div v-else-if="isShared(row.original)" class="text-xs text-muted">
-            your share
-            {{ formatCurrency(personalAmount(row.original), row.original.currency, locale) }}
+          <div class="text-dimmed">
+            {{ formatDate(nextRenewalDate(row.original), locale) }}
           </div>
         </div>
       </template>
 
-      <template #cycle-cell="{ row }">
-        / {{ displayCycle(row.original) }}
+      <template #billed-cell="{ row }">
+        <div class="flex flex-col">
+          <div class="text-right text-default">
+            {{ formatCurrency(row.original.amount, row.original.currency, locale) }}
+            <div v-if="isInTrial(row.original)" class="text-xs text-muted">
+              {{ $t('subscription.card.afterTrial') }}
+            </div>
+          </div>
+          <div class="text-xs text-dimmed">
+            {{ $t(`cycle.${row.original.cycle}`) }}
+          </div>
+        </div>
+      </template>
+
+      <template #per-month-cell="{ row }">
+        <div class="flex flex-col">
+          <div class="text-lg font-semibold text-highlighted">
+            {{ formatCurrency(getAmountByCycle(row.original), row.original.currency, locale) }}
+          </div>
+          <div v-if="isShared(row.original)" class="text-xs text-primary">
+            {{ $t('subscription.card.yourShare') }}
+            {{ formatCurrency(personalAmount(row.original), row.original.currency, locale) }}
+          </div>
+        </div>
       </template>
 
       <template #actions-cell="{ row }">
@@ -178,7 +206,7 @@ async function confirmDelete() {
             variant="ghost"
             size="sm"
             square
-            aria-label="Edit"
+            :aria-label="$t('common.edit')"
             @click="openEdit(row.original)"
           />
           <UButton
@@ -187,7 +215,7 @@ async function confirmDelete() {
             variant="ghost"
             size="sm"
             square
-            aria-label="Delete"
+            :aria-label="$t('common.delete')"
             @click="openDelete(row.original)"
           />
         </div>
@@ -195,7 +223,7 @@ async function confirmDelete() {
 
       <template #empty>
         <div class="py-8 text-center text-muted-foreground">
-          No results.
+          {{ $t('subscription.table.empty') }}
         </div>
       </template>
     </UTable>
@@ -211,16 +239,16 @@ async function confirmDelete() {
     <!-- Delete confirmation -->
     <UModal
       v-model:open="deleteOpen"
-      title="Warning"
-      description="Are you sure you want to delete this subscription? This action cannot be undone."
+      :title="$t('subscription.delete.title')"
+      :description="$t('subscription.delete.description')"
     >
       <template #footer>
         <div class="flex w-full justify-end gap-2">
           <UButton color="neutral" variant="outline" @click="deleteOpen = false">
-            Cancel
+            {{ $t('common.cancel') }}
           </UButton>
           <UButton color="error" :loading="deleting" @click="confirmDelete">
-            Delete
+            {{ $t('common.delete') }}
           </UButton>
         </div>
       </template>

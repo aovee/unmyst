@@ -8,21 +8,23 @@ const props = defineProps<{
   callbackUrl?: string
 }>()
 
+const { t } = useI18n()
+
 const copy = computed(() =>
   props.mode === 'signup'
     ? {
-        prompt: 'Already have an account?',
-        linkLabel: 'Sign in',
+        prompt: t('auth.signup.prompt'),
+        linkLabel: t('auth.signup.link'),
         linkTo: '/login',
-        placeholder: 'm@example.com',
-        submit: 'Create Account'
+        placeholder: t('auth.signup.placeholder'),
+        submit: t('auth.signup.submit')
       }
     : {
-        prompt: 'Don\'t have an account?',
-        linkLabel: 'Sign up',
+        prompt: t('auth.login.prompt'),
+        linkLabel: t('auth.login.link'),
         linkTo: '/signup',
-        placeholder: 'you@example.com',
-        submit: 'Login'
+        placeholder: t('auth.login.placeholder'),
+        submit: t('auth.login.submit')
       }
 )
 
@@ -52,7 +54,7 @@ async function onSubmit() {
     error.value
       = err.data?.message
         ?? err.statusMessage
-        ?? 'Something went wrong. Try again.'
+        ?? t('auth.genericError')
   } finally {
     pending.value = false
   }
@@ -64,7 +66,7 @@ async function onSubmit() {
     <form class="flex flex-col gap-6" @submit.prevent="onSubmit">
       <div class="flex flex-col items-center gap-2 text-center">
         <h1 class="text-xl font-bold">
-          Welcome to Unmyst
+          {{ $t('auth.welcome') }}
         </h1>
         <p class="text-sm text-muted-foreground">
           {{ copy.prompt }}
@@ -78,7 +80,7 @@ async function onSubmit() {
       </div>
 
       <fieldset :disabled="pending" class="flex flex-col gap-2">
-        <UFormField label="Email" :error="error ?? undefined" name="email">
+        <UFormField :label="$t('auth.emailLabel')" :error="error ?? undefined" name="email">
           <UInput
             v-model="email"
             type="email"
@@ -94,11 +96,11 @@ async function onSubmit() {
           :loading="pending"
           class="mt-2"
         >
-          {{ pending ? 'Sending…' : copy.submit }}
+          {{ pending ? $t('common.sending') : copy.submit }}
         </UButton>
       </fieldset>
 
-      <USeparator label="or" />
+      <USeparator :label="$t('common.or')" />
 
       <UButton
         variant="outline"
@@ -108,14 +110,19 @@ async function onSubmit() {
         href="/auth/google"
         external
       >
-        Continue with Google
+        {{ $t('auth.google') }}
       </UButton>
     </form>
 
     <p class="px-6 text-center text-xs text-muted-foreground">
-      By clicking continue, you agree to our
-      <a href="#" class="underline underline-offset-4">Terms of Service</a> and
-      <a href="#" class="underline underline-offset-4">Privacy Policy</a>.
+      <i18n-t keypath="auth.terms" tag="span">
+        <template #terms>
+          <a href="#" class="underline underline-offset-4">{{ $t('auth.termsOfService') }}</a>
+        </template>
+        <template #privacy>
+          <a href="#" class="underline underline-offset-4">{{ $t('auth.privacyPolicy') }}</a>
+        </template>
+      </i18n-t>
     </p>
   </div>
 </template>

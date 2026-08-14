@@ -8,7 +8,7 @@ import type { Subscription } from '~~/server/db/schema'
 
 const props = defineProps<{ subscriptions: Subscription[] }>()
 
-const CYCLES_PER_YEAR = { weekly: 52, monthly: 12, yearly: 1 } as const
+const { t } = useI18n()
 
 function annualCost(s: Subscription): number {
   return (personalAmount(s) * CYCLES_PER_YEAR[s.cycle]) / s.intervalCount
@@ -19,9 +19,9 @@ function annualCost(s: Subscription): number {
 const averaged = computed(() => {
   const yearly = props.subscriptions.reduce((sum, s) => sum + annualCost(s), 0)
   return [
-    { title: 'Per week', value: formatCurrency(yearly / 52) },
-    { title: 'Per month', value: formatCurrency(yearly / 12), hero: false },
-    { title: 'Per year', value: formatCurrency(yearly) }
+    { title: t('dashboard.averaged.perWeek'), value: formatCurrency(yearly / 52) },
+    { title: t('dashboard.averaged.perMonth'), value: formatCurrency(yearly / 12), hero: false },
+    { title: t('dashboard.averaged.perYear'), value: formatCurrency(yearly) }
   ]
 })
 
@@ -55,47 +55,55 @@ const sinceStart = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
-    <section class="flex flex-col gap-3">
-      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-scale" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium text-highlighted">
-            Averaged out
-          </h3>
-        </div>
-        <span class="text-sm text-muted">Everything spread evenly — an estimate for budgeting</span>
-      </div>
-
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <UCard
-          v-for="card in averaged"
-          :key="card.title"
-          :class="[
-            'border border-dashed border-default bg-transparent',
-            card.hero ? 'border-primary/40' : ''
-          ]"
-        >
-          <div
-            class="font-semibold text-highlighted"
-            :class="card.hero ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl'"
+  <div>
+    <DashboardSectionContainer
+      icon="i-lucide-scale"
+      :title="$t('dashboard.averaged.title')"
+      :description="$t('dashboard.averaged.description')"
+    >
+      <template #content>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <UCard
+            v-for="card in averaged"
+            :key="card.title"
+            :class="[
+              'border border-dashed border-default bg-transparent',
+              card.hero ? 'border-primary/40' : ''
+            ]"
           >
-            <span class="text-muted text-xl">≈</span> {{ card.value }}
-          </div>
-          <div class="text-sm text-muted">
-            {{ card.title }}
-            <span class="text-dimmed">· estimate</span>
-          </div>
-        </UCard>
-      </div>
-    </section>
+            <div
+              class="font-semibold text-highlighted"
+              :class="card.hero ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl'"
+            >
+              <span class="text-muted text-xl">≈</span> {{ card.value }}
+            </div>
+            <div class="text-sm text-muted">
+              {{ card.title }}
+              <span class="text-dimmed">· {{ $t('dashboard.averaged.estimate') }}</span>
+            </div>
+          </UCard>
+        </div>
+      </template>
 
-    <!-- All-time actual spend, as a quiet footnote -->
-    <p v-if="sinceStart.firstSubName" class="text-sm text-muted">
-      You've paid
-      <span class="font-medium text-default">{{ formatCurrency(sinceStart.total) }}</span>
-      in total since {{ formatDate(sinceStart.startDate) }}, starting with
-      {{ sinceStart.firstSubName }}.
-    </p>
+      <template #trailing>
+        <!-- All-time actual spend, as a quiet footnote -->
+        <i18n-t
+          v-if="sinceStart.firstSubName"
+          keypath="dashboard.averaged.sinceStart"
+          tag="p"
+          class="text-sm text-muted"
+        >
+          <template #total>
+            <span class="font-medium text-default">{{ formatCurrency(sinceStart.total) }}</span>
+          </template>
+          <template #date>
+            {{ formatDate(sinceStart.startDate) }}
+          </template>
+          <template #service>
+            {{ sinceStart.firstSubName }}
+          </template>
+        </i18n-t>
+      </template>
+    </DashboardSectionContainer>
   </div>
 </template>

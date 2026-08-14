@@ -11,11 +11,11 @@ function onSuccess() {
 <template>
   <UModal
     v-model:open="open"
-    title="New Subscription"
-    description="Fill out infos about your newly subscribed service and click &quot;Confirm&quot;."
+    :title="$t('subscription.add.title')"
+    :description="$t('subscription.add.description')"
   >
-    <UButton icon="i-lucide-plus" color="neutral" variant="outline">
-      Add Subscription
+    <UButton icon="i-lucide-plus" color="primary" variant="outline">
+      {{ $t('subscription.add.button') }}
     </UButton>
 
     <template #body>

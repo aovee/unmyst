@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
+const { t, locale } = useI18n()
 
 const color = computed(() => colorMode.value === 'dark' ? '#1b1718' : 'white')
 
@@ -13,13 +14,13 @@ useHead({
     { rel: 'icon', href: '/unmyst-favicon-32.png' }
   ],
   htmlAttrs: {
-    lang: 'en'
+    lang: () => locale.value
   },
   titleTemplate: '%s - Unmyst'
 })
 
 const title = 'Unmyst'
-const description = 'Finally see through all your subscriptions and memberships in one place. Unmyst is a subscription manager that helps you track, manage, and cancel your subscriptions with ease.'
+const description = computed(() => t('app.description'))
 
 useSeoMeta({
   title,

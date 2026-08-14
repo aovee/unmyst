@@ -14,14 +14,14 @@ function onSuccess() {
 <template>
   <UModal
     v-model:open="open"
-    title="Edit Subscription"
-    description="Edit infos about your subscription then click &quot;Confirm&quot;."
+    :title="$t('subscription.edit.title')"
+    :description="$t('subscription.edit.description')"
   >
     <template #body>
       <SubscriptionForm :subscription="subscription" @success="onSuccess">
         <template #cancel>
           <UButton color="neutral" variant="outline" @click="open = false">
-            Cancel
+            {{ $t('common.cancel') }}
           </UButton>
         </template>
       </SubscriptionForm>

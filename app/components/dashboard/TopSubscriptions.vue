@@ -35,15 +35,11 @@ const rows = computed(() => {
 <template>
   <UCard variant="outline">
     <template #header>
-      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-trophy" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium text-highlighted">
-            Top subscriptions
-          </h3>
-        </div>
-        <span class="text-sm text-muted">Priciest, normalized per month</span>
-      </div>
+      <DashboardSectionHeader
+        icon="i-lucide-trophy"
+        :title="$t('dashboard.topSubscriptions.title')"
+        :description="$t('dashboard.topSubscriptions.description')"
+      />
     </template>
 
     <div v-if="rows.length" class="flex flex-col gap-3.5">
@@ -64,7 +60,7 @@ const rows = computed(() => {
             <span class="truncate font-medium">{{ row.name }}</span>
             <span class="shrink-0 tabular-nums font-medium">
               {{ formatCurrency(row.amount, currency, locale) }}
-              <span class="text-xs text-muted">/mo</span>
+              <span class="text-xs text-muted">{{ $t('dashboard.topSubscriptions.perMonth') }}</span>
             </span>
           </div>
           <div class="mt-1.5 h-2 overflow-hidden rounded-full bg-elevated">
@@ -78,7 +74,7 @@ const rows = computed(() => {
     </div>
 
     <div v-else class="py-6 text-center text-sm text-muted">
-      No subscriptions yet.
+      {{ $t('dashboard.topSubscriptions.empty') }}
     </div>
   </UCard>
 </template>

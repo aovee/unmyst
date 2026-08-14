@@ -1,5 +1,6 @@
 <script setup lang="ts">
-useHead({ title: 'Login' })
+const { t } = useI18n()
+useHead({ title: () => t('auth.login.title') })
 
 const route = useRoute()
 const callbackUrl = computed(() => {

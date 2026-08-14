@@ -1,0 +1,351 @@
+{
+  "app": {
+    "name": "Unmyst",
+    "description": "Finally see through all your subscriptions and memberships in one place. Unmyst is a subscription manager that helps you track, manage, and cancel your subscriptions with ease."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "subscriptions": "Subscriptions",
+    "about": "About"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "saving": "Saving…",
+    "sending": "Sending…",
+    "or": "or"
+  },
+  "error": {
+    "title": "Page not found",
+    "description": "We are sorry but this page could not be found."
+  },
+  "cookie": {
+    "message": "We use first-party cookies to enhance your experience on our website.",
+    "accept": "Accept",
+    "optOut": "Opt out"
+  },
+  "userMenu": {
+    "appearance": "Appearance",
+    "light": "Light",
+    "dark": "Dark",
+    "language": "Language",
+    "logout": "Log out"
+  },
+  "notifications": {
+    "title": "Notifications"
+  },
+  "logoAttribution": {
+    "text": "Logos provided by {link}"
+  },
+  "auth": {
+    "welcome": "Welcome to Unmyst",
+    "emailLabel": "Email",
+    "google": "Continue with Google",
+    "terms": "By clicking continue, you agree to our {terms} and {privacy}.",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "genericError": "Something went wrong. Try again.",
+    "login": {
+      "title": "Login",
+      "prompt": "Don't have an account?",
+      "link": "Sign up",
+      "submit": "Login",
+      "placeholder": "you\\@example.com"
+    },
+    "signup": {
+      "title": "Sign up",
+      "prompt": "Already have an account?",
+      "link": "Sign in",
+      "submit": "Create Account",
+      "placeholder": "m\\@example.com"
+    }
+  },
+  "verify": {
+    "title": "Verify your email",
+    "body": "An activation link has been sent to your email address. Please check your inbox and click on the link to complete the activation process.",
+    "noMail": "Didn't get the mail?",
+    "tryAgain": "Try again",
+    "resend": "Resend",
+    "sent": "A new link is on its way to you.",
+    "error": "Could not resend."
+  },
+  "relative": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "inDays": "in {n} day | in {n} days"
+  },
+  "cycle": {
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "unit": {
+      "week": "week | weeks",
+      "month": "month | months",
+      "year": "year | years"
+    },
+    "per": {
+      "week": "Per week",
+      "month": "Per month",
+      "year": "Per year"
+    }
+  },
+  "filters": {
+    "all": "All"
+  },
+  "front": {
+    "nav": {
+      "howItCounts": "How it counts",
+      "yourData": "Your data",
+      "limits": "Limits",
+      "openLedger": "Open the ledger"
+    },
+    "footer": {
+      "version": "unmyst {version} · built {date}",
+      "source": "Source",
+      "report": "Report an issue",
+      "licence": "Licence",
+      "madeBy": "Made by Aovee, because a spreadsheet stopped being funny."
+    }
+  },
+  "about": {
+    "title": "About",
+    "hero": {
+      "line1": "A yearly plan is not cheaper.",
+      "line2": "It is just quieter.",
+      "body": "€131.88 once a year and €10.99 every month cost the same. One of them you notice. unmyst puts every subscription on a single scale — what it costs you per month — so the quiet ones stop hiding behind their billing cycle.",
+      "primary": "See the ledger",
+      "secondary": "How the maths works"
+    },
+    "stats": {
+      "caption": "An example — one member's ledger",
+      "plansValue": "16",
+      "plans": "Plans on one scale",
+      "typicalValue": "€120.51",
+      "typical": "Typical month, levelled",
+      "billedValue": "6 of 16",
+      "billed": "Billed monthly",
+      "dataValue": "€0",
+      "data": "Data sent anywhere"
+    },
+    "howItCounts": {
+      "eyebrow": "How it counts",
+      "one": {
+        "title": "Yearly plans divided by twelve",
+        "body": "Every subscription gets a levelled monthly figure, so a €131.88 annual charge sits next to a €23.90 monthly one and the comparison is honest. The real charge and its cycle stay visible on the same row.",
+        "example": "World of Warcraft €131.88 / yr → €10.99 / mo"
+      },
+      "two": {
+        "title": "Billed and averaged, kept apart",
+        "body": "Two figures, never blended. Actually billed is what your bank sees on the day it happens, spikes included. Averaged out spreads everything evenly — nothing is billed that way; it exists so you can budget one number.",
+        "example": "August billed €122.67 · averaged ≈€120.51"
+      },
+      "three": {
+        "title": "Shared plans count your half",
+        "body": "Record a split and your share becomes the primary number everywhere, with the full charge underneath. The monthly figure then reflects what actually leaves your account.",
+        "example": "Spotify Duo €21.24 → your share €7.08"
+      }
+    },
+    "ledger": {
+      "eyebrow": "The ledger",
+      "title": "One list, sorted by what happens next",
+      "body": "Renewals group into this week, later this month, and further out — each with the amount actually leaving your account. Every row carries the real charge, the cycle, and the levelled monthly figure side by side, so nothing is comparable-looking by accident.",
+      "previewLabel": "The subscriptions ledger",
+      "cols": {
+        "service": "Service",
+        "charge": "Charge",
+        "cycle": "Cycle",
+        "levelled": "Levelled"
+      }
+    },
+    "data": {
+      "eyebrow": "Your data",
+      "title": "Nothing leaves your machine",
+      "body": "unmyst never connects to your bank. You type in what you pay; it does the arithmetic. No account, no third-party analytics, no card data — and an export you can take with you.",
+      "exportJson": "Export JSON",
+      "importBackup": "Import a backup",
+      "tracked": "Subscriptions tracked",
+      "trackedValue": "16",
+      "since": "Tracking since",
+      "sinceValue": "13 Nov 2023",
+      "total": "Total recorded",
+      "totalValue": "€1,362.45",
+      "storage": "Storage",
+      "storageValue": "This browser · 41 KB",
+      "lastBackup": "Last backup",
+      "lastBackupValue": "9 Aug 2026"
+    },
+    "limits": {
+      "eyebrow": "What it deliberately doesn't do",
+      "bank": "Connect to your bank or read transactions — you enter what you pay.",
+      "cancel": "Cancel anything for you. It tells you what to cancel; the clicking is yours.",
+      "guess": "Guess at prices. An unedited plan keeps the last figure you gave it.",
+      "oneOff": "Track one-off purchases. If it doesn't recur, it doesn't belong here."
+    },
+    "quote": {
+      "text": "I thought I paid for four things. It was sixteen, and three of them were the same registrar.",
+      "attribution": "the reason this exists"
+    },
+    "cta": {
+      "title": "Find out what you actually pay",
+      "body": "It takes about ten minutes to enter a year of subscriptions. Most people are wrong by a factor of two.",
+      "openLedger": "Open the ledger",
+      "dashboard": "See the dashboard"
+    }
+  },
+  "dashboard": {
+    "navbarDescription": "{count} active subscriptions · {renewing} renewing in the next 30 days",
+    "allSubscriptions": "All subscriptions",
+    "actuallyBilled": {
+      "title": "Actually billed",
+      "description": "Real charges, grouped by how often they recur",
+      "billedEach": {
+        "weekly": "Billed each week",
+        "monthly": "Billed each month",
+        "yearly": "Billed each year"
+      },
+      "plans": {
+        "weekly": "{n} weekly plan | {n} weekly plans",
+        "monthly": "{n} monthly plan | {n} monthly plans",
+        "yearly": "{n} yearly plan | {n} yearly plans"
+      },
+      "noPlans": {
+        "weekly": "No weekly plans",
+        "monthly": "No monthly plans",
+        "yearly": "No yearly plans"
+      }
+    },
+    "spendForecast": {
+      "title": "Spending trends",
+      "description": "What you'll actually be billed each month",
+      "series": "Spend"
+    },
+    "topSubscriptions": {
+      "title": "Top subscriptions",
+      "description": "Priciest, normalized per month",
+      "perMonth": "/mo",
+      "empty": "No subscriptions yet."
+    },
+    "categoryBreakdown": {
+      "title": "By category",
+      "description": "Monthly spend, split by category",
+      "uncategorized": "Uncategorized",
+      "perMonth": "/mo",
+      "empty": "No subscriptions yet."
+    },
+    "subscriptionCreep": {
+      "title": "Subscription creep",
+      "description": "Monthly run-rate as you added services",
+      "series": "Monthly run-rate",
+      "growth": "Up {amount}/mo since {since} — now {latest}/mo.",
+      "empty": "Not enough history yet."
+    },
+    "averaged": {
+      "title": "Averaged out",
+      "description": "Everything spread evenly — an estimate for budgeting",
+      "perWeek": "Per week",
+      "perMonth": "Per month",
+      "perYear": "Per year",
+      "estimate": "estimate",
+      "sinceStart": "You've paid {total} in total since {date}, starting with {service}."
+    },
+    "upcomingRenewals": {
+      "title": "Upcoming renewals",
+      "due": "due in {days} days",
+      "trialEnds": "Trial ends · ",
+      "trialConverts": "Trial converts to paid automatically",
+      "firstCharge": "first charge",
+      "of": "of {amount}",
+      "empty": "Nothing due in the next {days} days."
+    },
+    "renewalCalendar": {
+      "title": "Renewal calendar",
+      "thisMonth": "this month",
+      "weekdays": "Mon,Tue,Wed,Thu,Fri,Sat,Sun"
+    }
+  },
+  "subscriptions": {
+    "title": "Subscriptions",
+    "headerDescription": "{count} active · levelled to a monthly figure so yearly plans stop hiding",
+    "search": "Search subscriptions",
+    "filterBy": "Filter by",
+    "cards": {
+      "perMonth": "per month",
+      "perMonthDescription": "all plans levelled to a month",
+      "perYear": "per year",
+      "perYearDescription": "{services} across {categories}",
+      "services": "{n} service | {n} services",
+      "categories": "{n} category | {n} categories",
+      "nextCharge": "next charge",
+      "nextChargeEmpty": "nothing scheduled",
+      "nextChargeDescription": "{service} · {when}, {date}",
+      "next30Days": "next 30 days",
+      "next30Due": "{amount} due across {count}",
+      "renewals": "{n} renewal | {n} renewals",
+      "noRenewals": "no renewals",
+      "nothingDue": "nothing due this month"
+    }
+  },
+  "subscription": {
+    "add": {
+      "button": "Add Subscription",
+      "title": "New Subscription",
+      "description": "Fill out infos about your newly subscribed service and click \"Confirm\"."
+    },
+    "edit": {
+      "title": "Edit Subscription",
+      "description": "Edit infos about your subscription then click \"Confirm\"."
+    },
+    "delete": {
+      "title": "Warning",
+      "description": "Are you sure you want to delete this subscription? This action cannot be undone.",
+      "success": "Subscription deleted",
+      "error": "Could not delete. Please try again."
+    },
+    "table": {
+      "service": "Service",
+      "renews": "Renews",
+      "billed": "Billed",
+      "perMonth": "Per month",
+      "empty": "No results."
+    },
+    "card": {
+      "nextBilling": "Next billing",
+      "afterTrial": "after trial",
+      "yourShare": "your share"
+    },
+    "trial": {
+      "endsToday": "Trial — ends today",
+      "daysLeft": "Trial — {n} day left | Trial — {n} days left",
+      "endsOn": "Trial ends {date}"
+    },
+    "form": {
+      "service": "Service",
+      "servicePlaceholder": "Netflix",
+      "description": "Description",
+      "descriptionPlaceholder": "Family plan",
+      "category": "Category",
+      "categoryPlaceholder": "Entertainment",
+      "price": "Price (€)",
+      "pricePlaceholder": "15.99",
+      "cycle": "Billing cycle",
+      "intervalCount": "Every N cycles",
+      "shareCount": "Split between",
+      "shareCountHelp": "Number of people sharing the cost equally, including you. Leave at 1 if it's all yours.",
+      "yourShare": "Your share:",
+      "firstBillingDate": "First billing date",
+      "trialStartDate": "Trial start date",
+      "hasTrial": "Starts with a free trial",
+      "hasTrialHelp": "During the trial it counts as €0 today, but still appears in your run-rate.",
+      "trialLength": "Trial length (days)",
+      "trialLengthPlaceholder": "30",
+      "trialEnds": "Trial ends {date}",
+      "automaticConversion": "Converts to paid automatically",
+      "automaticConversionHelp": "A payment method is attached — it'll start charging when the trial ends.",
+      "saved": "Subscription updated",
+      "created": "Subscription created",
+      "error": "Could not save. Please try again."
+    }
+  }
+}

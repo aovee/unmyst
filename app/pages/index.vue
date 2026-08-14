@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { format } from 'date-fns'
-
 definePageMeta({ middleware: 'auth', layout: 'dashboard' })
 
-useHead({ title: 'Dashboard' })
+const { t } = useI18n()
+const locale = useLocale()
+
+useHead({ title: () => t('nav.dashboard') })
 
 const { subscriptions: subs } = await useSubscriptions()
 
@@ -11,8 +12,12 @@ const { count: renewingSoon } = useUpcomingRenewals(subs, { windowDays: 30 })
 
 const navbarOptions = computed<{ title: string, description: string }>(() => {
   return {
-    title: format(new Date(), 'MMMM yyyy'),
-    description: `${subs.value.length} active subscriptions · ${renewingSoon.value} renewing in the next 30 days`
+    title: capitalize(new Intl.DateTimeFormat(locale.value, { month: 'long', year: 'numeric' })
+      .format(new Date())),
+    description: t('dashboard.navbarDescription', {
+      count: subs.value.length,
+      renewing: renewingSoon.value
+    })
   }
 })
 </script>
@@ -24,7 +29,7 @@ const navbarOptions = computed<{ title: string, description: string }>(() => {
         <template #right>
           <UButton
             to="/subscriptions"
-            label="All subscriptions"
+            :label="$t('dashboard.allSubscriptions')"
             size="md"
             variant="outline"
             trailing-icon="i-lucide-chevron-right"
@@ -39,6 +44,9 @@ const navbarOptions = computed<{ title: string, description: string }>(() => {
 
         <DashboardSpendForecast :subscriptions="subs" />
         <DashboardTopSubscriptions :subscriptions="subs" />
+
+        <DashboardCategoryBreakdown :subscriptions="subs" />
+        <DashboardSubscriptionCreep :subscriptions="subs" />
 
         <DashboardAveragedOutSubscriptions :subscriptions="subs" class="col-span-1 xl:col-span-2" />
 

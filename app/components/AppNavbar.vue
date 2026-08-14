@@ -6,12 +6,14 @@ defineProps<{
 </script>
 
 <template>
-  <UDashboardNavbar :ui="{ title: 'flex flex-col items-start gap-1 py-3' }">
+  <UDashboardNavbar
+    :ui="{ title: 'flex flex-col items-start gap-1 py-3', right: 'justify-start' }"
+  >
     <template #title>
-      <span class="text-2xl">
+      <span class="text-xl md:text-2xl">
         {{ title }}
       </span>
-      <div class="text-xs text-muted">
+      <div class="hidden md:block text-xs text-muted">
         {{ description }}
       </div>
     </template>

@@ -5,6 +5,7 @@ import type { Subscription } from '~~/server/db/schema'
 const props = defineProps<{ subscriptions: Subscription[] }>()
 
 const locale = useLocale()
+const { t } = useI18n()
 
 // Charts assume a single currency; fall back to the first subscription's.
 const currency = computed(() => props.subscriptions[0]?.currency ?? 'EUR')
@@ -48,12 +49,12 @@ const forecast = computed<MonthBucket[]>(() => {
   return buckets
 })
 
-const categories: Record<string, BulletLegendItemInterface> = {
-  amount: { name: 'Spend', color: 'var(--color-unmyst-500)' }
-}
+const categories = computed<Record<string, BulletLegendItemInterface>>(() => ({
+  amount: { name: t('dashboard.spendForecast.series'), color: 'var(--color-unmyst-500)' }
+}))
 
 const axisFormatter = (v: number) =>
-  new Intl.NumberFormat(locale, {
+  new Intl.NumberFormat(locale.value, {
     style: 'currency',
     currency: currency.value,
     maximumFractionDigits: 0
@@ -66,15 +67,11 @@ const monthFormatter = (i: number) => forecast.value[Math.round(i)]?.label ?? ''
 <template>
   <UCard variant="outline">
     <template #header>
-      <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-chart-column" class="size-4 text-primary" />
-          <h3 class="text-sm font-medium text-highlighted">
-            Spending trends
-          </h3>
-        </div>
-        <span class="text-sm text-muted">What you'll actually be billed each month</span>
-      </div>
+      <DashboardSectionHeader
+        icon="i-lucide-chart-column"
+        :title="$t('dashboard.spendForecast.title')"
+        :description="$t('dashboard.spendForecast.description')"
+      />
     </template>
 
     <BarChart
