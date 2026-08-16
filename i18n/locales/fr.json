@@ -263,6 +263,16 @@
       "title": "Calendrier de renouvellement",
       "thisMonth": "ce mois-ci",
       "weekdays": "Lun,Mar,Mer,Jeu,Ven,Sam,Dim"
+    },
+    "savings": {
+      "title": "Passez à l'annuel et économisez",
+      "description": "Vos forfaits mensuels gardés plus d'un an — la facturation annuelle est souvent moins chère",
+      "currentMonthly": "actuellement {amount}/mois",
+      "save": "Économisez {amount}/an",
+      "estimate": "estimation",
+      "dismiss": "Ignorer",
+      "dismissError": "Impossible d'ignorer. Veuillez réessayer.",
+      "empty": "Aucun forfait à basculer pour le moment."
     }
   },
   "subscriptions": {

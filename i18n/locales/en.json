@@ -263,6 +263,16 @@
       "title": "Renewal calendar",
       "thisMonth": "this month",
       "weekdays": "Mon,Tue,Wed,Thu,Fri,Sat,Sun"
+    },
+    "savings": {
+      "title": "Switch to annual & save",
+      "description": "Monthly plans you've kept over a year — annual billing is usually cheaper",
+      "currentMonthly": "now {amount}/mo",
+      "save": "Save {amount}/yr",
+      "estimate": "estimate",
+      "dismiss": "Dismiss",
+      "dismissError": "Could not dismiss. Please try again.",
+      "empty": "No plans worth switching right now."
     }
   },
   "subscriptions": {
