@@ -209,3 +209,113 @@ export function computeNextRenewal(
 
   return candidate
 }
+
+/**
+ * One period during which a subscription held a fixed price/cycle/split. Mirrors
+ * a `subscription_price_history` row but as a lightweight, storage-agnostic shape
+ * so the maths stays testable. Periods are half-open [effectiveFrom, effectiveTo).
+ */
+export interface PricePeriod {
+  amount: number
+  cycle: Cycle
+  shareCount?: number | null
+  effectiveFrom: Date | string
+  effectiveTo?: Date | string | null
+}
+
+/**
+ * Number of charges in the half-open window [from, to): billed on `from`, then
+ * every `cycle × intervalCount` after. Period-based summation — the model the
+ * "total paid" figure is built on. Returns 0 when the window is empty.
+ */
+export function occurrencesInPeriod(
+  cycle: Cycle,
+  intervalCount: number,
+  from: Date,
+  to: Date
+): number {
+  if (intervalCount < 1) return 0
+  const base = startOfDay(from)
+  const end = startOfDay(to)
+  let count = 0
+  let d = base
+  while (isBefore(d, end)) {
+    count++
+    d = addCycles(base, cycle, intervalCount * count)
+  }
+  return count
+}
+
+export interface TotalPaidContext {
+  anchorDate: Date | string
+  trialDurationDays?: number | null
+  intervalCount: number
+}
+
+/**
+ * Best estimate of what has actually been paid across a subscription's price
+ * history: each period's charge count × the price in force then, summed. Charges
+ * inside the free-trial window count as €0 (the first period starts at the trial
+ * end). `personal` divides each period by its own `shareCount` so the figure
+ * tracks split changes over time. An estimate: charges are assumed aligned to
+ * each period's start, since the real per-cycle dates aren't stored.
+ */
+export function totalPaidToDate(
+  history: PricePeriod[],
+  ctx: TotalPaidContext,
+  opts: { personal?: boolean } = {},
+  now: Date = new Date()
+): number {
+  const today = startOfDay(now)
+  const trialEnd = trialEndDate({
+    anchorDate: ctx.anchorDate,
+    trialDurationDays: ctx.trialDurationDays
+  })
+
+  let total = 0
+  for (const p of history) {
+    const rawStart = startOfDay(new Date(p.effectiveFrom))
+    // Nothing is billed during the trial, so the first billable date is its end.
+    const periodStart = trialEnd && isBefore(rawStart, trialEnd) ? trialEnd : rawStart
+    const rawEnd = p.effectiveTo != null ? startOfDay(new Date(p.effectiveTo)) : today
+    const periodEnd = isBefore(today, rawEnd) ? today : rawEnd
+    if (!isBefore(periodStart, periodEnd)) continue
+
+    const occ = occurrencesInPeriod(p.cycle, ctx.intervalCount, periodStart, periodEnd)
+    const per = opts.personal
+      ? personalAmount({ amount: p.amount, shareCount: p.shareCount })
+      : p.amount
+    total += occ * per
+  }
+  return total
+}
+
+export interface PriceEvolution {
+  /** Earliest recorded price (full, pre-split), in cents. */
+  first: number
+  /** Current price (the open period, or latest), in cents. */
+  current: number
+  /** Fractional change from first to current (0.29 = +29%); 0 when first is 0. */
+  pctChange: number
+  /** Start date of the earliest period. */
+  since: Date
+}
+
+/**
+ * First-vs-current price summary for the "€13.99 → €17.99 (+29% since Mar 2024)"
+ * line. Null when there's no history.
+ */
+export function priceEvolution(history: PricePeriod[]): PriceEvolution | null {
+  if (history.length === 0) return null
+  const sorted = [...history].sort(
+    (a, b) => new Date(a.effectiveFrom).getTime() - new Date(b.effectiveFrom).getTime()
+  )
+  const first = sorted[0]!
+  const current = sorted.find(p => p.effectiveTo == null) ?? sorted[sorted.length - 1]!
+  return {
+    first: first.amount,
+    current: current.amount,
+    pctChange: first.amount === 0 ? 0 : (current.amount - first.amount) / first.amount,
+    since: startOfDay(new Date(first.effectiveFrom))
+  }
+}
