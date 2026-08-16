@@ -1,4 +1,4 @@
-import { subscriptions } from '@nuxthub/db/schema'
+import { subscriptions, subscriptionPriceHistory } from '@nuxthub/db/schema'
 
 export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)
@@ -13,10 +13,25 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const values = toDbValues(result.data)
+  // Generate the id up front so the subscription and its opening price-history
+  // period are written together in one transaction.
+  const id = crypto.randomUUID()
+
   try {
-    await db
-      .insert(subscriptions)
-      .values({ ...toDbValues(result.data), userId: user.id })
+    await db.transaction(async (tx) => {
+      await tx.insert(subscriptions).values({ ...values, id, userId: user.id })
+      await tx.insert(subscriptionPriceHistory).values({
+        subscriptionId: id,
+        amount: values.amount,
+        currency: values.currency,
+        cycle: values.cycle,
+        shareCount: values.shareCount,
+        effectiveFrom: values.anchorDate,
+        effectiveTo: null,
+        source: 'manual'
+      })
+    })
   } catch (err) {
     console.error('createSubscription failed', err)
     throw createError({
