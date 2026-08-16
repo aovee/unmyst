@@ -102,7 +102,7 @@
       "openLedger": "Open the ledger"
     },
     "footer": {
-      "version": "unmyst {version} · built {date}",
+      "version": "unmyst {version} · {date}",
       "source": "Source",
       "report": "Report an issue",
       "licence": "Licence",

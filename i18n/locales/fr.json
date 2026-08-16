@@ -102,7 +102,7 @@
       "openLedger": "Ouvrir le registre"
     },
     "footer": {
-      "version": "unmyst {version} · compilé le {date}",
+      "version": "unmyst {version} · {date}",
       "source": "Code source",
       "report": "Signaler un problème",
       "licence": "Licence",
@@ -347,7 +347,7 @@
   },
   "subscription": {
     "add": {
-      "button": "Ajouter un abonnement",
+      "button": "Nouvel abonnement",
       "title": "Nouvel abonnement",
       "description": "Renseignez les informations sur le service auquel vous venez de vous abonner, puis cliquez sur « Confirmer »."
     },
