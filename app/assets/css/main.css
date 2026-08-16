@@ -37,7 +37,6 @@
   --ui-bg: oklch(95.213% 0.00011 271.152);
   --text-sm: 0.865rem;
   --ui-radius: 0.225rem;
-  --ui-header-height: 100px;
   --vis-tooltip-title-color: var(--ui-text) !important;
   --vis-tooltip-title-border-bottom: 1px solid var(--ui-border) !important;
   --vis-tooltip-label-color: var(--ui-text-muted) !important;
@@ -52,6 +51,12 @@
   --vis-tooltip-border-color: var(--ui-border) !important;
   --vis-tooltip-text-color: var(--ui-text-toned) !important;
   --vis-legend-spacing: 1rem;
+}
+
+@media (min-width:448px) {
+  :root {
+    --ui-header-height: 100px;
+  }
 }
 
 .dark {
