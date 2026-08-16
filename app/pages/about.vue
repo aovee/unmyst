@@ -60,6 +60,17 @@ const previewRows = [
   { service: 'Spotify Family', charge: 25488, cycle: 'monthly', levelled: 2124 }
 ]
 
+// Illustrative price timeline for the history preview (static product mock). The
+// total is the two periods summed at the price in force during each: five months
+// at €13.99 then seven at €17.99.
+const historyPreview = {
+  periods: [
+    { amount: 1799, from: new Date('2024-06-01'), to: null },
+    { amount: 1399, from: new Date('2024-01-01'), to: new Date('2024-06-01') }
+  ],
+  totalPaid: 19588
+}
+
 const eyebrow = 'text-xs font-semibold uppercase tracking-[0.16em] text-primary'
 </script>
 
@@ -179,6 +190,62 @@ const eyebrow = 'text-xs font-semibold uppercase tracking-[0.16em] text-primary'
             <div class="text-right font-numbers text-sm text-primary">
               {{ formatCurrency(row.levelled, 'EUR', locale) }}
             </div>
+          </div>
+        </UCard>
+      </div>
+    </UContainer>
+
+    <USeparator />
+
+    <!-- Price history -->
+    <UContainer class="py-16 md:py-20">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center">
+        <div>
+          <p :class="eyebrow">
+            {{ $t('about.history.eyebrow') }}
+          </p>
+          <h2 class="mt-4 font-title text-2xl font-semibold leading-tight text-highlighted">
+            {{ $t('about.history.title') }}
+          </h2>
+          <p class="mt-4 leading-relaxed text-muted">
+            {{ $t('about.history.body') }}
+          </p>
+        </div>
+
+        <!-- Static product preview of a plan's price timeline -->
+        <UCard variant="subtle" :ui="{ body: 'sm:p-5' }">
+          <div class="mb-3 flex items-center gap-2 text-dimmed">
+            <UIcon name="i-lucide-history" class="size-3.5" />
+            <span class="text-[11px] uppercase tracking-[0.13em]">{{ $t('about.history.previewLabel') }}</span>
+          </div>
+          <div class="flex flex-col">
+            <div
+              v-for="(p, i) in historyPreview.periods"
+              :key="i"
+              class="flex items-baseline justify-between gap-4 border-b border-default/60 py-2.5"
+            >
+              <div>
+                <span class="font-numbers text-sm text-highlighted">{{ formatCurrency(p.amount, 'EUR', locale) }}</span>
+                <span class="ml-1 text-[11px] text-dimmed">/ {{ $t('cycle.unit.month', 1) }}</span>
+              </div>
+              <div class="text-right text-[11px] text-dimmed">
+                <span>{{ formatDate(p.from, locale) }}</span>
+                <span v-if="p.to"> – {{ formatDate(p.to, locale) }}</span>
+                <UBadge
+                  v-else
+                  color="primary"
+                  variant="subtle"
+                  size="sm"
+                  class="ml-1"
+                >
+                  {{ $t('about.history.now') }}
+                </UBadge>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 flex items-baseline justify-between">
+            <span class="text-[11px] uppercase tracking-[0.13em] text-dimmed">{{ $t('about.history.totalLabel') }}</span>
+            <span class="font-numbers text-lg font-semibold text-primary">{{ formatCurrency(historyPreview.totalPaid, 'EUR', locale) }}</span>
           </div>
         </UCard>
       </div>
