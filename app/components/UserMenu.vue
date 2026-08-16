@@ -72,7 +72,7 @@ const items = computed<DropdownMenuItem[][]>(() => {
     icon: 'i-lucide-log-out',
     onSelect() {
       clear()
-      navigateTo('/login')
+      navigateTo('/')
     }
   }]]
 })

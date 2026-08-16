@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDebounceFn } from '@vueuse/core'
 
-definePageMeta({ middleware: 'auth', layout: 'dashboard' })
+definePageMeta({ layout: 'dashboard' })
 
 const { subscriptions: subs, refresh } = await useSubscriptions()
 
