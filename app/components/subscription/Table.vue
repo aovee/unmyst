@@ -65,6 +65,15 @@ const columns = computed<TableColumn<Subscription>[]>(() => [
   }
 ])
 
+// Annual-plan saving to badge on the row, or null when the plan isn't a
+// candidate (or switching wouldn't actually save). Shared logic with the
+// dashboard "Savings" section via `useAnnualPlanSuggestions`.
+function annualSuggestion(s: Subscription): { saving: number, isEstimate: boolean } | null {
+  if (!isAnnualPlanCandidate(s)) return null
+  const result = annualPlanSaving(s)
+  return result.saving > 0 ? result : null
+}
+
 function nextRenewalDate(s: Subscription): Date {
   return computeNextRenewal(new Date(s.anchorDate), s.cycle, s.intervalCount)
 }
@@ -144,6 +153,21 @@ async function confirmDelete() {
             <span v-if="row.original.category" class="text-xs text-dimmed">
               {{ row.original.category }}
             </span>
+            <UBadge
+              v-if="annualSuggestion(row.original)"
+              color="success"
+              variant="subtle"
+              size="sm"
+              icon="i-lucide-piggy-bank"
+              class="mt-1 w-fit"
+              :title="annualSuggestion(row.original)!.isEstimate
+                ? $t('subscription.annualSuggestion.tooltipEstimate')
+                : $t('subscription.annualSuggestion.tooltipExact')"
+            >
+              {{ $t('subscription.annualSuggestion.badge', {
+                amount: formatCurrency(annualSuggestion(row.original)!.saving, row.original.currency, locale)
+              }) }}
+            </UBadge>
           </div>
         </div>
       </template>

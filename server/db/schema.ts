@@ -32,6 +32,15 @@ export const subscriptions = pgTable('subscriptions', {
   trialDurationDays: integer('trial_duration_days'),
   automaticConversion: boolean('automatic_conversion').notNull().default(false),
   trialEndNotifiedAt: timestamp('trial_end_notified_at'),
+  // Optional yearly price for this plan (in cents), for the "switch to annual"
+  // suggestion on long-running monthly plans. Null = unknown; the suggestion
+  // then falls back to an estimated discount. Stored pre-split, like `amount`.
+  annualPrice: integer('annual_price'),
+  // When the user dismissed the annual-plan suggestion, and the monthly `amount`
+  // at that moment. The suggestion re-surfaces only if the price later changes,
+  // so a dismissal for a decision already made stays dismissed.
+  suggestionDismissedAt: timestamp('suggestion_dismissed_at'),
+  suggestionDismissedAmount: integer('suggestion_dismissed_amount'),
   category: text('category'),
   url: text('url'),
   notes: text('notes'),

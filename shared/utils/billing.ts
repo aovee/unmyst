@@ -5,7 +5,8 @@ import {
   addYears,
   startOfDay,
   isBefore,
-  differenceInCalendarDays
+  differenceInCalendarDays,
+  differenceInCalendarMonths
 } from 'date-fns'
 
 export type Cycle = 'weekly' | 'monthly' | 'yearly'
@@ -108,6 +109,70 @@ export function monthlyAmount(
   intervalCount: number
 ): number {
   return annualAmount(amount, cycle, intervalCount) / 12
+}
+
+/**
+ * Assumed annual discount when a plan's real yearly price is unknown. Most
+ * services shave 15–20% off for paying yearly; 17% is a deliberately middle,
+ * conservative guess used only for the *estimated* saving, never shown as fact.
+ */
+export const ANNUAL_DISCOUNT_ESTIMATE = 0.17
+
+/** How long a monthly plan must have run before an annual switch is worth flagging. */
+export const ANNUAL_CANDIDATE_MIN_MONTHS = 12
+
+export interface AnnualCandidate extends Splittable, Trialable {
+  cycle: Cycle
+  intervalCount: number
+  annualPrice?: number | null
+  suggestionDismissedAt?: Date | string | null
+  suggestionDismissedAmount?: number | null
+}
+
+/**
+ * Whether a plan is worth flagging as "cheaper billed annually": a plain monthly
+ * plan (every month, not "every N months") that has run at least a year, isn't
+ * still on trial, and hasn't been dismissed at its current price. A dismissal is
+ * honoured only while the price is unchanged — a later price change re-surfaces
+ * the suggestion, since the earlier decision was made against a different number.
+ */
+export function isAnnualPlanCandidate(
+  s: AnnualCandidate,
+  now: Date = new Date()
+): boolean {
+  if (s.cycle !== 'monthly' || s.intervalCount !== 1) return false
+  if (isInTrial(s, now)) return false
+
+  const monthsRunning = differenceInCalendarMonths(startOfDay(now), startOfDay(new Date(s.anchorDate)))
+  if (monthsRunning < ANNUAL_CANDIDATE_MIN_MONTHS) return false
+
+  const dismissed
+    = s.suggestionDismissedAt != null && s.suggestionDismissedAmount === s.amount
+  return !dismissed
+}
+
+/**
+ * The user's yearly saving (in the same unit as `amount`, e.g. cents) from
+ * switching this plan to annual, computed on their personal post-split share.
+ * When a real `annualPrice` is known the figure is exact; otherwise it's an
+ * estimate from {@link ANNUAL_DISCOUNT_ESTIMATE}. `isEstimate` lets the UI label
+ * it honestly. Does not itself check eligibility — pair with
+ * {@link isAnnualPlanCandidate} — but the estimate branch is always positive.
+ */
+export function annualPlanSaving(
+  s: AnnualCandidate
+): { saving: number, isEstimate: boolean } {
+  const personalYearIfMonthly = personalAmount(s) * 12
+
+  if (s.annualPrice != null) {
+    const personalAnnual = personalAmount({ amount: s.annualPrice, shareCount: s.shareCount })
+    return { saving: personalYearIfMonthly - personalAnnual, isEstimate: false }
+  }
+
+  return {
+    saving: Math.round(personalYearIfMonthly * ANNUAL_DISCOUNT_ESTIMATE),
+    isEstimate: true
+  }
 }
 
 export function addCycles(anchor: Date, cycle: Cycle, count: number): Date {

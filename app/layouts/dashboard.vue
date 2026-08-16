@@ -21,15 +21,15 @@ const links = computed<NavigationMenuItem[][]>(() => [[{
     open.value = false
   }
 }], [
-  // {
-  //   label: t('nav.about'),
-  //   icon: 'i-lucide-info',
-  //   to: '/about',
-  //   target: '_blank',
-  //   onSelect: () => {
-  //     open.value = false
-  //   }
-  // }
+  {
+    label: t('nav.about'),
+    icon: 'i-lucide-info',
+    to: '/about',
+    target: '_blank',
+    onSelect: () => {
+      open.value = false
+    }
+  }
 ]])
 
 onMounted(async () => {

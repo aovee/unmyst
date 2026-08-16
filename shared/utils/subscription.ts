@@ -18,6 +18,13 @@ export const SubscriptionInputSchema = z.object({
   description: z.string().trim().nullable().default(null),
   category: z.string().trim().nullable().default(null),
   amount: z.number().positive('Price must be a positive number'), // euros
+  // Optional yearly price (euros) for a monthly plan, powering the exact
+  // "switch to annual" saving. Null/undefined means unknown.
+  annualPrice: z
+    .number()
+    .positive('Annual price must be a positive number')
+    .nullable()
+    .default(null),
   currency: z.string().trim().min(1).default('EUR'),
   cycle: z.enum(['weekly', 'monthly', 'yearly']),
   intervalCount: z.number().int().min(1).default(1),
@@ -46,6 +53,8 @@ export function toDbValues(input: SubscriptionInput) {
     // Optional category; blank collapses to null so counts/charts ignore it.
     category: input.category?.trim() ? input.category.trim() : null,
     amount: Math.round(input.amount * 100), // euros → cents
+    // Optional; only meaningful for monthly plans, stored in cents like `amount`.
+    annualPrice: input.annualPrice != null ? Math.round(input.annualPrice * 100) : null,
     currency: input.currency,
     cycle: input.cycle,
     intervalCount: input.intervalCount,

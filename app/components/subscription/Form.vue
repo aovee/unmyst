@@ -42,6 +42,7 @@ const state = reactive<Partial<SubscriptionInput>>({
   description: props.subscription?.description ?? '',
   category: props.subscription?.category ?? null,
   amount: props.subscription ? props.subscription.amount / 100 : undefined,
+  annualPrice: props.subscription?.annualPrice != null ? props.subscription.annualPrice / 100 : null,
   currency: props.subscription?.currency ?? 'EUR',
   cycle: props.subscription?.cycle ?? 'monthly',
   intervalCount: props.subscription?.intervalCount ?? 1,
@@ -79,6 +80,20 @@ const descriptionModel = computed({
   get: () => state.description ?? undefined,
   set: (v: string | undefined) => {
     state.description = v ?? null
+  }
+})
+
+// Optional annual price only makes sense for monthly plans; drop any stale value
+// when the cycle changes so it's never submitted for a non-monthly plan.
+watch(() => state.cycle, (cycle) => {
+  if (cycle !== 'monthly') state.annualPrice = null
+})
+
+// Bridge the nullable annual-price field to UInput (`number | undefined`).
+const annualPriceModel = computed({
+  get: () => state.annualPrice ?? undefined,
+  set: (v: number | undefined) => {
+    state.annualPrice = v ?? null
   }
 })
 
@@ -177,6 +192,22 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
         v-model.number="state.intervalCount"
         type="number"
         min="1"
+        class="w-full"
+      />
+    </UFormField>
+
+    <UFormField
+      v-if="state.cycle === 'monthly'"
+      :label="$t('subscription.form.annualPrice')"
+      name="annualPrice"
+      :help="$t('subscription.form.annualPriceHelp')"
+    >
+      <UInput
+        v-model.number="annualPriceModel"
+        type="number"
+        step="0.01"
+        min="0"
+        :placeholder="$t('subscription.form.annualPricePlaceholder')"
         class="w-full"
       />
     </UFormField>

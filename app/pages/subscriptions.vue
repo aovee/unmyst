@@ -102,7 +102,7 @@ const filteredSubs = computed(() => {
         </template>
       </AppNavbar>
 
-      <DataToolbar>
+      <DataToolbar class="hidden md:grid">
         <DataToolbarCard
           :title="$t('subscriptions.cards.perMonth')"
           :value="formatCurrency(perMonth, currency, locale)"
