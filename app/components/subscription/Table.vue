@@ -145,7 +145,11 @@ async function confirmDelete() {
             class="shrink-0 bg-elevated"
           />
           <div class="flex flex-col">
-            <span class="truncate text-sm text-highlighted font-semibold">{{ row.original.service }}
+            <span class="truncate text-sm font-semibold">
+              <ULink
+                :to="`/subscriptions/${row.original.id}`"
+                class="text-highlighted hover:text-primary"
+              >{{ row.original.service }}</ULink>
               <span v-if="row.original.description" class="text-xs text-muted">
                 - {{ row.original.description }}
               </span>

@@ -43,6 +43,20 @@ export const SubscriptionInputSchema = z.object({
 
 export type SubscriptionInput = z.infer<typeof SubscriptionInputSchema>
 
+/**
+ * Edit payload: the full subscription plus how to treat a price change.
+ * `priceChangeIntent` distinguishes "the price actually changed" (opens a new
+ * price-history period) from "I typed it wrong" (corrects the current one).
+ * `effectiveFrom` (yyyy-mm-dd) is the date a real change took effect; the server
+ * defaults it to today. Both are ignored when nothing price-related changed.
+ */
+export const SubscriptionUpdateSchema = SubscriptionInputSchema.extend({
+  priceChangeIntent: z.enum(['change', 'correction']).optional(),
+  effectiveFrom: z.string().optional()
+})
+
+export type SubscriptionUpdate = z.infer<typeof SubscriptionUpdateSchema>
+
 /** Normalise validated form input into DB column values. */
 export function toDbValues(input: SubscriptionInput) {
   return {

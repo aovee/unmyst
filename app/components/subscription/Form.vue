@@ -115,13 +115,42 @@ const trialEndPreview = computed(() => {
   return end ? formatDate(end) : null
 })
 
+// Price-change handling (edit only). When a price-relevant field differs from
+// the stored value, ask whether it's a real change (opens a new history period)
+// or a correction (rewrites the current one), and from when a real change applies.
+const priceChangeIntent = ref<'change' | 'correction'>('change')
+const priceEffectiveFrom = ref<string>(new Date().toISOString().slice(0, 10))
+
+const priceFieldsChanged = computed(() => {
+  if (!props.subscription) return false
+  const amountCents = state.amount != null ? Math.round(state.amount * 100) : null
+  return amountCents !== props.subscription.amount
+    || state.cycle !== props.subscription.cycle
+    || state.currency !== props.subscription.currency
+})
+
+const priceChangeItems = computed(() => [
+  { label: t('subscription.form.priceChange.changed'), value: 'change' },
+  { label: t('subscription.form.priceChange.correction'), value: 'correction' }
+])
+
 async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
   pending.value = true
   try {
     if (isEdit.value) {
+      // Carry the price-change intent only when a price field actually changed;
+      // the server ignores it otherwise.
+      const body = priceFieldsChanged.value
+        ? {
+            ...event.data,
+            priceChangeIntent: priceChangeIntent.value,
+            effectiveFrom:
+              priceChangeIntent.value === 'change' ? priceEffectiveFrom.value : undefined
+          }
+        : event.data
       await $fetch(`/api/subscriptions/${props.subscription!.id}`, {
         method: 'PUT',
-        body: event.data
+        body
       })
     } else {
       await $fetch('/api/subscriptions', { method: 'POST', body: event.data })
@@ -211,6 +240,23 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
         class="w-full"
       />
     </UFormField>
+
+    <div
+      v-if="isEdit && priceFieldsChanged"
+      class="space-y-3 rounded-lg border border-warning/40 bg-warning/5 p-3"
+    >
+      <p class="text-sm font-medium text-highlighted">
+        {{ $t('subscription.form.priceChange.legend') }}
+      </p>
+      <URadioGroup v-model="priceChangeIntent" :items="priceChangeItems" />
+      <UFormField
+        v-if="priceChangeIntent === 'change'"
+        :label="$t('subscription.form.priceChange.effectiveFrom')"
+        :help="$t('subscription.form.priceChange.effectiveFromHelp')"
+      >
+        <UInput v-model="priceEffectiveFrom" type="date" class="w-full" />
+      </UFormField>
+    </div>
 
     <UFormField
       :label="$t('subscription.form.shareCount')"

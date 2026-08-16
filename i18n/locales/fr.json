@@ -153,6 +153,14 @@
         "levelled": "Ramené"
       }
     },
+    "history": {
+      "eyebrow": "Historique des prix",
+      "title": "Chaque changement de prix est conservé",
+      "body": "Les abonnements augmentent avec le temps, et une fois l'ancien montant écrasé, il est perdu. unmyst conserve plutôt chaque prix passé — et quand vous en modifiez un, il demande si le prix a vraiment changé ou si vous vous êtes simplement trompé, pour qu'une correction ne passe jamais pour une hausse. À partir de cet historique, il calcule ce que vous avez réellement payé depuis le début, chaque période comptée au prix en vigueur à ce moment-là. Ouvrez un forfait pour voir sa chronologie et son total.",
+      "previewLabel": "Exemple — le prix d'un forfait dans le temps",
+      "now": "actuel",
+      "totalLabel": "Total payé à ce jour"
+    },
     "track": {
       "eyebrow": "Ce que vous pouvez enregistrer",
       "title": "Quelques champs par forfait",
@@ -373,6 +381,24 @@
       "afterTrial": "après l'essai",
       "yourShare": "votre part"
     },
+    "detail": {
+      "title": "Abonnement",
+      "back": "Retour",
+      "notFound": "Abonnement introuvable.",
+      "totalPaid": "Total payé à ce jour",
+      "totalPaidHint": "Votre part, cumulée au prix en vigueur à chaque période",
+      "fullCost": "{amount} au total, avant votre partage"
+    },
+    "history": {
+      "title": "Historique des prix",
+      "current": "actuel",
+      "evolution": "{from} → {to} ({pct} depuis {date})",
+      "source": {
+        "manual": "Manuel",
+        "import": "Importé",
+        "correction": "Correction"
+      }
+    },
     "trial": {
       "endsToday": "Essai — se termine aujourd'hui",
       "daysLeft": "Essai — {n} jour restant | Essai — {n} jours restants",
@@ -392,6 +418,13 @@
       "categoryPlaceholder": "Divertissement",
       "price": "Prix (€)",
       "pricePlaceholder": "15,99",
+      "priceChange": {
+        "legend": "Vous avez modifié le prix",
+        "changed": "Le prix a changé",
+        "correction": "Je corrige une erreur",
+        "effectiveFrom": "En vigueur depuis",
+        "effectiveFromHelp": "Date d'entrée en vigueur du nouveau prix. Aujourd'hui par défaut."
+      },
       "annualPrice": "Prix annuel (€)",
       "annualPricePlaceholder": "131,88",
       "annualPriceHelp": "Facultatif. Le prix annuel si vous payiez à l'année — transforme la suggestion d'économie d'une estimation en un chiffre exact.",

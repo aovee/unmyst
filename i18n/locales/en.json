@@ -153,6 +153,14 @@
         "levelled": "Levelled"
       }
     },
+    "history": {
+      "eyebrow": "Price history",
+      "title": "Every price change is kept",
+      "body": "Subscriptions creep up in price, and once you've overwritten the old number it's gone. unmyst keeps each past price instead — and when you edit one it asks whether the price genuinely changed or you'd just mistyped it, so a correction never masquerades as an increase. From that history it works out what you've actually paid since day one, each stretch counted at the price in force then. Open any plan to see its timeline and running total.",
+      "previewLabel": "Example — a plan's price over time",
+      "now": "now",
+      "totalLabel": "Total paid to date"
+    },
     "track": {
       "eyebrow": "What you can record",
       "title": "A handful of fields per plan",
@@ -373,6 +381,24 @@
       "afterTrial": "after trial",
       "yourShare": "your share"
     },
+    "detail": {
+      "title": "Subscription",
+      "back": "Back",
+      "notFound": "Subscription not found.",
+      "totalPaid": "Total paid to date",
+      "totalPaidHint": "Your share, summed at the price in force each period",
+      "fullCost": "{amount} in full, before your split"
+    },
+    "history": {
+      "title": "Price history",
+      "current": "now",
+      "evolution": "{from} → {to} ({pct} since {date})",
+      "source": {
+        "manual": "Manual",
+        "import": "Imported",
+        "correction": "Correction"
+      }
+    },
     "trial": {
       "endsToday": "Trial — ends today",
       "daysLeft": "Trial — {n} day left | Trial — {n} days left",
@@ -392,6 +418,13 @@
       "categoryPlaceholder": "Entertainment",
       "price": "Price (€)",
       "pricePlaceholder": "15.99",
+      "priceChange": {
+        "legend": "You changed the price",
+        "changed": "The price changed",
+        "correction": "I'm fixing a mistake",
+        "effectiveFrom": "In effect since",
+        "effectiveFromHelp": "When the new price started. Defaults to today."
+      },
       "annualPrice": "Annual price (€)",
       "annualPricePlaceholder": "131.88",
       "annualPriceHelp": "Optional. The yearly price if you paid annually — turns the savings suggestion from an estimate into an exact figure.",
