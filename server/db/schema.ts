@@ -2,6 +2,7 @@ import {
   pgTable,
   pgEnum,
   primaryKey,
+  uniqueIndex,
   uuid,
   text,
   integer,
@@ -9,8 +10,15 @@ import {
   date,
   timestamp
 } from 'drizzle-orm/pg-core'
+import { sql } from 'drizzle-orm'
 
 export const cycleEnum = pgEnum('cycle', ['weekly', 'monthly', 'yearly'])
+
+export const priceHistorySourceEnum = pgEnum('price_history_source', [
+  'manual',
+  'import',
+  'correction'
+])
 
 export const subscriptions = pgTable('subscriptions', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -53,6 +61,39 @@ export const subscriptions = pgTable('subscriptions', {
 
 export type Subscription = typeof subscriptions.$inferSelect
 export type NewSubscription = typeof subscriptions.$inferInsert
+
+// Temporal price history: one row per period a subscription held a given price.
+// `subscriptions.amount/currency/cycle/shareCount` stay the denormalised current
+// values (mirrored by the open row) so existing reads are untouched; this table
+// records what changed and when. Periods are half-open [effectiveFrom, effectiveTo);
+// the single open period has effectiveTo = null. `shareCount` is versioned here so
+// historical "your share" totals stay correct across split changes.
+export const subscriptionPriceHistory = pgTable(
+  'subscription_price_history',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    subscriptionId: uuid('subscription_id')
+      .notNull()
+      .references(() => subscriptions.id, { onDelete: 'cascade' }),
+    amount: integer('amount').notNull(), // in cents
+    currency: text('currency').notNull().default('EUR'),
+    cycle: cycleEnum('cycle').notNull(),
+    shareCount: integer('share_count').notNull().default(1),
+    effectiveFrom: date('effective_from', { mode: 'date' }).notNull(),
+    effectiveTo: date('effective_to', { mode: 'date' }), // null = current period
+    source: priceHistorySourceEnum('source').notNull().default('manual'),
+    createdAt: timestamp('created_at').notNull().defaultNow()
+  },
+  t => [
+    // Enforce the "exactly one open period per subscription" invariant in the DB.
+    uniqueIndex('price_history_one_open_per_sub')
+      .on(t.subscriptionId)
+      .where(sql`${t.effectiveTo} is null`)
+  ]
+)
+
+export type PriceHistory = typeof subscriptionPriceHistory.$inferSelect
+export type NewPriceHistory = typeof subscriptionPriceHistory.$inferInsert
 
 export const users = pgTable('user', {
   id: text('id')
