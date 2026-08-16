@@ -36,7 +36,7 @@ export default defineOAuthGoogleEventHandler({
       }
     })
 
-    return sendRedirect(event, '/dashboard')
+    return sendRedirect(event, dashboardPath(event))
   },
   onError(event, error) {
     console.error('Google OAuth error', error)

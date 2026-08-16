@@ -71,7 +71,12 @@ export default defineNuxtConfig({
 
   i18n: {
     defaultLocale: 'en',
-    strategy: 'no_prefix',
+    // Default locale served unprefixed (`/`, `/dashboard`); other locales get a
+    // path prefix (`/fr`, `/fr/dashboard`) so each language has a distinct,
+    // indexable URL. `baseUrl` makes the auto-generated canonical + hreflang
+    // links absolute.
+    strategy: 'prefix_except_default',
+    baseUrl: 'https://unmyst.app',
     locales: [
       { code: 'en', name: 'English', language: 'en-GB', file: 'en.json' },
       { code: 'fr', name: 'Français', language: 'fr-FR', file: 'fr.json' }

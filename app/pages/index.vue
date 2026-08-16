@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const locale = useLocale()
+const localePath = useLocalePath()
 
 definePageMeta({ layout: 'front' })
 
@@ -75,7 +76,7 @@ const historyPreview = {
 
 const heroLinks = computed(() => ([
   {
-    to: '/dashboard/subscriptions',
+    to: localePath('/dashboard/subscriptions'),
     label: t('about.hero.primary'),
     color: 'primary' as const,
     variant: 'outline' as const
@@ -90,13 +91,13 @@ const heroLinks = computed(() => ([
 
 const ctaLinks = computed(() => ([
   {
-    to: '/dashboard/subscriptions',
+    to: localePath('/dashboard/subscriptions'),
     label: t('about.cta.openLedger'),
     color: 'primary' as const,
     variant: 'outline' as const
   },
   {
-    to: '/dashboard',
+    to: localePath('/dashboard'),
     label: t('about.cta.dashboard'),
     color: 'neutral' as const,
     variant: 'link' as const

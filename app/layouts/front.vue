@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t, locale, locales, setLocale } = useI18n()
+const localePath = useLocalePath()
 
 const APP_VERSION = 'v0.4.2'
 const BUILD_DATE = new Date('2026-08-14')
@@ -28,7 +29,7 @@ const otherLocale = computed(() => locales.value.find(l => l.code !== locale.val
   <div class="dark flex min-h-svh flex-col bg-default text-default">
     <header class="sticky top-0 z-20 border-b border-default bg-default/80 backdrop-blur">
       <UContainer class="flex h-16 items-center justify-between gap-6">
-        <ULink to="/" class="flex items-center gap-2">
+        <ULink :to="localePath('/')" class="flex items-center gap-2">
           <img
             src="/unmyst-mark-dark.svg"
             alt=""
@@ -51,7 +52,7 @@ const otherLocale = computed(() => locales.value.find(l => l.code !== locale.val
         </nav>
 
         <UButton
-          to="/dashboard/subscriptions"
+          :to="localePath('/dashboard/subscriptions')"
           :label="$t('front.nav.openLedger')"
           color="primary"
           variant="outline"

@@ -9,6 +9,7 @@ const { loggedIn, user, clear } = useUserSession()
 
 const colorMode = useColorMode()
 const { t, locale, locales, setLocale } = useI18n()
+const localePath = useLocalePath()
 
 const items = computed<DropdownMenuItem[][]>(() => {
   if (!loggedIn.value || !user.value) {
@@ -72,7 +73,7 @@ const items = computed<DropdownMenuItem[][]>(() => {
     icon: 'i-lucide-log-out',
     onSelect() {
       clear()
-      navigateTo('/')
+      navigateTo(localePath('/'))
     }
   }]]
 })

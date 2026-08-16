@@ -13,11 +13,6 @@ const BodySchema = z.object({
   redirectTo: z.string().optional()
 })
 
-function safeRedirect(target: string | null | undefined): string {
-  if (target && target.startsWith('/') && !target.startsWith('//')) return target
-  return '/dashboard'
-}
-
 function clientIp(event: Parameters<typeof getRequestHeader>[0]): string {
   const forwarded = getRequestHeader(event, 'x-forwarded-for')
   if (forwarded) return forwarded.split(',')[0]!.trim()
@@ -34,7 +29,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const email = parsed.data.email.trim().toLowerCase()
-  const redirectTo = safeRedirect(parsed.data.redirectTo)
+  const redirectTo = safeRedirect(event, parsed.data.redirectTo)
   const ip = clientIp(event)
 
   // Throttle per-email and per-IP (unchanged logic from the old action).

@@ -1,9 +1,13 @@
 User-agent: *
 Allow: /
 Disallow: /dashboard
+Disallow: /fr/dashboard
 Disallow: /login
+Disallow: /fr/login
 Disallow: /signup
+Disallow: /fr/signup
 Disallow: /verify-request
+Disallow: /fr/verify-request
 Disallow: /api/
 
 Sitemap: https://unmyst.app/sitemap.xml
