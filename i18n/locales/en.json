@@ -330,6 +330,11 @@
       "daysLeft": "Trial — {n} day left | Trial — {n} days left",
       "endsOn": "Trial ends {date}"
     },
+    "annualSuggestion": {
+      "badge": "Annual saves {amount}/yr",
+      "tooltipExact": "Based on the annual price you entered.",
+      "tooltipEstimate": "Estimated from a typical ~17% annual discount. Add the real annual price to make it exact."
+    },
     "form": {
       "service": "Service",
       "servicePlaceholder": "Netflix",

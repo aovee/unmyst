@@ -330,6 +330,11 @@
       "daysLeft": "Essai — {n} jour restant | Essai — {n} jours restants",
       "endsOn": "L'essai se termine le {date}"
     },
+    "annualSuggestion": {
+      "badge": "L'annuel économise {amount}/an",
+      "tooltipExact": "D'après le prix annuel que vous avez saisi.",
+      "tooltipEstimate": "Estimé à partir d'une remise annuelle typique d'environ 17 %. Saisissez le vrai prix annuel pour un chiffre exact."
+    },
     "form": {
       "service": "Service",
       "servicePlaceholder": "Netflix",
