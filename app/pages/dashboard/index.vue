@@ -3,6 +3,7 @@ definePageMeta({ layout: 'dashboard' })
 
 const { t } = useI18n()
 const locale = useLocale()
+const localePath = useLocalePath()
 
 useHead({ title: () => t('nav.dashboard') })
 
@@ -32,7 +33,7 @@ const navbarOptions = computed<{ title: string, description: string }>(() => {
       <AppNavbar v-bind="navbarOptions">
         <template #right>
           <UButton
-            to="/dashboard/subscriptions"
+            :to="localePath('/dashboard/subscriptions')"
             :label="$t('dashboard.allSubscriptions')"
             size="md"
             variant="outline"

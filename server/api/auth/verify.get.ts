@@ -1,17 +1,12 @@
 import { eq, lt } from 'drizzle-orm'
 import { users, verificationTokens } from '@nuxthub/db/schema'
 
-function safeRedirect(target: string | null | undefined): string {
-  if (target && target.startsWith('/') && !target.startsWith('//')) return target
-  return '/dashboard'
-}
-
 export default defineEventHandler(async (event) => {
   const { token, redirectTo } = getQuery(event) as {
     token?: string
     redirectTo?: string
   }
-  const dest = safeRedirect(redirectTo)
+  const dest = safeRedirect(event, redirectTo)
 
   if (!token) {
     return sendRedirect(event, '/login?error=missing-token')

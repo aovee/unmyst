@@ -9,20 +9,21 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 const copy = computed(() =>
   props.mode === 'signup'
     ? {
         prompt: t('auth.signup.prompt'),
         linkLabel: t('auth.signup.link'),
-        linkTo: '/login',
+        linkTo: localePath('/login'),
         placeholder: t('auth.signup.placeholder'),
         submit: t('auth.signup.submit')
       }
     : {
         prompt: t('auth.login.prompt'),
         linkLabel: t('auth.login.link'),
-        linkTo: '/signup',
+        linkTo: localePath('/signup'),
         placeholder: t('auth.login.placeholder'),
         submit: t('auth.login.submit')
       }
@@ -32,7 +33,7 @@ const email = ref('')
 const error = ref<string | null>(null)
 const pending = ref(false)
 
-const redirectTo = computed(() => props.callbackUrl || '/dashboard')
+const redirectTo = computed(() => props.callbackUrl || localePath('/dashboard'))
 
 async function onSubmit() {
   error.value = null
@@ -43,10 +44,10 @@ async function onSubmit() {
       body: { email: email.value, redirectTo: redirectTo.value }
     })
     await navigateTo({
-      path: '/verify-request',
+      path: localePath('/verify-request'),
       query: {
         email: email.value,
-        ...(redirectTo.value !== '/dashboard' ? { redirectTo: redirectTo.value } : {})
+        ...(redirectTo.value !== localePath('/dashboard') ? { redirectTo: redirectTo.value } : {})
       }
     })
   } catch (e) {

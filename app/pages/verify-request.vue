@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 useHead({ title: () => t('verify.title') })
 // Utility page — keep it out of the search index.
 useSeoMeta({ robots: 'noindex, follow' })
@@ -35,7 +36,7 @@ const redirectTo = computed(() =>
         />
         <p v-else class="text-sm text-muted-foreground">
           {{ $t('verify.noMail') }}
-          <NuxtLink to="/login" class="text-primary underline-offset-4 hover:underline">
+          <NuxtLink :to="localePath('/login')" class="text-primary underline-offset-4 hover:underline">
             {{ $t('verify.tryAgain') }}
           </NuxtLink>
         </p>

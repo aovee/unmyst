@@ -7,6 +7,7 @@ const route = useRoute()
 const router = useRouter()
 const locale = useLocale()
 const { t } = useI18n()
+const localePath = useLocalePath()
 const toast = useToast()
 const { logoUrl } = useServiceLogo()
 
@@ -65,7 +66,7 @@ async function confirmDelete() {
   try {
     await $fetch(`/api/subscriptions/${sub.value.id}`, { method: 'DELETE' })
     toast.add({ title: t('subscription.delete.success'), color: 'success' })
-    router.push('/dashboard/subscriptions')
+    router.push(localePath('/dashboard/subscriptions'))
   } catch {
     toast.add({ title: t('subscription.delete.error'), color: 'error' })
     deleting.value = false
@@ -79,7 +80,7 @@ async function confirmDelete() {
       <AppNavbar :title="sub?.service ?? $t('subscription.detail.title')">
         <template #right>
           <UButton
-            to="/dashboard/subscriptions"
+            :to="localePath('/dashboard/subscriptions')"
             icon="i-lucide-arrow-left"
             color="neutral"
             variant="ghost"
