@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const { t } = useI18n()
 useHead({ title: () => t('auth.login.title') })
+// Utility page — keep it out of the search index.
+useSeoMeta({ robots: 'noindex, follow' })
 
 const route = useRoute()
 const callbackUrl = computed(() => {
