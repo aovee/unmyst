@@ -112,46 +112,40 @@
   "about": {
     "title": "About",
     "hero": {
-      "line1": "A yearly plan is not cheaper.",
-      "line2": "It is just quieter.",
-      "body": "€131.88 once a year and €10.99 every month cost the same. One of them you notice. unmyst puts every subscription on a single scale — what it costs you per month — so the quiet ones stop hiding behind their billing cycle.",
-      "primary": "See the ledger",
-      "secondary": "How the maths works"
-    },
-    "stats": {
-      "caption": "An example — one member's ledger",
-      "plansValue": "16",
-      "plans": "Plans on one scale",
-      "typicalValue": "€120.51",
-      "typical": "Typical month, levelled",
-      "billedValue": "6 of 16",
-      "billed": "Billed monthly",
-      "dataValue": "€0",
-      "data": "Data sent anywhere"
+      "line1": "See what your subscriptions",
+      "line2": "actually cost you.",
+      "body": "Unmyst is a subscription tracker. You enter each plan, its price, and its billing cycle; it converts everything to a comparable monthly figure and shows you when each one renews. It doesn't connect to your bank — you type in the numbers, and it does the arithmetic.",
+      "primary": "Open the ledger",
+      "secondary": "How the numbers work"
     },
     "howItCounts": {
-      "eyebrow": "How it counts",
+      "eyebrow": "How the numbers work",
+      "title": "The same amounts, read three ways",
+      "intro": "A weekly, monthly, and yearly plan can't be compared as they're billed. Unmyst shows your subscriptions three ways, each answering a different question. Nothing is invented — they're the same figures, grouped differently.",
       "one": {
-        "title": "Yearly plans divided by twelve",
-        "body": "Every subscription gets a levelled monthly figure, so a €131.88 annual charge sits next to a €23.90 monthly one and the comparison is honest. The real charge and its cycle stay visible on the same row.",
-        "example": "World of Warcraft €131.88 / yr → €10.99 / mo"
+        "title": "Levelled to a month",
+        "body": "Every plan is reduced to what it costs per month, so plans on different cycles line up on one scale. A yearly price is divided by twelve; a weekly price is multiplied by 52 and divided by twelve. The real charge and its cycle stay visible on the same row.",
+        "formula": "yearly ÷ 12   ·   weekly × 52 ÷ 12",
+        "example": "€131.88 / year  →  €10.99 / month"
       },
       "two": {
-        "title": "Billed and averaged, kept apart",
-        "body": "Two figures, never blended. Actually billed is what your bank sees on the day it happens, spikes included. Averaged out spreads everything evenly — nothing is billed that way; it exists so you can budget one number.",
-        "example": "August billed €122.67 · averaged ≈€120.51"
+        "title": "Actually billed",
+        "body": "What your bank is charged on the day it happens, each plan counted on its own cycle. Nothing is smoothed or averaged, so this is the figure that matches your statement — including the months a yearly plan lands.",
+        "formula": "the real charge, on its real date",
+        "example": "August: €122.67 across 6 plans"
       },
       "three": {
-        "title": "Shared plans count your half",
-        "body": "Record a split and your share becomes the primary number everywhere, with the full charge underneath. The monthly figure then reflects what actually leaves your account.",
-        "example": "Spotify Duo €21.24 → your share €7.08"
+        "title": "Averaged out",
+        "body": "A budgeting estimate that spreads every plan evenly across weeks, months, and years. Nothing is ever billed this way; it exists to give you a single steady number to set aside, whichever month you look at.",
+        "formula": "all plans, spread evenly over time",
+        "example": "≈ €120.51 per month set aside"
       }
     },
     "ledger": {
       "eyebrow": "The ledger",
-      "title": "One list, sorted by what happens next",
-      "body": "Renewals group into this week, later this month, and further out — each with the amount actually leaving your account. Every row carries the real charge, the cycle, and the levelled monthly figure side by side, so nothing is comparable-looking by accident.",
-      "previewLabel": "The subscriptions ledger",
+      "title": "One list, ordered by what renews next",
+      "body": "Your subscriptions page groups renewals into this week, later this month, and further out. Each row carries the real charge, the billing cycle, and the levelled monthly figure side by side, so nothing looks comparable by accident. The example shows three plans on two different cycles.",
+      "previewLabel": "Example — the subscriptions ledger",
       "cols": {
         "service": "Service",
         "charge": "Charge",
@@ -159,37 +153,91 @@
         "levelled": "Levelled"
       }
     },
+    "track": {
+      "eyebrow": "What you can record",
+      "title": "A handful of fields per plan",
+      "intro": "Each subscription holds the details that change what it costs you. Only the service, price, cycle, and first billing date are required; the rest refine the figures.",
+      "cycles": {
+        "title": "Any billing cycle",
+        "body": "Weekly, monthly, or yearly — plus an \"every N cycles\" option for the awkward ones, like a plan billed once every three months."
+      },
+      "splits": {
+        "title": "Shared plans",
+        "body": "Split a cost equally between however many people share it, including you. Your share becomes the headline figure, with the full charge shown underneath."
+      },
+      "trials": {
+        "title": "Free trials",
+        "body": "Mark a plan as starting on a trial. It counts as €0 today but still appears in your run-rate, and you can flag whether it converts to paid on its own."
+      },
+      "categories": {
+        "title": "Categories",
+        "body": "Tag each plan — Entertainment, Music, Software, and so on — so the dashboard can break your spending down by category."
+      }
+    },
+    "panels": {
+      "eyebrow": "On the dashboard",
+      "title": "Eight panels, all from the plans you enter",
+      "intro": "There's no separate setup. Add subscriptions and each panel fills in from them:",
+      "billed": {
+        "title": "Actually billed",
+        "body": "Real charges, grouped by weekly, monthly, and yearly."
+      },
+      "trends": {
+        "title": "Spending trends",
+        "body": "What you'll be billed each month, month by month."
+      },
+      "top": {
+        "title": "Top subscriptions",
+        "body": "Your priciest plans, each levelled to a month."
+      },
+      "category": {
+        "title": "By category",
+        "body": "Monthly spend split across the categories you set."
+      },
+      "creep": {
+        "title": "Subscription creep",
+        "body": "How your monthly run-rate has grown as plans were added."
+      },
+      "averaged": {
+        "title": "Averaged out",
+        "body": "The evened-out estimate, per week, month, and year."
+      },
+      "renewals": {
+        "title": "Upcoming renewals",
+        "body": "What's due next, including trials about to convert."
+      },
+      "calendar": {
+        "title": "Renewal calendar",
+        "body": "Every renewal this month laid out on a calendar."
+      }
+    },
     "data": {
-      "eyebrow": "Your data",
-      "title": "Nothing leaves your machine",
-      "body": "unmyst never connects to your bank. You type in what you pay; it does the arithmetic. No account, no third-party analytics, no card data — and an export you can take with you.",
-      "exportJson": "Export JSON",
-      "importBackup": "Import a backup",
-      "tracked": "Subscriptions tracked",
-      "trackedValue": "16",
-      "since": "Tracking since",
-      "sinceValue": "13 Nov 2023",
-      "total": "Total recorded",
-      "totalValue": "€1,362.45",
-      "storage": "Storage",
-      "storageValue": "This browser · 41 KB",
-      "lastBackup": "Last backup",
-      "lastBackupValue": "9 Aug 2026"
+      "eyebrow": "Your data & account",
+      "title": "Stored in your account, not pulled from your bank",
+      "body": "You sign in with a one-time link sent to your email, or with Google — there's no password to set. Your subscriptions are saved to your account, so they're there on any device you sign in from. Unmyst has no connection to your bank or card and can't read transactions; every figure is one you entered yourself.",
+      "rows": {
+        "signIn": "Sign in",
+        "signInValue": "Email link or Google",
+        "password": "Password",
+        "passwordValue": "None to set",
+        "bank": "Bank access",
+        "bankValue": "None — you enter figures",
+        "stored": "Stored per plan",
+        "storedValue": "Price, cycle, dates, split, trial, category",
+        "devices": "Across devices",
+        "devicesValue": "Synced to your account"
+      }
     },
     "limits": {
       "eyebrow": "What it deliberately doesn't do",
       "bank": "Connect to your bank or read transactions — you enter what you pay.",
-      "cancel": "Cancel anything for you. It tells you what to cancel; the clicking is yours.",
-      "guess": "Guess at prices. An unedited plan keeps the last figure you gave it.",
+      "cancel": "Cancel anything for you. It shows what's due; you cancel it yourself.",
+      "guess": "Guess at prices. A plan keeps the last figure you gave it until you change it.",
       "oneOff": "Track one-off purchases. If it doesn't recur, it doesn't belong here."
     },
-    "quote": {
-      "text": "I thought I paid for four things. It was sixteen, and three of them were the same registrar.",
-      "attribution": "the reason this exists"
-    },
     "cta": {
-      "title": "Find out what you actually pay",
-      "body": "It takes about ten minutes to enter a year of subscriptions. Most people are wrong by a factor of two.",
+      "title": "Start with the plans you already know",
+      "body": "Add a few subscriptions and the monthly total, the renewal dates, and the category breakdown fill in as you go. Entering a year's worth takes about ten minutes.",
       "openLedger": "Open the ledger",
       "dashboard": "See the dashboard"
     }

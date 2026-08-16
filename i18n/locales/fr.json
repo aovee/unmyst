@@ -112,46 +112,40 @@
   "about": {
     "title": "À propos",
     "hero": {
-      "line1": "Un forfait annuel n'est pas moins cher.",
-      "line2": "Il est simplement plus discret.",
-      "body": "131,88 € une fois par an et 10,99 € chaque mois coûtent la même chose. L'un des deux, vous le remarquez. unmyst met chaque abonnement sur une seule échelle — ce qu'il vous coûte par mois — pour que les plus discrets cessent de se cacher derrière leur cycle de facturation.",
-      "primary": "Voir le registre",
-      "secondary": "Comment le calcul fonctionne"
-    },
-    "stats": {
-      "caption": "Un exemple — le registre d'un membre",
-      "plansValue": "16",
-      "plans": "Abonnements sur une échelle",
-      "typicalValue": "120,51 €",
-      "typical": "Mois type, ramené au mois",
-      "billedValue": "6 sur 16",
-      "billed": "Facturés au mois",
-      "dataValue": "0 €",
-      "data": "Données envoyées ailleurs"
+      "line1": "Voyez ce que vos abonnements",
+      "line2": "vous coûtent vraiment.",
+      "body": "Unmyst est un suivi d'abonnements. Vous saisissez chaque forfait, son prix et son cycle de facturation ; il convertit le tout en un montant mensuel comparable et vous montre quand chacun se renouvelle. Il ne se connecte pas à votre banque — vous entrez les chiffres, il fait le calcul.",
+      "primary": "Ouvrir le registre",
+      "secondary": "Comment les chiffres marchent"
     },
     "howItCounts": {
-      "eyebrow": "Comment ça compte",
+      "eyebrow": "Comment les chiffres marchent",
+      "title": "Les mêmes montants, lus de trois façons",
+      "intro": "Un forfait hebdomadaire, mensuel et annuel ne se comparent pas tels qu'ils sont facturés. Unmyst affiche vos abonnements de trois façons, chacune répondant à une question différente. Rien n'est inventé : ce sont les mêmes chiffres, regroupés autrement.",
       "one": {
-        "title": "Les forfaits annuels divisés par douze",
-        "body": "Chaque abonnement reçoit un montant mensuel ramené au mois : ainsi un prélèvement annuel de 131,88 € voisine avec un forfait mensuel de 23,90 € et la comparaison est honnête. Le prélèvement réel et son cycle restent visibles sur la même ligne.",
-        "example": "World of Warcraft 131,88 € / an → 10,99 € / mois"
+        "title": "Ramené au mois",
+        "body": "Chaque forfait est ramené à ce qu'il coûte par mois, pour que des cycles différents s'alignent sur une seule échelle. Un prix annuel est divisé par douze ; un prix hebdomadaire est multiplié par 52 puis divisé par douze. Le prélèvement réel et son cycle restent visibles sur la même ligne.",
+        "formula": "annuel ÷ 12   ·   hebdo × 52 ÷ 12",
+        "example": "131,88 € / an  →  10,99 € / mois"
       },
       "two": {
-        "title": "Facturé et lissé, gardés à part",
-        "body": "Deux chiffres, jamais mélangés. Le montant réellement facturé est ce que votre banque voit le jour venu, pics compris. Le montant lissé répartit tout uniformément — rien n'est facturé ainsi ; il existe pour vous donner un seul chiffre à budgéter.",
-        "example": "Août facturé 122,67 € · lissé ≈120,51 €"
+        "title": "Réellement facturé",
+        "body": "Ce que votre banque prélève le jour venu, chaque forfait compté sur son propre cycle. Rien n'est lissé ni moyenné : c'est le chiffre qui correspond à votre relevé — y compris les mois où tombe un forfait annuel.",
+        "formula": "le prélèvement réel, à sa date réelle",
+        "example": "Août : 122,67 € sur 6 forfaits"
       },
       "three": {
-        "title": "Les forfaits partagés comptent votre part",
-        "body": "Enregistrez un partage et votre part devient le chiffre principal partout, avec le prélèvement complet en dessous. Le montant mensuel reflète alors ce qui quitte réellement votre compte.",
-        "example": "Spotify Duo 21,24 € → votre part 7,08 €"
+        "title": "Lissé sur la durée",
+        "body": "Une estimation pour budgéter qui répartit chaque forfait uniformément sur les semaines, les mois et les années. Rien n'est jamais facturé ainsi ; cela existe pour vous donner un seul chiffre régulier à mettre de côté, quel que soit le mois.",
+        "formula": "tous les forfaits, répartis dans le temps",
+        "example": "≈ 120,51 € à mettre de côté / mois"
       }
     },
     "ledger": {
       "eyebrow": "Le registre",
-      "title": "Une seule liste, triée par ordre d'échéance",
-      "body": "Les renouvellements se regroupent en cette semaine, plus tard ce mois-ci et au-delà — chacun avec le montant qui quitte réellement votre compte. Chaque ligne porte le prélèvement réel, le cycle et le montant mensuel ramené côte à côte, pour que rien ne paraisse comparable par accident.",
-      "previewLabel": "Le registre des abonnements",
+      "title": "Une seule liste, triée par prochaine échéance",
+      "body": "Votre page d'abonnements regroupe les renouvellements en cette semaine, plus tard ce mois-ci et au-delà. Chaque ligne porte le prélèvement réel, le cycle de facturation et le montant mensuel ramené côte à côte, pour que rien ne paraisse comparable par accident. L'exemple montre trois forfaits sur deux cycles différents.",
+      "previewLabel": "Exemple — le registre des abonnements",
       "cols": {
         "service": "Service",
         "charge": "Prélèvement",
@@ -159,37 +153,91 @@
         "levelled": "Ramené"
       }
     },
+    "track": {
+      "eyebrow": "Ce que vous pouvez enregistrer",
+      "title": "Quelques champs par forfait",
+      "intro": "Chaque abonnement contient les détails qui changent ce qu'il vous coûte. Seuls le service, le prix, le cycle et la première date de facturation sont requis ; le reste affine les chiffres.",
+      "cycles": {
+        "title": "Tout cycle de facturation",
+        "body": "Hebdomadaire, mensuel ou annuel — plus une option « tous les N cycles » pour les cas particuliers, comme un forfait prélevé une fois tous les trois mois."
+      },
+      "splits": {
+        "title": "Forfaits partagés",
+        "body": "Répartissez un coût à parts égales entre autant de personnes qu'il le faut, vous compris. Votre part devient le chiffre principal, avec le prélèvement complet affiché en dessous."
+      },
+      "trials": {
+        "title": "Essais gratuits",
+        "body": "Marquez un forfait comme débutant par un essai. Il compte 0 € aujourd'hui mais apparaît quand même dans votre cadence, et vous pouvez indiquer s'il se convertit tout seul en payant."
+      },
+      "categories": {
+        "title": "Catégories",
+        "body": "Classez chaque forfait — Divertissement, Musique, Logiciels, etc. — pour que le tableau de bord puisse ventiler vos dépenses par catégorie."
+      }
+    },
+    "panels": {
+      "eyebrow": "Sur le tableau de bord",
+      "title": "Huit panneaux, tous issus des forfaits saisis",
+      "intro": "Aucune configuration à part. Ajoutez des abonnements et chaque panneau se remplit à partir d'eux :",
+      "billed": {
+        "title": "Réellement facturé",
+        "body": "Les prélèvements réels, groupés en hebdo, mensuel et annuel."
+      },
+      "trends": {
+        "title": "Tendances de dépenses",
+        "body": "Ce que vous serez facturé chaque mois, mois après mois."
+      },
+      "top": {
+        "title": "Principaux abonnements",
+        "body": "Vos forfaits les plus chers, chacun ramené au mois."
+      },
+      "category": {
+        "title": "Par catégorie",
+        "body": "La dépense mensuelle ventilée selon vos catégories."
+      },
+      "creep": {
+        "title": "Dérive des abonnements",
+        "body": "Comment votre cadence mensuelle a grimpé au fil des ajouts."
+      },
+      "averaged": {
+        "title": "Lissé sur la durée",
+        "body": "L'estimation lissée, par semaine, par mois et par an."
+      },
+      "renewals": {
+        "title": "Prochains renouvellements",
+        "body": "Ce qui arrive, essais sur le point de se convertir compris."
+      },
+      "calendar": {
+        "title": "Calendrier des renouvellements",
+        "body": "Chaque renouvellement du mois disposé sur un calendrier."
+      }
+    },
     "data": {
-      "eyebrow": "Vos données",
-      "title": "Rien ne quitte votre machine",
-      "body": "unmyst ne se connecte jamais à votre banque. Vous saisissez ce que vous payez ; il fait le calcul. Aucun compte, aucune analyse tierce, aucune donnée de carte — et un export que vous emportez avec vous.",
-      "exportJson": "Exporter en JSON",
-      "importBackup": "Importer une sauvegarde",
-      "tracked": "Abonnements suivis",
-      "trackedValue": "16",
-      "since": "Suivi depuis le",
-      "sinceValue": "13 nov. 2023",
-      "total": "Total enregistré",
-      "totalValue": "1 362,45 €",
-      "storage": "Stockage",
-      "storageValue": "Ce navigateur · 41 Ko",
-      "lastBackup": "Dernière sauvegarde",
-      "lastBackupValue": "9 août 2026"
+      "eyebrow": "Vos données et votre compte",
+      "title": "Stockées dans votre compte, pas tirées de votre banque",
+      "body": "Vous vous connectez avec un lien à usage unique envoyé par e-mail, ou avec Google — aucun mot de passe à définir. Vos abonnements sont enregistrés sur votre compte, donc présents sur tout appareil où vous vous connectez. Unmyst n'a aucune connexion à votre banque ou votre carte et ne peut pas lire de transactions ; chaque chiffre est un chiffre que vous avez saisi.",
+      "rows": {
+        "signIn": "Connexion",
+        "signInValue": "Lien e-mail ou Google",
+        "password": "Mot de passe",
+        "passwordValue": "Aucun à définir",
+        "bank": "Accès bancaire",
+        "bankValue": "Aucun — vous saisissez",
+        "stored": "Enregistré par forfait",
+        "storedValue": "Prix, cycle, dates, partage, essai, catégorie",
+        "devices": "Sur tous vos appareils",
+        "devicesValue": "Synchronisé à votre compte"
+      }
     },
     "limits": {
       "eyebrow": "Ce qu'il ne fait délibérément pas",
       "bank": "Se connecter à votre banque ou lire vos transactions — vous saisissez ce que vous payez.",
-      "cancel": "Résilier quoi que ce soit à votre place. Il vous dit quoi résilier ; les clics sont à vous.",
-      "guess": "Deviner les prix. Un forfait non modifié garde le dernier montant que vous lui avez donné.",
+      "cancel": "Résilier quoi que ce soit à votre place. Il indique les échéances ; vous résiliez vous-même.",
+      "guess": "Deviner les prix. Un forfait garde le dernier montant donné jusqu'à ce que vous le changiez.",
       "oneOff": "Suivre les achats ponctuels. Si ça ne se répète pas, ça n'a pas sa place ici."
     },
-    "quote": {
-      "text": "Je pensais payer pour quatre choses. Il y en avait seize, et trois d'entre elles étaient le même bureau d'enregistrement.",
-      "attribution": "la raison d'être de cet outil"
-    },
     "cta": {
-      "title": "Découvrez ce que vous payez vraiment",
-      "body": "Il faut une dizaine de minutes pour saisir une année d'abonnements. La plupart des gens se trompent d'un facteur deux.",
+      "title": "Commencez par les forfaits que vous connaissez déjà",
+      "body": "Ajoutez quelques abonnements et le total mensuel, les dates de renouvellement et la répartition par catégorie se remplissent au fur et à mesure. Saisir une année prend une dizaine de minutes.",
       "openLedger": "Ouvrir le registre",
       "dashboard": "Voir le tableau de bord"
     }
