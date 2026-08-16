@@ -15,7 +15,7 @@ const BodySchema = z.object({
 
 function safeRedirect(target: string | null | undefined): string {
   if (target && target.startsWith('/') && !target.startsWith('//')) return target
-  return '/'
+  return '/dashboard'
 }
 
 function clientIp(event: Parameters<typeof getRequestHeader>[0]): string {

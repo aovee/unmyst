@@ -9,14 +9,14 @@ const open = ref(false)
 const links = computed<NavigationMenuItem[][]>(() => [[{
   label: t('nav.dashboard'),
   icon: 'i-lucide-house',
-  to: '/',
+  to: '/dashboard',
   onSelect: () => {
     open.value = false
   }
 }, {
   label: t('nav.subscriptions'),
   icon: 'i-lucide-credit-card',
-  to: '/subscriptions',
+  to: '/dashboard/subscriptions',
   onSelect: () => {
     open.value = false
   }
@@ -24,7 +24,7 @@ const links = computed<NavigationMenuItem[][]>(() => [[{
   {
     label: t('nav.about'),
     icon: 'i-lucide-info',
-    to: '/about',
+    to: '/',
     target: '_blank',
     onSelect: () => {
       open.value = false
@@ -78,7 +78,7 @@ onMounted(async () => {
           <AppLogo
             :collapsed="collapsed"
             class="bg-transparent ring-default"
-            to="/"
+            to="/dashboard"
           />
           <UDashboardSidebarCollapse />
         </div>

@@ -28,6 +28,9 @@ export default defineNuxtConfig({
       }
     },
     public: {
+      // Canonical origin for absolute URLs (canonical link, og:url, og:image,
+      // sitemap). Override per-environment with NUXT_PUBLIC_SITE_URL.
+      siteUrl: 'https://unmyst.app',
       // Logo.dev publishable token (pk_…), used to render service logos.
       // Publishable keys are safe to expose client-side. Override with
       // NUXT_PUBLIC_LOGO_DEV_TOKEN if you rotate it.

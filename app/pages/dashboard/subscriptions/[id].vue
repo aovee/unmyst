@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Subscription, PriceHistory } from '~~/server/db/schema'
 
-definePageMeta({ middleware: 'auth', layout: 'dashboard' })
+definePageMeta({ layout: 'dashboard' })
 
 const route = useRoute()
 const router = useRouter()
@@ -65,7 +65,7 @@ async function confirmDelete() {
   try {
     await $fetch(`/api/subscriptions/${sub.value.id}`, { method: 'DELETE' })
     toast.add({ title: t('subscription.delete.success'), color: 'success' })
-    router.push('/subscriptions')
+    router.push('/dashboard/subscriptions')
   } catch {
     toast.add({ title: t('subscription.delete.error'), color: 'error' })
     deleting.value = false
@@ -79,7 +79,7 @@ async function confirmDelete() {
       <AppNavbar :title="sub?.service ?? $t('subscription.detail.title')">
         <template #right>
           <UButton
-            to="/subscriptions"
+            to="/dashboard/subscriptions"
             icon="i-lucide-arrow-left"
             color="neutral"
             variant="ghost"

@@ -10,7 +10,7 @@ const buildLabel = computed(() =>
 )
 
 const navLinks = computed(() => [
-  { label: t('front.nav.howItCounts'), to: '#how-it-counts' },
+  { label: t('front.nav.howItCounts'), to: '#how-it-works' },
   { label: t('front.nav.yourData'), to: '#your-data' },
   { label: t('front.nav.limits'), to: '#limits' }
 ])
@@ -28,7 +28,7 @@ const otherLocale = computed(() => locales.value.find(l => l.code !== locale.val
   <div class="dark flex min-h-svh flex-col bg-default text-default">
     <header class="sticky top-0 z-20 border-b border-default bg-default/80 backdrop-blur">
       <UContainer class="flex h-16 items-center justify-between gap-6">
-        <ULink to="/about" class="flex items-center gap-2">
+        <ULink to="/" class="flex items-center gap-2">
           <img
             src="/unmyst-mark-dark.svg"
             alt=""
@@ -51,7 +51,7 @@ const otherLocale = computed(() => locales.value.find(l => l.code !== locale.val
         </nav>
 
         <UButton
-          to="/subscriptions"
+          to="/dashboard/subscriptions"
           :label="$t('front.nav.openLedger')"
           color="primary"
           variant="outline"

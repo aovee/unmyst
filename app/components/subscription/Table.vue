@@ -147,7 +147,7 @@ async function confirmDelete() {
           <div class="flex flex-col">
             <span class="truncate text-sm font-semibold">
               <ULink
-                :to="`/subscriptions/${row.original.id}`"
+                :to="`/dashboard/subscriptions/${row.original.id}`"
                 class="text-highlighted hover:text-primary"
               >{{ row.original.service }}</ULink>
               <span v-if="row.original.description" class="text-xs text-muted">

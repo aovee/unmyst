@@ -32,7 +32,7 @@ const email = ref('')
 const error = ref<string | null>(null)
 const pending = ref(false)
 
-const redirectTo = computed(() => props.callbackUrl || '/')
+const redirectTo = computed(() => props.callbackUrl || '/dashboard')
 
 async function onSubmit() {
   error.value = null
@@ -46,7 +46,7 @@ async function onSubmit() {
       path: '/verify-request',
       query: {
         email: email.value,
-        ...(redirectTo.value !== '/' ? { redirectTo: redirectTo.value } : {})
+        ...(redirectTo.value !== '/dashboard' ? { redirectTo: redirectTo.value } : {})
       }
     })
   } catch (e) {
