@@ -1,64 +1,134 @@
-# Nuxt Dashboard Template
+# Unmyst
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+Take the mystery out of your subscriptions. Unmyst is a self-hostable web app that tracks recurring subscriptions, forecasts your spend, watches for silent price creep and free-trial conversions, and suggests where you could save.
 
-Get started with the Nuxt dashboard template with multiple pages, collapsible sidebar, keyboard shortcuts, light & dark mode, command palette and more, powered by [Nuxt UI](https://ui.nuxt.com).
+[![CI](https://github.com/aovee/unmyst/actions/workflows/ci.yml/badge.svg)](https://github.com/aovee/unmyst/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Made with Nuxt](https://img.shields.io/badge/Made%20with-Nuxt-00DC82?logo=nuxt&labelColor=020420)](https://nuxt.com)
 
-- [Live demo](https://dashboard-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+## Features
 
-<a href="https://dashboard-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/dashboard-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png">
-    <img alt="Nuxt Dashboard Template" src="https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png">
-  </picture>
-</a>
+- **Subscription tracking** — weekly, monthly and yearly cycles with custom intervals, multi-currency amounts and shared/split costs.
+- **Spend dashboard** — actual-vs-averaged monthly spend, category breakdowns, top subscriptions and a rolling forecast.
+- **Renewal calendar** — upcoming renewals and a month view driven by each subscription's billing anchor date.
+- **Price-creep detection** — temporal price history per subscription so you can see when and how much a price changed.
+- **Free-trial tracking** — derived trial-end dates and alerts before a trial converts to a paid plan.
+- **Savings suggestions** — "switch to annual" prompts on long-running monthly plans, dismissible per subscription.
+- **Passwordless auth** — magic-link sign-in (via Resend) plus Google OAuth.
+- **Internationalised** — English and French out of the box, with localised URL prefixes and hreflang tags.
+- **Light & dark mode**, keyboard shortcuts and a command palette, powered by [Nuxt UI](https://ui.nuxt.com).
 
-> The dashboard template for Vue is on https://github.com/nuxt-ui-templates/dashboard-vue.
+## Tech stack
 
-## Quick Start
+| Concern        | Choice                                                                 |
+| -------------- | --------------------------------------------------------------------- |
+| Framework      | [Nuxt 4](https://nuxt.com) / [Vue 3](https://vuejs.org)               |
+| UI             | [Nuxt UI 4](https://ui.nuxt.com) + [Tailwind CSS 4](https://tailwindcss.com) |
+| Hosting/runtime| [NuxtHub](https://hub.nuxt.com)                                        |
+| Database       | PostgreSQL via [Drizzle ORM](https://orm.drizzle.team)                 |
+| Auth           | [nuxt-auth-utils](https://github.com/atinux/nuxt-auth-utils) (magic link + Google OAuth) |
+| Email          | [Resend](https://resend.com) + Vue email templates                    |
+| Charts         | [Unovis](https://unovis.dev) via `nuxt-charts`                         |
+| i18n           | [@nuxtjs/i18n](https://i18n.nuxtjs.org)                                |
+| Validation     | [Zod](https://zod.dev)                                                 |
 
-```bash [Terminal]
-npm create nuxt@latest -- -t ui/dashboard
-```
+## Getting started
 
-## Deploy your own
+### Prerequisites
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=dashboard&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fdashboard&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fdashboard-dark.png&demo-url=https%3A%2F%2Fdashboard-template.nuxt.dev%2F&demo-title=Nuxt%20Dashboard%20Template&demo-description=A%20dashboard%20template%20with%20multi-column%20layout%20for%20building%20sophisticated%20admin%20interfaces.)
+- [Node.js](https://nodejs.org) 22+
+- [pnpm](https://pnpm.io) 11+ (`corepack enable` to use the pinned version)
+- A PostgreSQL database (e.g. [Neon](https://neon.tech) or any Postgres instance)
+- A [Resend](https://resend.com) account for magic-link emails
+- *(optional)* Google OAuth credentials for social sign-in
 
-## Setup
-
-Make sure to install the dependencies:
+### Install
 
 ```bash
 pnpm install
 ```
 
-## Development Server
+### Configure
 
-Start the development server on `http://localhost:3000`:
+Copy the example environment file and fill in your own values:
+
+```bash
+cp .env.example .env
+```
+
+See [Environment variables](#environment-variables) below for what each key does. At minimum you need `DATABASE_URL`, `NUXT_SESSION_PASSWORD` and the Resend keys.
+
+### Run the dev server
 
 ```bash
 pnpm dev
 ```
 
-## Production
+The app runs at `http://localhost:3000`. Database migrations under `server/db/migrations` are applied automatically by NuxtHub on start.
 
-Build the application for production:
+## Environment variables
+
+| Variable                          | Required | Description                                                                 |
+| --------------------------------- | :------: | --------------------------------------------------------------------------- |
+| `DATABASE_URL`                    |    ✅    | PostgreSQL connection string.                                               |
+| `NUXT_SESSION_PASSWORD`           |    ✅    | Secret ≥ 32 chars used to seal the session cookie.                          |
+| `RESEND_KEY`                      |    ✅    | Resend API key, used to send magic-link emails.                             |
+| `RESEND_EMAIL_FROM`               |    ✅    | Verified "from" address, e.g. `"Unmyst <contact@example.com>"`.             |
+| `NUXT_OAUTH_GOOGLE_CLIENT_ID`     |    –     | Google OAuth client ID (enables Google sign-in).                            |
+| `NUXT_OAUTH_GOOGLE_CLIENT_SECRET` |    –     | Google OAuth client secret.                                                 |
+| `NUXT_SESSION_COOKIE_NAME`        |    –     | Override the session cookie name (default `unmyst_session`).                |
+| `NUXT_PUBLIC_SITE_URL`            |    –     | Canonical origin for absolute URLs (canonical, OG, sitemap).                |
+| `NUXT_PUBLIC_LOGO_DEV_TOKEN`      |    –     | [Logo.dev](https://logo.dev) publishable key (`pk_…`) for service logos.    |
+
+> Never commit `.env`. It is gitignored — only `.env.example` (with placeholder values) belongs in the repo.
+
+## Scripts
+
+| Command            | Description                                    |
+| ------------------ | ---------------------------------------------- |
+| `pnpm dev`         | Start the development server.                  |
+| `pnpm build`       | Build for production.                          |
+| `pnpm preview`     | Preview the production build locally.          |
+| `pnpm lint`        | Run ESLint.                                    |
+| `pnpm typecheck`   | Type-check with `vue-tsc`.                     |
+
+## Database
+
+The schema lives in [`server/db/schema.ts`](server/db/schema.ts) and migrations in [`server/db/migrations`](server/db/migrations). To change the schema, edit `schema.ts`, then generate a migration:
 
 ```bash
-pnpm build
+pnpm drizzle-kit generate
 ```
 
-Locally preview production build:
+NuxtHub applies pending migrations automatically on the next dev-server restart.
 
-```bash
-pnpm preview
+## Project structure
+
+```
+app/            Nuxt app — pages, components, composables, layouts, emails
+server/         Nitro API routes, Drizzle schema/migrations, server utils
+shared/         Code shared between app and server (billing, formatting, types)
+i18n/locales/   Translation files (en, fr)
+test/           Unit tests
+public/         Static assets and fonts
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Deployment
 
-## Renovate integration
+Unmyst is built for [NuxtHub](https://hub.nuxt.com); see the [NuxtHub deployment docs](https://hub.nuxt.com/docs/getting-started/deploy). Any Nitro-compatible host works too — check the [Nuxt deployment guide](https://nuxt.com/docs/getting-started/deployment). Provide the environment variables above in your host's dashboard.
 
-Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.
+## Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) and our [Code of Conduct](./CODE_OF_CONDUCT.md) before opening an issue or pull request.
+
+## Security
+
+Found a vulnerability? Please follow the process in [SECURITY.md](./SECURITY.md) — do **not** open a public issue for security reports.
+
+## License
+
+[MIT](./LICENSE) © Ghislain "Ao" Linais
+
+---
+
+Bootstrapped from the [Nuxt UI Dashboard template](https://github.com/nuxt-ui-templates/dashboard).
