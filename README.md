@@ -127,7 +127,7 @@ Found a vulnerability? Please follow the process in [SECURITY.md](./SECURITY.md)
 
 ## License
 
-[MIT](./LICENSE) © Ghislain "Ao" Linais
+[MIT](./LICENSE) © Aovee
 
 ---
 
