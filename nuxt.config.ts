@@ -8,7 +8,8 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     'nuxt-charts',
     'nuxt-email-renderer',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    '@vercel/analytics'
   ],
 
   devtools: {

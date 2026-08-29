@@ -22,6 +22,7 @@
     "@tanstack/table-core": "^8.21.3",
     "@unovis/ts": "^1.6.7",
     "@unovis/vue": "^1.6.7",
+    "@vercel/analytics": "^2.0.1",
     "@vueuse/core": "^14.4.0",
     "@vueuse/nuxt": "^14.4.0",
     "date-fns": "^4.4.0",
