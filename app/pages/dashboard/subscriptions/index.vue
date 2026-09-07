@@ -13,15 +13,19 @@ useHead({ title: () => t('subscriptions.title') })
 // Summary figures assume a single currency; fall back to the first sub's.
 const currency = computed(() => subs.value[0]?.currency ?? 'EUR')
 
+// Only currently-billing plans count toward the run-rate; paused and canceled
+// subscriptions are excluded (but still listed below).
+const billingSubs = computed(() => subs.value.filter(s => isBillingActive(s)))
+
 // Per-person run-rate, every plan levelled to a common cycle.
 const perMonth = computed(() =>
-  subs.value.reduce(
+  billingSubs.value.reduce(
     (sum, s) => sum + monthlyAmount(personalAmount(s), s.cycle, s.intervalCount),
     0
   )
 )
 const perYear = computed(() =>
-  subs.value.reduce(
+  billingSubs.value.reduce(
     (sum, s) => sum + annualAmount(personalAmount(s), s.cycle, s.intervalCount),
     0
   )
@@ -71,11 +75,24 @@ const periodFilters = computed<PeriodFilter[]>(() => [
   { label: t('cycle.yearly'), value: 'yearly' }
 ])
 
+type StatusFilterValue = SubscriptionStatus | 'all'
+const statusFilter = ref<StatusFilterValue>('all')
+const statusFilters = computed<{ label: string, value: StatusFilterValue }[]>(() => [
+  { label: t('filters.all'), value: 'all' },
+  { label: t('subscription.status.active'), value: 'active' },
+  { label: t('subscription.status.paused'), value: 'paused' },
+  { label: t('subscription.status.canceled'), value: 'canceled' }
+])
+
 // Client-side filtering. The period tab (FilterTabs) always applies; the text
 // query narrows further only when something has been typed.
 const filteredSubs = computed(() => {
   return subs.value.filter((s) => {
     if (periodFilter.value !== 'all' && s.cycle !== periodFilter.value) {
+      return false
+    }
+
+    if (statusFilter.value !== 'all' && s.status !== statusFilter.value) {
       return false
     }
 
@@ -184,11 +201,18 @@ const filteredSubs = computed(() => {
                 }"
                 @update:model-value="onSearch"
               />
-              <FilterTabs
-                v-model="periodFilter"
-                :label="$t('subscriptions.filterBy')"
-                :items="periodFilters"
-              />
+              <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+                <FilterTabs
+                  v-model="statusFilter"
+                  :label="$t('subscriptions.filterStatus')"
+                  :items="statusFilters"
+                />
+                <FilterTabs
+                  v-model="periodFilter"
+                  :label="$t('subscriptions.filterBy')"
+                  :items="periodFilters"
+                />
+              </div>
             </div>
           </template>
         </DataToolbarCard>

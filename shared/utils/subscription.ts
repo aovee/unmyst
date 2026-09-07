@@ -57,6 +57,27 @@ export const SubscriptionUpdateSchema = SubscriptionInputSchema.extend({
 
 export type SubscriptionUpdate = z.infer<typeof SubscriptionUpdateSchema>
 
+/**
+ * Pause a subscription. `resumeAt` (yyyy-mm-dd) is an optional planned resume
+ * date; omitted means paused indefinitely.
+ */
+export const SubscriptionPauseSchema = z.object({
+  resumeAt: z.string().min(1).nullable().default(null)
+})
+
+export type SubscriptionPauseInput = z.infer<typeof SubscriptionPauseSchema>
+
+/**
+ * Cancel a subscription. `canceledAt` (yyyy-mm-dd) is the day it ended; the
+ * server defaults it to today. Also the date the open price-history period is
+ * closed at, so "total paid" stops counting there.
+ */
+export const SubscriptionCancelSchema = z.object({
+  canceledAt: z.string().min(1).nullable().default(null)
+})
+
+export type SubscriptionCancelInput = z.infer<typeof SubscriptionCancelSchema>
+
 /** Normalise validated form input into DB column values. */
 export function toDbValues(input: SubscriptionInput) {
   return {

@@ -60,6 +60,18 @@ const editOpen = ref(false)
 const deleteOpen = ref(false)
 const deleting = ref(false)
 
+// Lifecycle (pause / resume / cancel). Pause and cancel open dated dialogs;
+// resume is immediate.
+const { resume, reactivate } = useSubscriptionLifecycle()
+const pauseOpen = ref(false)
+const cancelOpen = ref(false)
+async function onResume() {
+  if (sub.value && await resume(sub.value.id)) refresh()
+}
+async function onReactivate() {
+  if (sub.value && await reactivate(sub.value.id)) refresh()
+}
+
 async function confirmDelete() {
   if (!sub.value) return
   deleting.value = true
@@ -97,6 +109,42 @@ async function confirmDelete() {
             @click="editOpen = true"
           />
           <UButton
+            v-if="sub && sub.status === 'active'"
+            icon="i-lucide-pause"
+            color="warning"
+            variant="outline"
+            size="sm"
+            :label="$t('subscription.pause.action')"
+            @click="pauseOpen = true"
+          />
+          <UButton
+            v-if="sub && sub.status === 'paused'"
+            icon="i-lucide-play"
+            color="success"
+            variant="outline"
+            size="sm"
+            :label="$t('subscription.resume.action')"
+            @click="onResume"
+          />
+          <UButton
+            v-if="sub && sub.status === 'canceled'"
+            icon="i-lucide-rotate-ccw"
+            color="success"
+            variant="outline"
+            size="sm"
+            :label="$t('subscription.reactivate.action')"
+            @click="onReactivate"
+          />
+          <UButton
+            v-if="sub && sub.status !== 'canceled'"
+            icon="i-lucide-x-circle"
+            color="error"
+            variant="outline"
+            size="sm"
+            :label="$t('subscription.cancel.action')"
+            @click="cancelOpen = true"
+          />
+          <UButton
             v-if="sub"
             icon="i-lucide-trash-2"
             color="error"
@@ -125,8 +173,11 @@ async function confirmDelete() {
             class="shrink-0 bg-elevated"
           />
           <div class="min-w-0">
-            <div class="truncate text-xl font-semibold text-highlighted">
-              {{ sub.service }}
+            <div class="flex items-center gap-2">
+              <div class="truncate text-xl font-semibold text-highlighted">
+                {{ sub.service }}
+              </div>
+              <SubscriptionStatusBadge :sub="sub" />
             </div>
             <div class="text-sm text-muted">
               {{ formatCurrency(sub.amount, sub.currency, locale) }} · {{ cycleLabel(sub.cycle) }}
@@ -228,6 +279,20 @@ async function confirmDelete() {
   <SubscriptionEditDialog
     v-if="sub"
     v-model:open="editOpen"
+    :subscription="sub"
+    @saved="refresh"
+  />
+
+  <!-- Pause / cancel dialogs -->
+  <SubscriptionPauseDialog
+    v-if="sub"
+    v-model:open="pauseOpen"
+    :subscription="sub"
+    @saved="refresh"
+  />
+  <SubscriptionCancelDialog
+    v-if="sub"
+    v-model:open="cancelOpen"
     :subscription="sub"
     @saved="refresh"
   />

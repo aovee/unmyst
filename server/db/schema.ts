@@ -14,6 +14,16 @@ import { sql } from 'drizzle-orm'
 
 export const cycleEnum = pgEnum('cycle', ['weekly', 'monthly', 'yearly'])
 
+// Lifecycle of a tracked subscription. `active` bills normally; `paused` is a
+// reversible break (excluded from current spend and renewals); `canceled` is
+// terminal — kept for history, with its open price-history period closed at
+// `canceledAt` so "total paid" stops counting there.
+export const subscriptionStatusEnum = pgEnum('subscription_status', [
+  'active',
+  'paused',
+  'canceled'
+])
+
 export const priceHistorySourceEnum = pgEnum('price_history_source', [
   'manual',
   'import',
@@ -49,6 +59,14 @@ export const subscriptions = pgTable('subscriptions', {
   // so a dismissal for a decision already made stays dismissed.
   suggestionDismissedAt: timestamp('suggestion_dismissed_at'),
   suggestionDismissedAmount: integer('suggestion_dismissed_amount'),
+  // Lifecycle. `pausedAt` marks when a pause began; `resumeAt` is an optional
+  // planned resume date (null = paused indefinitely) — a resume date that has
+  // passed makes the subscription bill again on its own. `canceledAt` is the
+  // day it ended and mirrors the closed open price-history period.
+  status: subscriptionStatusEnum('status').notNull().default('active'),
+  pausedAt: date('paused_at', { mode: 'date' }),
+  resumeAt: date('resume_at', { mode: 'date' }),
+  canceledAt: date('canceled_at', { mode: 'date' }),
   category: text('category'),
   url: text('url'),
   notes: text('notes'),

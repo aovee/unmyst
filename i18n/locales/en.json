@@ -352,7 +352,8 @@
       "renewals": "{n} renewal | {n} renewals",
       "noRenewals": "no renewals",
       "nothingDue": "nothing due this month"
-    }
+    },
+    "filterStatus": "Status"
   },
   "subscription": {
     "add": {
@@ -446,6 +447,46 @@
       "saved": "Subscription updated",
       "created": "Subscription created",
       "error": "Could not save. Please try again."
+    },
+    "status": {
+      "active": "Active",
+      "paused": "Paused",
+      "canceled": "Canceled",
+      "pausedUntil": "Paused until {date}",
+      "canceledOn": "Canceled {date}"
+    },
+    "lifecycle": {
+      "menu": "More actions"
+    },
+    "pause": {
+      "action": "Pause",
+      "title": "Pause {service}",
+      "description": "Pause this subscription. It stops counting toward your spend and upcoming renewals until you resume it.",
+      "resumeLabel": "Resume on (optional)",
+      "resumeHelp": "Leave empty to pause indefinitely.",
+      "confirm": "Pause",
+      "success": "Subscription paused",
+      "error": "Could not pause. Please try again."
+    },
+    "resume": {
+      "action": "Resume",
+      "success": "Subscription resumed",
+      "error": "Could not resume. Please try again."
+    },
+    "cancel": {
+      "action": "Cancel",
+      "title": "Cancel {service}",
+      "description": "Cancel this subscription. It stays for your records but stops counting toward future spend.",
+      "dateLabel": "Canceled on",
+      "dateHelp": "The day it ended. Charges after this date are no longer counted.",
+      "confirm": "Cancel subscription",
+      "success": "Subscription canceled",
+      "error": "Could not cancel. Please try again."
+    },
+    "reactivate": {
+      "action": "Reactivate",
+      "success": "Subscription reactivated",
+      "error": "Could not reactivate. Please try again."
     }
   }
 }
