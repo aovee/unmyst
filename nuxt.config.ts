@@ -9,7 +9,8 @@ export default defineNuxtConfig({
     'nuxt-charts',
     'nuxt-email-renderer',
     '@nuxtjs/i18n',
-    '@vercel/analytics'
+    '@vercel/analytics',
+    '@vercel/speed-insights'
   ],
 
   devtools: {
