@@ -34,6 +34,8 @@ export function useUpcomingRenewals(
   const all = computed<UpcomingRenewal[]>(() => {
     const today = new Date()
     return toValue(subscriptions)
+      // Paused and canceled plans have no upcoming charge.
+      .filter(sub => isBillingActive(sub, today))
       .map((sub) => {
         const trialEnd = isInTrial(sub) ? trialEndDate(sub)! : null
         const date

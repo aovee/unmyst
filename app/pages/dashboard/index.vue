@@ -9,6 +9,11 @@ useHead({ title: () => t('nav.dashboard') })
 
 const { subscriptions: subs, refresh } = await useSubscriptions()
 
+// Spend and forecast sections reflect what's actually billing: paused and
+// canceled plans drop out. They stay visible/manageable on the subscriptions
+// list. Renewal sections filter internally (see `useUpcomingRenewals`).
+const activeSubs = computed(() => subs.value.filter(s => isBillingActive(s)))
+
 const { count: renewingSoon } = useUpcomingRenewals(subs, { windowDays: 30 })
 
 // Only surface the annual-savings section when there's actually something to
@@ -45,7 +50,7 @@ const navbarOptions = computed<{ title: string, description: string }>(() => {
 
     <template #body>
       <div class="grid grid-cols-1 gap-8 xl:grid-cols-2">
-        <DashboardActuallyBilled :subscriptions="subs" class="col-span-1 xl:col-span-2" />
+        <DashboardActuallyBilled :subscriptions="activeSubs" class="col-span-1 xl:col-span-2" />
 
         <DashboardSavingsSuggestions
           v-if="savingsCount > 0"
@@ -54,16 +59,16 @@ const navbarOptions = computed<{ title: string, description: string }>(() => {
           @refresh="refresh"
         />
 
-        <DashboardSpendForecast :subscriptions="subs" />
-        <DashboardTopSubscriptions :subscriptions="subs" />
+        <DashboardSpendForecast :subscriptions="activeSubs" />
+        <DashboardTopSubscriptions :subscriptions="activeSubs" />
 
-        <DashboardCategoryBreakdown :subscriptions="subs" />
-        <DashboardSubscriptionCreep :subscriptions="subs" />
+        <DashboardCategoryBreakdown :subscriptions="activeSubs" />
+        <DashboardSubscriptionCreep :subscriptions="activeSubs" />
 
-        <DashboardAveragedOutSubscriptions :subscriptions="subs" class="col-span-1 xl:col-span-2" />
+        <DashboardAveragedOutSubscriptions :subscriptions="activeSubs" class="col-span-1 xl:col-span-2" />
 
         <DashboardUpcomingRenewals :subscriptions="subs" />
-        <DashboardRenewalCalendar :subscriptions="subs" />
+        <DashboardRenewalCalendar :subscriptions="activeSubs" />
       </div>
     </template>
   </UDashboardPanel>

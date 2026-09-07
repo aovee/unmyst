@@ -42,6 +42,29 @@ export function isShared(s: Splittable): boolean {
   return (s.shareCount ?? 1) > 1
 }
 
+export type SubscriptionStatus = 'active' | 'paused' | 'canceled'
+
+export interface Lifecycle {
+  status?: SubscriptionStatus | null
+  /** Planned resume date for a paused sub; null = paused indefinitely. */
+  resumeAt?: Date | string | null
+}
+
+/**
+ * Whether the subscription is billing *right now*: not canceled, and not inside
+ * an active pause. A pause with a `resumeAt` that has already passed counts as
+ * active again, so the spend numbers self-correct even if the user never hit
+ * "resume". Used to gate every forward-looking figure (run-rate, forecasts,
+ * upcoming renewals) so paused/canceled plans drop out.
+ */
+export function isBillingActive(s: Lifecycle, now: Date = new Date()): boolean {
+  if (s.status === 'canceled') return false
+  if (s.status === 'paused') {
+    return s.resumeAt != null && !isBefore(startOfDay(now), startOfDay(new Date(s.resumeAt)))
+  }
+  return true
+}
+
 export interface Trialable {
   anchorDate: Date | string
   trialDurationDays?: number | null
@@ -77,9 +100,11 @@ export function trialDaysLeft(s: Trialable, now: Date = new Date()): number | nu
  * the forward-looking numbers and the projection doesn't jump on conversion.
  */
 export function currentAmount(
-  s: Splittable & Trialable,
+  s: Splittable & Trialable & Lifecycle,
   now: Date = new Date()
 ): number {
+  // Paused or canceled plans contribute nothing to current spend.
+  if (!isBillingActive(s, now)) return 0
   return isInTrial(s, now) ? 0 : personalAmount(s)
 }
 
@@ -121,7 +146,7 @@ export const ANNUAL_DISCOUNT_ESTIMATE = 0.17
 /** How long a monthly plan must have run before an annual switch is worth flagging. */
 export const ANNUAL_CANDIDATE_MIN_MONTHS = 12
 
-export interface AnnualCandidate extends Splittable, Trialable {
+export interface AnnualCandidate extends Splittable, Trialable, Lifecycle {
   cycle: Cycle
   intervalCount: number
   annualPrice?: number | null
@@ -141,6 +166,8 @@ export function isAnnualPlanCandidate(
   now: Date = new Date()
 ): boolean {
   if (s.cycle !== 'monthly' || s.intervalCount !== 1) return false
+  // No point nudging a plan that isn't currently billing.
+  if (!isBillingActive(s, now)) return false
   if (isInTrial(s, now)) return false
 
   const monthsRunning = differenceInCalendarMonths(startOfDay(now), startOfDay(new Date(s.anchorDate)))

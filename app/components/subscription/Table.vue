@@ -112,6 +112,65 @@ function openDelete(s: Subscription) {
   deleteOpen.value = true
 }
 
+// Lifecycle (pause / resume / cancel) wiring. Pause and cancel open a dialog for
+// the optional date; resume is immediate. A single dialog instance is retargeted
+// per row, like the edit dialog above.
+const { resume, reactivate } = useSubscriptionLifecycle()
+
+const pauseOpen = ref(false)
+const cancelOpen = ref(false)
+const lifecycleSub = ref<Subscription | null>(null)
+
+function openPause(s: Subscription) {
+  lifecycleSub.value = s
+  pauseOpen.value = true
+}
+function openCancel(s: Subscription) {
+  lifecycleSub.value = s
+  cancelOpen.value = true
+}
+async function onResume(s: Subscription) {
+  if (await resume(s.id)) emit('refresh')
+}
+async function onReactivate(s: Subscription) {
+  if (await reactivate(s.id)) emit('refresh')
+}
+
+// The lifecycle actions available for a row, given its current status.
+function lifecycleItems(s: Subscription) {
+  const items = []
+  if (s.status === 'active') {
+    items.push({
+      label: t('subscription.pause.action'),
+      icon: 'i-lucide-pause',
+      onSelect: () => openPause(s)
+    })
+  }
+  if (s.status === 'paused') {
+    items.push({
+      label: t('subscription.resume.action'),
+      icon: 'i-lucide-play',
+      onSelect: () => onResume(s)
+    })
+  }
+  if (s.status === 'canceled') {
+    items.push({
+      label: t('subscription.reactivate.action'),
+      icon: 'i-lucide-rotate-ccw',
+      onSelect: () => onReactivate(s)
+    })
+  }
+  if (s.status !== 'canceled') {
+    items.push({
+      label: t('subscription.cancel.action'),
+      icon: 'i-lucide-x-circle',
+      color: 'error' as const,
+      onSelect: () => openCancel(s)
+    })
+  }
+  return items
+}
+
 async function confirmDelete() {
   if (!deleteSub.value) return
   deleting.value = true
@@ -137,7 +196,10 @@ async function confirmDelete() {
       :ui="{ tr: 'group' }"
     >
       <template #service-cell="{ row }">
-        <div class="flex items-center gap-3">
+        <div
+          class="flex items-center gap-3"
+          :class="{ 'opacity-60': row.original.status === 'canceled' }"
+        >
           <UAvatar
             :src="logoUrl(row.original.service) ?? undefined"
             :text="initials(row.original.service)"
@@ -150,6 +212,7 @@ async function confirmDelete() {
               <ULink
                 :to="localePath(`/dashboard/subscriptions/${row.original.id}`)"
                 class="text-highlighted hover:text-primary"
+                :class="{ 'line-through': row.original.status === 'canceled' }"
               >{{ row.original.service }}</ULink>
               <span v-if="row.original.description" class="text-xs text-muted">
                 - {{ row.original.description }}
@@ -158,6 +221,7 @@ async function confirmDelete() {
             <span v-if="row.original.category" class="text-xs text-dimmed">
               {{ row.original.category }}
             </span>
+            <SubscriptionStatusBadge :sub="row.original" class="mt-1" />
             <UBadge
               v-if="annualSuggestion(row.original)"
               color="success"
@@ -238,6 +302,19 @@ async function confirmDelete() {
             :aria-label="$t('common.edit')"
             @click="openEdit(row.original)"
           />
+          <UDropdownMenu
+            :items="lifecycleItems(row.original)"
+            :content="{ align: 'end' }"
+          >
+            <UButton
+              icon="i-lucide-ellipsis-vertical"
+              color="neutral"
+              variant="ghost"
+              size="sm"
+              square
+              :aria-label="$t('subscription.lifecycle.menu')"
+            />
+          </UDropdownMenu>
           <UButton
             icon="i-lucide-trash-2"
             color="error"
@@ -262,6 +339,20 @@ async function confirmDelete() {
       v-if="editSub"
       v-model:open="editOpen"
       :subscription="editSub"
+      @saved="emit('refresh')"
+    />
+
+    <!-- Pause / cancel dialogs (single instance each, retargeted per row) -->
+    <SubscriptionPauseDialog
+      v-if="lifecycleSub"
+      v-model:open="pauseOpen"
+      :subscription="lifecycleSub"
+      @saved="emit('refresh')"
+    />
+    <SubscriptionCancelDialog
+      v-if="lifecycleSub"
+      v-model:open="cancelOpen"
+      :subscription="lifecycleSub"
       @saved="emit('refresh')"
     />
 

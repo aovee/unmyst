@@ -352,7 +352,8 @@
       "renewals": "{n} renouvellement | {n} renouvellements",
       "noRenewals": "aucun renouvellement",
       "nothingDue": "rien à payer ce mois-ci"
-    }
+    },
+    "filterStatus": "Statut"
   },
   "subscription": {
     "add": {
@@ -446,6 +447,46 @@
       "saved": "Abonnement mis à jour",
       "created": "Abonnement créé",
       "error": "Enregistrement impossible. Veuillez réessayer."
+    },
+    "status": {
+      "active": "Actif",
+      "paused": "En pause",
+      "canceled": "Résilié",
+      "pausedUntil": "En pause jusqu’au {date}",
+      "canceledOn": "Résilié le {date}"
+    },
+    "lifecycle": {
+      "menu": "Plus d’actions"
+    },
+    "pause": {
+      "action": "Mettre en pause",
+      "title": "Mettre {service} en pause",
+      "description": "Mettez cet abonnement en pause. Il cesse de compter dans vos dépenses et vos prochains renouvellements jusqu’à sa reprise.",
+      "resumeLabel": "Reprendre le (facultatif)",
+      "resumeHelp": "Laissez vide pour une pause indéfinie.",
+      "confirm": "Mettre en pause",
+      "success": "Abonnement mis en pause",
+      "error": "Mise en pause impossible. Veuillez réessayer."
+    },
+    "resume": {
+      "action": "Reprendre",
+      "success": "Abonnement repris",
+      "error": "Reprise impossible. Veuillez réessayer."
+    },
+    "cancel": {
+      "action": "Résilier",
+      "title": "Résilier {service}",
+      "description": "Résiliez cet abonnement. Il reste dans votre historique mais cesse de compter dans vos dépenses futures.",
+      "dateLabel": "Résilié le",
+      "dateHelp": "Le jour de la fin. Les prélèvements après cette date ne sont plus comptés.",
+      "confirm": "Résilier l’abonnement",
+      "success": "Abonnement résilié",
+      "error": "Résiliation impossible. Veuillez réessayer."
+    },
+    "reactivate": {
+      "action": "Réactiver",
+      "success": "Abonnement réactivé",
+      "error": "Réactivation impossible. Veuillez réessayer."
     }
   }
 }

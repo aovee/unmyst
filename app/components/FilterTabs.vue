@@ -2,7 +2,7 @@
 const active = defineModel<string>()
 defineProps<{
   label?: string
-  items: PeriodFilter[]
+  items: { label: string, value: string }[]
 }>()
 </script>
 
