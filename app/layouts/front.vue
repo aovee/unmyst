@@ -3,7 +3,7 @@ const { t, locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 
 const APP_VERSION = 'v0.4.2'
-const BUILD_DATE = new Date('2026-08-14')
+const BUILD_DATE = new Date('2026-10-03')
 
 const buildLabel = computed(() =>
   new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short', year: 'numeric' })
@@ -17,9 +17,8 @@ const navLinks = computed(() => [
 ])
 
 const footerLinks = computed(() => [
-  { label: t('front.footer.source'), to: '#' },
-  { label: t('front.footer.report'), to: '#' },
-  { label: t('front.footer.licence'), to: '#' }
+  { label: t('front.footer.source'), to: 'https://github.com/aovee/unmyst' },
+  { label: t('front.footer.report'), to: 'https://github.com/aovee/unmyst/issues' }
 ])
 
 const otherLocale = computed(() => locales.value.find(l => l.code !== locale.value))
