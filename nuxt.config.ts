@@ -39,7 +39,6 @@ export default defineNuxtConfig({
     },
     session: {
       name: process.env.SESSION_COOKIE_NAME || 'unmyst_session',
-      password: process.env.NUXT_SESSION_PASSWORD || '',
       maxAge: 60 * 60 * 24 * 7, // 7 days
       cookie: {
         maxAge: 60 * 60 * 24 * 7 // persist cookie across browser restarts
