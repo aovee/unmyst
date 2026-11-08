@@ -10,10 +10,13 @@ export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing subscription id' })
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Missing subscription id'
+    })
   }
 
-  const result = await readValidatedBody(event, b =>
+  const result = await readValidatedBody(event, (b) =>
     SubscriptionUpdateSchema.safeParse(b)
   )
   if (!result.success) {
@@ -34,13 +37,16 @@ export default defineEventHandler(async (event) => {
     .where(and(eq(subscriptions.id, id), eq(subscriptions.userId, user.id)))
     .limit(1)
   if (!current) {
-    throw createError({ statusCode: 404, statusMessage: 'Subscription not found' })
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Subscription not found'
+    })
   }
 
-  const priceChanged
-    = values.amount !== current.amount
-      || values.cycle !== current.cycle
-      || values.currency !== current.currency
+  const priceChanged =
+    values.amount !== current.amount ||
+    values.cycle !== current.cycle ||
+    values.currency !== current.currency
   const shareChanged = values.shareCount !== current.shareCount
   const anchorChanged = +values.anchorDate !== +new Date(current.anchorDate)
 
@@ -55,7 +61,9 @@ export default defineEventHandler(async (event) => {
         tx
           .update(subscriptions)
           .set({ ...values, updatedAt: new Date() })
-          .where(and(eq(subscriptions.id, id), eq(subscriptions.userId, user.id)))
+          .where(
+            and(eq(subscriptions.id, id), eq(subscriptions.userId, user.id))
+          )
 
       if (priceChanged) {
         const [openRow] = await tx
@@ -72,10 +80,10 @@ export default defineEventHandler(async (event) => {
         // correction, or the requested start isn't strictly after the current
         // period began (which would overlap). In those cases we rewrite the open
         // period in place instead.
-        const canOpenNewPeriod
-          = data.priceChangeIntent !== 'correction'
-            && openRow != null
-            && +effectiveFrom > +new Date(openRow.effectiveFrom)
+        const canOpenNewPeriod =
+          data.priceChangeIntent !== 'correction' &&
+          openRow != null &&
+          +effectiveFrom > +new Date(openRow.effectiveFrom)
 
         if (canOpenNewPeriod) {
           await tx

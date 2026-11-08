@@ -20,14 +20,16 @@ const locale = useLocale()
 const { t } = useI18n()
 const currency = computed(() => props.subscriptions[0]?.currency ?? 'EUR')
 
-const WEEKDAYS = computed(() => t('dashboard.renewalCalendar.weekdays').split(','))
+const WEEKDAYS = computed(() =>
+  t('dashboard.renewalCalendar.weekdays').split(',')
+)
 
 interface DayCell {
   date: Date
   inMonth: boolean
   isToday: boolean
   amount: number // cents
-  items: { name: string, amount: number }[]
+  items: { name: string; amount: number }[]
 }
 
 const calendar = computed(() => {
@@ -38,7 +40,7 @@ const calendar = computed(() => {
   const gridEnd = endOfWeek(monthEnd, { weekStartsOn: 1 })
 
   // Collect every renewal that falls within the visible month.
-  const byDay = new Map<string, { name: string, amount: number }[]>()
+  const byDay = new Map<string, { name: string; amount: number }[]>()
   for (const s of props.subscriptions) {
     const base = startOfDay(new Date(s.anchorDate))
     let k = 0
@@ -61,24 +63,30 @@ const calendar = computed(() => {
     }
   }
 
-  const days: DayCell[] = eachDayOfInterval({ start: gridStart, end: gridEnd }).map(
-    (date) => {
-      const items = byDay.get(format(date, 'yyyy-MM-dd')) ?? []
-      return {
-        date,
-        inMonth: isSameMonth(date, today),
-        isToday: isSameDay(date, today),
-        amount: items.reduce((sum, i) => sum + i.amount, 0),
-        items
-      }
+  const days: DayCell[] = eachDayOfInterval({
+    start: gridStart,
+    end: gridEnd
+  }).map((date) => {
+    const items = byDay.get(format(date, 'yyyy-MM-dd')) ?? []
+    return {
+      date,
+      inMonth: isSameMonth(date, today),
+      isToday: isSameDay(date, today),
+      amount: items.reduce((sum, i) => sum + i.amount, 0),
+      items
     }
+  })
+
+  const maxAmount = Math.max(0, ...days.map((d) => d.amount))
+  const monthTotal = days.reduce(
+    (sum, d) => (d.inMonth ? sum + d.amount : sum),
+    0
   )
 
-  const maxAmount = Math.max(0, ...days.map(d => d.amount))
-  const monthTotal = days.reduce((sum, d) => (d.inMonth ? sum + d.amount : sum), 0)
-
-  const label = new Intl.DateTimeFormat(locale.value, { month: 'long', year: 'numeric' })
-    .format(today)
+  const label = new Intl.DateTimeFormat(locale.value, {
+    month: 'long',
+    year: 'numeric'
+  }).format(today)
   return { days, maxAmount, monthTotal, label }
 })
 
@@ -147,7 +155,9 @@ const compact = (cents: number) =>
         >
           <span
             class="text-xs tabular-nums"
-            :class="cell.items.length ? 'font-medium text-default' : 'text-muted'"
+            :class="
+              cell.items.length ? 'font-medium text-default' : 'text-muted'
+            "
           >
             {{ cell.date.getDate() }}
           </span>

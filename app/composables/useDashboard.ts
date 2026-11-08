@@ -8,12 +8,16 @@ const _useDashboard = () => {
 
   defineShortcuts({
     'g-h': () => router.push(localePath('/dashboard')),
-    'n': () => isNotificationsSlideoverOpen.value = !isNotificationsSlideoverOpen.value
+    n: () =>
+      (isNotificationsSlideoverOpen.value = !isNotificationsSlideoverOpen.value)
   })
 
-  watch(() => route.fullPath, () => {
-    isNotificationsSlideoverOpen.value = false
-  })
+  watch(
+    () => route.fullPath,
+    () => {
+      isNotificationsSlideoverOpen.value = false
+    }
+  )
 
   return {
     isNotificationsSlideoverOpen

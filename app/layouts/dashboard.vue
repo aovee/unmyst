@@ -7,31 +7,37 @@ const localePath = useLocalePath()
 
 const open = ref(false)
 
-const links = computed<NavigationMenuItem[][]>(() => [[{
-  label: t('nav.dashboard'),
-  icon: 'i-lucide-house',
-  to: localePath('/dashboard'),
-  onSelect: () => {
-    open.value = false
-  }
-}, {
-  label: t('nav.subscriptions'),
-  icon: 'i-lucide-credit-card',
-  to: localePath('/dashboard/subscriptions'),
-  onSelect: () => {
-    open.value = false
-  }
-}], [
-  {
-    label: t('nav.about'),
-    icon: 'i-lucide-info',
-    to: localePath('/'),
-    target: '_blank',
-    onSelect: () => {
-      open.value = false
+const links = computed<NavigationMenuItem[][]>(() => [
+  [
+    {
+      label: t('nav.dashboard'),
+      icon: 'i-lucide-house',
+      to: localePath('/dashboard'),
+      onSelect: () => {
+        open.value = false
+      }
+    },
+    {
+      label: t('nav.subscriptions'),
+      icon: 'i-lucide-credit-card',
+      to: localePath('/dashboard/subscriptions'),
+      onSelect: () => {
+        open.value = false
+      }
     }
-  }
-]])
+  ],
+  [
+    {
+      label: t('nav.about'),
+      icon: 'i-lucide-info',
+      to: localePath('/'),
+      target: '_blank',
+      onSelect: () => {
+        open.value = false
+      }
+    }
+  ]
+])
 
 onMounted(async () => {
   const cookie = useCookie('cookie-consent', {
@@ -45,18 +51,21 @@ onMounted(async () => {
     title: t('cookie.message'),
     duration: 0,
     close: false,
-    actions: [{
-      label: t('cookie.accept'),
-      color: 'neutral',
-      variant: 'outline',
-      onClick: () => {
-        cookie.value = 'accepted'
+    actions: [
+      {
+        label: t('cookie.accept'),
+        color: 'neutral',
+        variant: 'outline',
+        onClick: () => {
+          cookie.value = 'accepted'
+        }
+      },
+      {
+        label: t('cookie.optOut'),
+        color: 'neutral',
+        variant: 'ghost'
       }
-    }, {
-      label: t('cookie.optOut'),
-      color: 'neutral',
-      variant: 'ghost'
-    }]
+    ]
   })
 })
 </script>
@@ -74,7 +83,11 @@ onMounted(async () => {
       <template #header="{ collapsed }">
         <div
           class="w-full"
-          :class="collapsed ? 'flex-col justify-center gap-1' : 'flex flex-row justify-between'"
+          :class="
+            collapsed
+              ? 'flex-col justify-center gap-1'
+              : 'flex flex-row justify-between'
+          "
         >
           <AppLogo
             :collapsed="collapsed"

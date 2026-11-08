@@ -31,7 +31,8 @@ export default defineAppConfig({
           active: true,
           class: {
             link: 'before:bg-primary text-inverted dark:before:bg-primary-800 dark:text-primary',
-            linkLeadingIcon: 'text-inverted group-data-[state=open]:text-inverted dark:text-primary dark:group-data-[state=open]:text-primary'
+            linkLeadingIcon:
+              'text-inverted group-data-[state=open]:text-inverted dark:text-primary dark:group-data-[state=open]:text-primary'
           }
         }
       ]

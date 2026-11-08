@@ -11,7 +11,9 @@ function first(v: string | string[] | undefined): string | undefined {
   return Array.isArray(v) ? v[0] : v
 }
 
-const email = computed(() => first(route.query.email as string | string[] | undefined))
+const email = computed(() =>
+  first(route.query.email as string | string[] | undefined)
+)
 const redirectTo = computed(() =>
   first(route.query.redirectTo as string | string[] | undefined)
 )
@@ -36,7 +38,10 @@ const redirectTo = computed(() =>
         />
         <p v-else class="text-sm text-muted-foreground">
           {{ $t('verify.noMail') }}
-          <NuxtLink :to="localePath('/login')" class="text-primary underline-offset-4 hover:underline">
+          <NuxtLink
+            :to="localePath('/login')"
+            class="text-primary underline-offset-4 hover:underline"
+          >
             {{ $t('verify.tryAgain') }}
           </NuxtLink>
         </p>

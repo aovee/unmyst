@@ -21,11 +21,17 @@ const trialLabel = computed<string>(() => {
 })
 
 const nextRenewalDate = computed<Date>(() =>
-  computeNextRenewal(new Date(props.sub.anchorDate), props.sub.cycle, props.sub.intervalCount)
+  computeNextRenewal(
+    new Date(props.sub.anchorDate),
+    props.sub.cycle,
+    props.sub.intervalCount
+  )
 )
 
 const locale = useLocale()
-const nextBilling = computed<string>(() => formatRelativeDate(nextRenewalDate.value, locale.value))
+const nextBilling = computed<string>(() =>
+  formatRelativeDate(nextRenewalDate.value, locale.value)
+)
 
 const cycle = computed<string>(() => {
   const { sub } = props
@@ -71,26 +77,40 @@ const cycle = computed<string>(() => {
           v-if="isInTrial(sub)"
           :color="sub.automaticConversion ? 'warning' : 'neutral'"
           :variant="sub.automaticConversion ? 'subtle' : 'outline'"
-          :icon="sub.automaticConversion ? 'i-lucide-alert-triangle' : 'i-lucide-hourglass'"
-          :title="$t('subscription.trial.endsOn', { date: formatDate(trialEndDate(sub)!, locale) })"
+          :icon="
+            sub.automaticConversion
+              ? 'i-lucide-alert-triangle'
+              : 'i-lucide-hourglass'
+          "
+          :title="
+            $t('subscription.trial.endsOn', {
+              date: formatDate(trialEndDate(sub)!, locale)
+            })
+          "
         >
           {{ trialLabel }}
         </UBadge>
-        <UTooltip v-else :delay-duration="0" :text="formatDate(nextRenewalDate, locale)">
+        <UTooltip
+          v-else
+          :delay-duration="0"
+          :text="formatDate(nextRenewalDate, locale)"
+        >
           <span class="text-sm">{{ nextBilling }}</span>
         </UTooltip>
       </div>
-      <div class="text-muted text-sm">
-        / {{ cycle }}
-      </div>
+      <div class="text-muted text-sm">/ {{ cycle }}</div>
       <div class="text-end">
-        <span class="text-2xl">{{ formatCurrency(sub.amount, sub.currency, locale) }}</span>
+        <span class="text-2xl">{{
+          formatCurrency(sub.amount, sub.currency, locale)
+        }}</span>
         <div v-if="isInTrial(sub)" class="text-xs text-muted">
           {{ $t('subscription.card.afterTrial') }}
         </div>
         <div v-else-if="isShared(sub)" class="text-xs text-muted">
           {{ $t('subscription.card.yourShare') }}
-          <span>{{ formatCurrency(personalAmount(sub), sub.currency, locale) }}</span>
+          <span>{{
+            formatCurrency(personalAmount(sub), sub.currency, locale)
+          }}</span>
         </div>
       </div>
     </div>

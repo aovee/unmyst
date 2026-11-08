@@ -60,7 +60,10 @@ export interface Lifecycle {
 export function isBillingActive(s: Lifecycle, now: Date = new Date()): boolean {
   if (s.status === 'canceled') return false
   if (s.status === 'paused') {
-    return s.resumeAt != null && !isBefore(startOfDay(now), startOfDay(new Date(s.resumeAt)))
+    return (
+      s.resumeAt != null &&
+      !isBefore(startOfDay(now), startOfDay(new Date(s.resumeAt)))
+    )
   }
   return true
 }
@@ -87,7 +90,10 @@ export function isInTrial(s: Trialable, now: Date = new Date()): boolean {
 }
 
 /** Whole days left in the trial (0 on the last day), or null when not on trial. */
-export function trialDaysLeft(s: Trialable, now: Date = new Date()): number | null {
+export function trialDaysLeft(
+  s: Trialable,
+  now: Date = new Date()
+): number | null {
   const end = trialEndDate(s)
   if (end === null) return null
   return Math.max(0, differenceInCalendarDays(end, startOfDay(now)))
@@ -170,11 +176,14 @@ export function isAnnualPlanCandidate(
   if (!isBillingActive(s, now)) return false
   if (isInTrial(s, now)) return false
 
-  const monthsRunning = differenceInCalendarMonths(startOfDay(now), startOfDay(new Date(s.anchorDate)))
+  const monthsRunning = differenceInCalendarMonths(
+    startOfDay(now),
+    startOfDay(new Date(s.anchorDate))
+  )
   if (monthsRunning < ANNUAL_CANDIDATE_MIN_MONTHS) return false
 
-  const dismissed
-    = s.suggestionDismissedAt != null && s.suggestionDismissedAmount === s.amount
+  const dismissed =
+    s.suggestionDismissedAt != null && s.suggestionDismissedAmount === s.amount
   return !dismissed
 }
 
@@ -186,13 +195,17 @@ export function isAnnualPlanCandidate(
  * it honestly. Does not itself check eligibility — pair with
  * {@link isAnnualPlanCandidate} — but the estimate branch is always positive.
  */
-export function annualPlanSaving(
-  s: AnnualCandidate
-): { saving: number, isEstimate: boolean } {
+export function annualPlanSaving(s: AnnualCandidate): {
+  saving: number
+  isEstimate: boolean
+} {
   const personalYearIfMonthly = personalAmount(s) * 12
 
   if (s.annualPrice != null) {
-    const personalAnnual = personalAmount({ amount: s.annualPrice, shareCount: s.shareCount })
+    const personalAnnual = personalAmount({
+      amount: s.annualPrice,
+      shareCount: s.shareCount
+    })
     return { saving: personalYearIfMonthly - personalAnnual, isEstimate: false }
   }
 
@@ -303,12 +316,19 @@ export function totalPaidToDate(
   for (const p of history) {
     const rawStart = startOfDay(new Date(p.effectiveFrom))
     // Nothing is billed during the trial, so the first billable date is its end.
-    const periodStart = trialEnd && isBefore(rawStart, trialEnd) ? trialEnd : rawStart
-    const rawEnd = p.effectiveTo != null ? startOfDay(new Date(p.effectiveTo)) : today
+    const periodStart =
+      trialEnd && isBefore(rawStart, trialEnd) ? trialEnd : rawStart
+    const rawEnd =
+      p.effectiveTo != null ? startOfDay(new Date(p.effectiveTo)) : today
     const periodEnd = isBefore(today, rawEnd) ? today : rawEnd
     if (!isBefore(periodStart, periodEnd)) continue
 
-    const occ = occurrencesInPeriod(p.cycle, ctx.intervalCount, periodStart, periodEnd)
+    const occ = occurrencesInPeriod(
+      p.cycle,
+      ctx.intervalCount,
+      periodStart,
+      periodEnd
+    )
     const per = opts.personal
       ? personalAmount({ amount: p.amount, shareCount: p.shareCount })
       : p.amount
@@ -335,14 +355,17 @@ export interface PriceEvolution {
 export function priceEvolution(history: PricePeriod[]): PriceEvolution | null {
   if (history.length === 0) return null
   const sorted = [...history].sort(
-    (a, b) => new Date(a.effectiveFrom).getTime() - new Date(b.effectiveFrom).getTime()
+    (a, b) =>
+      new Date(a.effectiveFrom).getTime() - new Date(b.effectiveFrom).getTime()
   )
   const first = sorted[0]!
-  const current = sorted.find(p => p.effectiveTo == null) ?? sorted[sorted.length - 1]!
+  const current =
+    sorted.find((p) => p.effectiveTo == null) ?? sorted[sorted.length - 1]!
   return {
     first: first.amount,
     current: current.amount,
-    pctChange: first.amount === 0 ? 0 : (current.amount - first.amount) / first.amount,
+    pctChange:
+      first.amount === 0 ? 0 : (current.amount - first.amount) / first.amount,
     since: startOfDay(new Date(first.effectiveFrom))
   }
 }

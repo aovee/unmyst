@@ -18,10 +18,13 @@ export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing subscription id' })
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Missing subscription id'
+    })
   }
 
-  const result = await readValidatedBody(event, b =>
+  const result = await readValidatedBody(event, (b) =>
     SubscriptionCancelSchema.safeParse(b)
   )
   if (!result.success) {
@@ -31,7 +34,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const canceledAt = result.data.canceledAt ? new Date(result.data.canceledAt) : todayDate()
+  const canceledAt = result.data.canceledAt
+    ? new Date(result.data.canceledAt)
+    : todayDate()
 
   // Ensure the row exists and belongs to the user before mutating anything.
   const [current] = await db
@@ -40,7 +45,10 @@ export default defineEventHandler(async (event) => {
     .where(and(eq(subscriptions.id, id), eq(subscriptions.userId, user.id)))
     .limit(1)
   if (!current) {
-    throw createError({ statusCode: 404, statusMessage: 'Subscription not found' })
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Subscription not found'
+    })
   }
 
   const openRowWhere = and(
@@ -58,8 +66,8 @@ export default defineEventHandler(async (event) => {
 
       if (openRow) {
         // Never close before the period began (a same-day/early cancel).
-        const effectiveTo
-          = +canceledAt > +new Date(openRow.effectiveFrom)
+        const effectiveTo =
+          +canceledAt > +new Date(openRow.effectiveFrom)
             ? canceledAt
             : new Date(openRow.effectiveFrom)
         await tx

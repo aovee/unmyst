@@ -89,14 +89,17 @@ export function toDbValues(input: SubscriptionInput) {
     category: input.category?.trim() ? input.category.trim() : null,
     amount: Math.round(input.amount * 100), // euros → cents
     // Optional; only meaningful for monthly plans, stored in cents like `amount`.
-    annualPrice: input.annualPrice != null ? Math.round(input.annualPrice * 100) : null,
+    annualPrice:
+      input.annualPrice != null ? Math.round(input.annualPrice * 100) : null,
     currency: input.currency,
     cycle: input.cycle,
     intervalCount: input.intervalCount,
     shareCount: input.shareCount,
     trialDurationDays: input.trialDurationDays,
     // A trial can only auto-convert if there actually is a trial.
-    automaticConversion: input.trialDurationDays ? input.automaticConversion : false,
+    automaticConversion: input.trialDurationDays
+      ? input.automaticConversion
+      : false,
     anchorDate: new Date(input.anchorDate)
   }
 }

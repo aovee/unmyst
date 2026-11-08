@@ -33,37 +33,48 @@ export function useUpcomingRenewals(
   // Next real charge for every sub, soonest-first, past events removed.
   const all = computed<UpcomingRenewal[]>(() => {
     const today = new Date()
-    return toValue(subscriptions)
-      // Paused and canceled plans have no upcoming charge.
-      .filter(sub => isBillingActive(sub, today))
-      .map((sub) => {
-        const trialEnd = isInTrial(sub) ? trialEndDate(sub)! : null
-        const date
-          = trialEnd
-            ?? computeNextRenewal(new Date(sub.anchorDate), sub.cycle, sub.intervalCount, today)
-        return {
-          sub,
-          date,
-          inDays: differenceInCalendarDays(date, today),
-          amount: personalAmount(sub),
-          isTrialEnd: trialEnd !== null
-        }
-      })
-      .filter(r => r.inDays >= 0)
-      .sort((a, b) => a.date.getTime() - b.date.getTime())
+    return (
+      toValue(subscriptions)
+        // Paused and canceled plans have no upcoming charge.
+        .filter((sub) => isBillingActive(sub, today))
+        .map((sub) => {
+          const trialEnd = isInTrial(sub) ? trialEndDate(sub)! : null
+          const date =
+            trialEnd ??
+            computeNextRenewal(
+              new Date(sub.anchorDate),
+              sub.cycle,
+              sub.intervalCount,
+              today
+            )
+          return {
+            sub,
+            date,
+            inDays: differenceInCalendarDays(date, today),
+            amount: personalAmount(sub),
+            isTrialEnd: trialEnd !== null
+          }
+        })
+        .filter((r) => r.inDays >= 0)
+        .sort((a, b) => a.date.getTime() - b.date.getTime())
+    )
   })
 
   // Constrained to the window when one is provided.
   const renewals = computed<UpcomingRenewal[]>(() => {
     const window = toValue(options.windowDays)
     if (window == null) return all.value
-    return all.value.filter(r => r.inDays <= window)
+    return all.value.filter((r) => r.inDays <= window)
   })
 
   /** The very next charge across all subs, ignoring any window. */
-  const nextCharge = computed<UpcomingRenewal | null>(() => all.value[0] ?? null)
+  const nextCharge = computed<UpcomingRenewal | null>(
+    () => all.value[0] ?? null
+  )
   /** Sum of the windowed renewals' amounts, in cents. */
-  const total = computed(() => renewals.value.reduce((sum, r) => sum + r.amount, 0))
+  const total = computed(() =>
+    renewals.value.reduce((sum, r) => sum + r.amount, 0)
+  )
   /** Number of charges within the window. */
   const count = computed(() => renewals.value.length)
 

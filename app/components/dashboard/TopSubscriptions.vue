@@ -17,7 +17,7 @@ function initials(name: string): string {
 
 const rows = computed(() => {
   const ranked = props.subscriptions
-    .map(s => ({
+    .map((s) => ({
       name: s.service,
       amount: monthlyAmount(personalAmount(s), s.cycle, s.intervalCount)
     }))
@@ -25,7 +25,7 @@ const rows = computed(() => {
     .slice(0, max.value)
 
   const peak = ranked[0]?.amount ?? 0
-  return ranked.map(r => ({
+  return ranked.map((r) => ({
     ...r,
     width: peak > 0 ? `${Math.max(4, (r.amount / peak) * 100)}%` : '0%'
   }))
@@ -43,11 +43,7 @@ const rows = computed(() => {
     </template>
 
     <div v-if="rows.length" class="flex flex-col gap-3.5">
-      <div
-        v-for="row in rows"
-        :key="row.name"
-        class="flex items-center gap-3"
-      >
+      <div v-for="row in rows" :key="row.name" class="flex items-center gap-3">
         <UAvatar
           :src="logoUrl(row.name) ?? undefined"
           :text="initials(row.name)"
@@ -60,7 +56,9 @@ const rows = computed(() => {
             <span class="truncate font-medium">{{ row.name }}</span>
             <span class="shrink-0 tabular-nums font-medium">
               {{ formatCurrency(row.amount, currency, locale) }}
-              <span class="text-xs text-muted">{{ $t('dashboard.topSubscriptions.perMonth') }}</span>
+              <span class="text-xs text-muted">{{
+                $t('dashboard.topSubscriptions.perMonth')
+              }}</span>
             </span>
           </div>
           <div class="mt-1.5 h-2 overflow-hidden rounded-full bg-elevated">

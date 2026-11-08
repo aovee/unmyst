@@ -16,66 +16,80 @@ const items = computed<DropdownMenuItem[][]>(() => {
     return []
   }
 
-  return [[{
-    type: 'label',
-    label: user.value.name ?? '',
-    avatar: {
-      src: user.value.image ?? undefined
-    }
-  }], [{
-    label: t('userMenu.appearance'),
-    icon: 'i-lucide-sun-moon',
-    children: [{
-      label: t('userMenu.light'),
-      icon: 'i-lucide-sun',
-      type: 'checkbox',
-      checked: colorMode.value === 'light',
-      onUpdateChecked(checked: boolean) {
-        if (checked) {
-          colorMode.preference = 'light'
+  return [
+    [
+      {
+        type: 'label',
+        label: user.value.name ?? '',
+        avatar: {
+          src: user.value.image ?? undefined
         }
-      },
-      onSelect(e: Event) {
-        e.preventDefault()
       }
-    }, {
-      label: t('userMenu.dark'),
-      icon: 'i-lucide-moon',
-      type: 'checkbox',
-      checked: colorMode.value === 'dark',
-      onUpdateChecked(checked: boolean) {
-        if (checked) {
-          colorMode.preference = 'dark'
+    ],
+    [
+      {
+        label: t('userMenu.appearance'),
+        icon: 'i-lucide-sun-moon',
+        children: [
+          {
+            label: t('userMenu.light'),
+            icon: 'i-lucide-sun',
+            type: 'checkbox',
+            checked: colorMode.value === 'light',
+            onUpdateChecked(checked: boolean) {
+              if (checked) {
+                colorMode.preference = 'light'
+              }
+            },
+            onSelect(e: Event) {
+              e.preventDefault()
+            }
+          },
+          {
+            label: t('userMenu.dark'),
+            icon: 'i-lucide-moon',
+            type: 'checkbox',
+            checked: colorMode.value === 'dark',
+            onUpdateChecked(checked: boolean) {
+              if (checked) {
+                colorMode.preference = 'dark'
+              }
+            },
+            onSelect(e: Event) {
+              e.preventDefault()
+            }
+          }
+        ]
+      },
+      {
+        label: t('userMenu.language'),
+        icon: 'i-lucide-languages',
+        children: locales.value.map((l) => ({
+          label: l.name ?? l.code,
+          type: 'checkbox' as const,
+          checked: locale.value === l.code,
+          onUpdateChecked(checked: boolean) {
+            if (checked) {
+              setLocale(l.code)
+            }
+          },
+          onSelect(e: Event) {
+            e.preventDefault()
+          }
+        }))
+      }
+    ],
+    [
+      {
+        label: t('userMenu.logout'),
+        icon: 'i-lucide-log-out',
+        onSelect() {
+          clear()
+          navigateTo(localePath('/'))
         }
-      },
-      onSelect(e: Event) {
-        e.preventDefault()
       }
-    }]
-  }, {
-    label: t('userMenu.language'),
-    icon: 'i-lucide-languages',
-    children: locales.value.map(l => ({
-      label: l.name ?? l.code,
-      type: 'checkbox' as const,
-      checked: locale.value === l.code,
-      onUpdateChecked(checked: boolean) {
-        if (checked) {
-          setLocale(l.code)
-        }
-      },
-      onSelect(e: Event) {
-        e.preventDefault()
-      }
-    }))
-  }], [{
-    label: t('userMenu.logout'),
-    icon: 'i-lucide-log-out',
-    onSelect() {
-      clear()
-      navigateTo(localePath('/'))
-    }
-  }]]
+    ]
+  ]
 })
 </script>
 
@@ -84,11 +98,13 @@ const items = computed<DropdownMenuItem[][]>(() => {
     v-if="loggedIn && user"
     :items="items"
     :content="{ align: 'center', collisionPadding: 12 }"
-    :ui="{ content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)' }"
+    :ui="{
+      content: collapsed ? 'w-48' : 'w-(--reka-dropdown-menu-trigger-width)'
+    }"
   >
     <UButton
       :avatar="user?.image ? { src: user.image } : undefined"
-      :label="collapsed ? undefined : user?.name ?? undefined"
+      :label="collapsed ? undefined : (user?.name ?? undefined)"
       :trailing-icon="collapsed ? undefined : 'i-lucide-chevrons-up-down'"
       color="neutral"
       variant="ghost"

@@ -69,7 +69,9 @@ const columns = computed<TableColumn<Subscription>[]>(() => [
 // Annual-plan saving to badge on the row, or null when the plan isn't a
 // candidate (or switching wouldn't actually save). Shared logic with the
 // dashboard "Savings" section via `useAnnualPlanSuggestions`.
-function annualSuggestion(s: Subscription): { saving: number, isEstimate: boolean } | null {
+function annualSuggestion(
+  s: Subscription
+): { saving: number; isEstimate: boolean } | null {
   if (!isAnnualPlanCandidate(s)) return null
   const result = annualPlanSaving(s)
   return result.saving > 0 ? result : null
@@ -84,7 +86,11 @@ function nextBilling(s: Subscription): string {
 }
 
 function getAmountByCycle(s: Subscription): number {
-  return ((s.amount * CYCLES_PER_YEAR[s.cycle]) / s.intervalCount) / CYCLES_PER_YEAR['monthly']
+  return (
+    (s.amount * CYCLES_PER_YEAR[s.cycle]) /
+    s.intervalCount /
+    CYCLES_PER_YEAR['monthly']
+  )
 }
 
 // "Trial — 6 days left" display state. Warning-coloured when the trial will
@@ -175,7 +181,9 @@ async function confirmDelete() {
   if (!deleteSub.value) return
   deleting.value = true
   try {
-    await $fetch(`/api/subscriptions/${deleteSub.value.id}`, { method: 'DELETE' })
+    await $fetch(`/api/subscriptions/${deleteSub.value.id}`, {
+      method: 'DELETE'
+    })
     toast.add({ title: t('subscription.delete.success'), color: 'success' })
     deleteOpen.value = false
     emit('refresh')
@@ -213,7 +221,8 @@ async function confirmDelete() {
                 :to="localePath(`/dashboard/subscriptions/${row.original.id}`)"
                 class="text-highlighted hover:text-primary"
                 :class="{ 'line-through': row.original.status === 'canceled' }"
-              >{{ row.original.service }}</ULink>
+                >{{ row.original.service }}</ULink
+              >
               <span v-if="row.original.description" class="text-xs text-muted">
                 - {{ row.original.description }}
               </span>
@@ -229,13 +238,21 @@ async function confirmDelete() {
               size="sm"
               icon="i-lucide-piggy-bank"
               class="mt-1 w-fit"
-              :title="annualSuggestion(row.original)!.isEstimate
-                ? $t('subscription.annualSuggestion.tooltipEstimate')
-                : $t('subscription.annualSuggestion.tooltipExact')"
+              :title="
+                annualSuggestion(row.original)!.isEstimate
+                  ? $t('subscription.annualSuggestion.tooltipEstimate')
+                  : $t('subscription.annualSuggestion.tooltipExact')
+              "
             >
-              {{ $t('subscription.annualSuggestion.badge', {
-                amount: formatCurrency(annualSuggestion(row.original)!.saving, row.original.currency, locale)
-              }) }}
+              {{
+                $t('subscription.annualSuggestion.badge', {
+                  amount: formatCurrency(
+                    annualSuggestion(row.original)!.saving,
+                    row.original.currency,
+                    locale
+                  )
+                })
+              }}
             </UBadge>
           </div>
         </div>
@@ -248,12 +265,23 @@ async function confirmDelete() {
               v-if="isInTrial(row.original)"
               :color="row.original.automaticConversion ? 'warning' : 'neutral'"
               :variant="row.original.automaticConversion ? 'subtle' : 'outline'"
-              :icon="row.original.automaticConversion ? 'i-lucide-alert-triangle' : 'i-lucide-hourglass'"
-              :title="$t('subscription.trial.endsOn', { date: formatDate(trialEndDate(row.original)!, locale) })"
+              :icon="
+                row.original.automaticConversion
+                  ? 'i-lucide-alert-triangle'
+                  : 'i-lucide-hourglass'
+              "
+              :title="
+                $t('subscription.trial.endsOn', {
+                  date: formatDate(trialEndDate(row.original)!, locale)
+                })
+              "
             >
               {{ trialLabel(row.original) }}
             </UBadge>
-            <span v-else :title="formatDate(nextRenewalDate(row.original), locale)">
+            <span
+              v-else
+              :title="formatDate(nextRenewalDate(row.original), locale)"
+            >
               {{ nextBilling(row.original) }}
             </span>
           </div>
@@ -266,7 +294,9 @@ async function confirmDelete() {
       <template #billed-cell="{ row }">
         <div class="flex flex-col">
           <div class="text-right text-default">
-            {{ formatCurrency(row.original.amount, row.original.currency, locale) }}
+            {{
+              formatCurrency(row.original.amount, row.original.currency, locale)
+            }}
             <div v-if="isInTrial(row.original)" class="text-xs text-muted">
               {{ $t('subscription.card.afterTrial') }}
             </div>
@@ -280,11 +310,23 @@ async function confirmDelete() {
       <template #per-month-cell="{ row }">
         <div class="flex flex-col">
           <div class="text-lg font-semibold text-highlighted">
-            {{ formatCurrency(getAmountByCycle(row.original), row.original.currency, locale) }}
+            {{
+              formatCurrency(
+                getAmountByCycle(row.original),
+                row.original.currency,
+                locale
+              )
+            }}
           </div>
           <div v-if="isShared(row.original)" class="text-xs text-primary">
             {{ $t('subscription.card.yourShare') }}
-            {{ formatCurrency(personalAmount(row.original), row.original.currency, locale) }}
+            {{
+              formatCurrency(
+                personalAmount(row.original),
+                row.original.currency,
+                locale
+              )
+            }}
           </div>
         </div>
       </template>
@@ -364,7 +406,11 @@ async function confirmDelete() {
     >
       <template #footer>
         <div class="flex w-full justify-end gap-2">
-          <UButton color="neutral" variant="outline" @click="deleteOpen = false">
+          <UButton
+            color="neutral"
+            variant="outline"
+            @click="deleteOpen = false"
+          >
             {{ $t('common.cancel') }}
           </UButton>
           <UButton color="error" :loading="deleting" @click="confirmDelete">

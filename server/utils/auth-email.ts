@@ -30,7 +30,9 @@ type MagicLinkProps = {
 const APP_NAME = 'Unmyst'
 
 /** Render the shared template into an HTML + plain-text pair. */
-async function renderMagicLink(props: MagicLinkProps): Promise<{ html: string, text: string }> {
+async function renderMagicLink(
+  props: MagicLinkProps
+): Promise<{ html: string; text: string }> {
   const [html, text] = await Promise.all([
     renderEmailComponent('MagicLinkEmail', props),
     renderEmailComponent('MagicLinkEmail', props, { plainText: true })
@@ -43,7 +45,10 @@ async function renderMagicLink(props: MagicLinkProps): Promise<{ html: string, t
 }
 
 /** Email for an address that already has an account. */
-export async function signInEmail({ url, host }: AuthEmailParams): Promise<RenderedEmail> {
+export async function signInEmail({
+  url,
+  host
+}: AuthEmailParams): Promise<RenderedEmail> {
   return {
     subject: `Sign in to ${APP_NAME}`,
     ...(await renderMagicLink({
@@ -59,7 +64,10 @@ export async function signInEmail({ url, host }: AuthEmailParams): Promise<Rende
 }
 
 /** Email for a brand-new address (no account yet). */
-export async function signUpEmail({ url, host }: AuthEmailParams): Promise<RenderedEmail> {
+export async function signUpEmail({
+  url,
+  host
+}: AuthEmailParams): Promise<RenderedEmail> {
   return {
     subject: `Welcome to ${APP_NAME} — confirm your email`,
     ...(await renderMagicLink({

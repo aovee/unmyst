@@ -19,8 +19,15 @@ function annualCost(s: Subscription): number {
 const averaged = computed(() => {
   const yearly = props.subscriptions.reduce((sum, s) => sum + annualCost(s), 0)
   return [
-    { title: t('dashboard.averaged.perWeek'), value: formatCurrency(yearly / 52) },
-    { title: t('dashboard.averaged.perMonth'), value: formatCurrency(yearly / 12), hero: false },
+    {
+      title: t('dashboard.averaged.perWeek'),
+      value: formatCurrency(yearly / 52)
+    },
+    {
+      title: t('dashboard.averaged.perMonth'),
+      value: formatCurrency(yearly / 12),
+      hero: false
+    },
     { title: t('dashboard.averaged.perYear'), value: formatCurrency(yearly) }
   ]
 })
@@ -73,13 +80,17 @@ const sinceStart = computed(() => {
           >
             <div
               class="font-semibold text-highlighted"
-              :class="card.hero ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl'"
+              :class="
+                card.hero ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl'
+              "
             >
               <span class="text-muted text-xl">≈</span> {{ card.value }}
             </div>
             <div class="text-sm text-muted">
               {{ card.title }}
-              <span class="text-dimmed">· {{ $t('dashboard.averaged.estimate') }}</span>
+              <span class="text-dimmed"
+                >· {{ $t('dashboard.averaged.estimate') }}</span
+              >
             </div>
           </UCard>
         </div>
@@ -94,7 +105,9 @@ const sinceStart = computed(() => {
           class="text-sm text-muted"
         >
           <template #total>
-            <span class="font-medium text-default">{{ formatCurrency(sinceStart.total) }}</span>
+            <span class="font-medium text-default">{{
+              formatCurrency(sinceStart.total)
+            }}</span>
           </template>
           <template #date>
             {{ formatDate(sinceStart.startDate) }}

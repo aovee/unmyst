@@ -1,12 +1,15 @@
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
-  collapsed?: boolean
-  to?: string
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-}>(), {
-  collapsed: false,
-  size: 'md'
-})
+const props = withDefaults(
+  defineProps<{
+    collapsed?: boolean
+    to?: string
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  }>(),
+  {
+    collapsed: false,
+    size: 'md'
+  }
+)
 
 const ULink = resolveComponent('ULink')
 
@@ -53,7 +56,11 @@ const titleSize = computed<string>(() => {
       :height="logoSize"
       :width="logoSize"
     />
-    <div v-if="!collapsed" class="font-title text-highlighted" :class="titleSize">
+    <div
+      v-if="!collapsed"
+      class="font-title text-highlighted"
+      :class="titleSize"
+    >
       unmyst
     </div>
   </component>

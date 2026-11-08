@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { startOfMonth, endOfMonth, addMonths, differenceInCalendarMonths, isAfter } from 'date-fns'
+import {
+  startOfMonth,
+  endOfMonth,
+  addMonths,
+  differenceInCalendarMonths,
+  isAfter
+} from 'date-fns'
 import type { Subscription } from '~~/server/db/schema'
 
 const props = defineProps<{ subscriptions: Subscription[] }>()
@@ -30,7 +36,10 @@ const points = computed<MonthPoint[]>(() => {
   }, now)
 
   // Clamp the span to MAX_MONTHS, always ending at the current month.
-  const span = Math.min(differenceInCalendarMonths(now, earliest), MAX_MONTHS - 1)
+  const span = Math.min(
+    differenceInCalendarMonths(now, earliest),
+    MAX_MONTHS - 1
+  )
   const start = addMonths(now, -span)
   const multiYear = span >= 12
   const monthLabel = new Intl.DateTimeFormat(
@@ -56,7 +65,10 @@ const first = computed(() => points.value[0]?.amount ?? 0)
 const growth = computed(() => latest.value - first.value)
 
 const categories = computed<Record<string, BulletLegendItemInterface>>(() => ({
-  amount: { name: t('dashboard.subscriptionCreep.series'), color: 'var(--color-unmyst-500)' }
+  amount: {
+    name: t('dashboard.subscriptionCreep.series'),
+    color: 'var(--color-unmyst-500)'
+  }
 }))
 
 const axisFormatter = (v: number) =>
@@ -99,13 +111,17 @@ const monthFormatter = (i: number) => points.value[Math.round(i)]?.label ?? ''
         class="mt-5 text-sm text-muted"
       >
         <template #amount>
-          <span class="font-medium text-default">{{ formatCurrency(growth, currency, locale) }}</span>
+          <span class="font-medium text-default">{{
+            formatCurrency(growth, currency, locale)
+          }}</span>
         </template>
         <template #since>
           {{ points[0]!.label }}
         </template>
         <template #latest>
-          <span class="font-medium text-default">{{ formatCurrency(latest, currency, locale) }}</span>
+          <span class="font-medium text-default">{{
+            formatCurrency(latest, currency, locale)
+          }}</span>
         </template>
       </i18n-t>
     </div>
