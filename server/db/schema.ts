@@ -102,7 +102,7 @@ export const subscriptionPriceHistory = pgTable(
     source: priceHistorySourceEnum('source').notNull().default('manual'),
     createdAt: timestamp('created_at').notNull().defaultNow()
   },
-  t => [
+  (t) => [
     // Enforce the "exactly one open period per subscription" invariant in the DB.
     uniqueIndex('price_history_one_open_per_sub')
       .on(t.subscriptionId)
@@ -132,7 +132,7 @@ export const verificationTokens = pgTable(
     token: text('token').notNull(),
     expires: timestamp('expires', { mode: 'date' }).notNull()
   },
-  vt => [primaryKey({ columns: [vt.identifier, vt.token] })]
+  (vt) => [primaryKey({ columns: [vt.identifier, vt.token] })]
 )
 
 // Fixed-window counters for throttling abuse-prone endpoints (e.g. the magic

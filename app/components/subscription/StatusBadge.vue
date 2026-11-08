@@ -10,13 +10,17 @@ const { t } = useI18n()
 const badge = computed(() => {
   if (props.sub.status === 'paused') {
     const resume = props.sub.resumeAt
-      ? t('subscription.status.pausedUntil', { date: formatDate(new Date(props.sub.resumeAt), locale.value) })
+      ? t('subscription.status.pausedUntil', {
+          date: formatDate(new Date(props.sub.resumeAt), locale.value)
+        })
       : t('subscription.status.paused')
     return { label: resume, color: 'warning' as const, icon: 'i-lucide-pause' }
   }
   if (props.sub.status === 'canceled') {
     const label = props.sub.canceledAt
-      ? t('subscription.status.canceledOn', { date: formatDate(new Date(props.sub.canceledAt), locale.value) })
+      ? t('subscription.status.canceledOn', {
+          date: formatDate(new Date(props.sub.canceledAt), locale.value)
+        })
       : t('subscription.status.canceled')
     return { label, color: 'neutral' as const, icon: 'i-lucide-x-circle' }
   }

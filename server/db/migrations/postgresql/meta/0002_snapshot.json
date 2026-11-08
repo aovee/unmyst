@@ -163,12 +163,8 @@
           "name": "subscriptions_user_id_user_id_fk",
           "tableFrom": "subscriptions",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -250,10 +246,7 @@
       "compositePrimaryKeys": {
         "verificationToken_identifier_token_pk": {
           "name": "verificationToken_identifier_token_pk",
-          "columns": [
-            "identifier",
-            "token"
-          ]
+          "columns": ["identifier", "token"]
         }
       },
       "uniqueConstraints": {},
@@ -266,11 +259,7 @@
     "public.cycle": {
       "name": "cycle",
       "schema": "public",
-      "values": [
-        "weekly",
-        "monthly",
-        "yearly"
-      ]
+      "values": ["weekly", "monthly", "yearly"]
     }
   },
   "schemas": {},

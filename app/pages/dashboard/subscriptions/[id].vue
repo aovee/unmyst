@@ -13,17 +13,21 @@ const { logoUrl } = useServiceLogo()
 
 const id = computed(() => route.params.id as string)
 
-const { data, refresh, error } = await useFetch<{ subscription: Subscription, history: PriceHistory[] }>(
-  () => `/api/subscriptions/${id.value}`,
-  { key: `subscription-detail-${id.value}` }
-)
+const { data, refresh, error } = await useFetch<{
+  subscription: Subscription
+  history: PriceHistory[]
+}>(() => `/api/subscriptions/${id.value}`, {
+  key: `subscription-detail-${id.value}`
+})
 
 const sub = computed(() => data.value?.subscription ?? null)
 const history = computed(() => data.value?.history ?? [])
 
 useHead({ title: () => sub.value?.service ?? t('subscription.detail.title') })
 
-const initials = computed(() => sub.value?.service.trim().charAt(0).toUpperCase() || '?')
+const initials = computed(
+  () => sub.value?.service.trim().charAt(0).toUpperCase() || '?'
+)
 const shared = computed(() => (sub.value ? isShared(sub.value) : false))
 
 // Newest period first for the timeline; the open period (effectiveTo === null) leads.
@@ -66,10 +70,10 @@ const { resume, reactivate } = useSubscriptionLifecycle()
 const pauseOpen = ref(false)
 const cancelOpen = ref(false)
 async function onResume() {
-  if (sub.value && await resume(sub.value.id)) refresh()
+  if (sub.value && (await resume(sub.value.id))) refresh()
 }
 async function onReactivate() {
-  if (sub.value && await reactivate(sub.value.id)) refresh()
+  if (sub.value && (await reactivate(sub.value.id))) refresh()
 }
 
 async function confirmDelete() {
@@ -180,7 +184,8 @@ async function confirmDelete() {
               <SubscriptionStatusBadge :sub="sub" />
             </div>
             <div class="text-sm text-muted">
-              {{ formatCurrency(sub.amount, sub.currency, locale) }} · {{ cycleLabel(sub.cycle) }}
+              {{ formatCurrency(sub.amount, sub.currency, locale) }} ·
+              {{ cycleLabel(sub.cycle) }}
               <span v-if="shared" class="text-dimmed">
                 · {{ $t('subscription.card.yourShare') }}
                 {{ formatCurrency(personalAmount(sub), sub.currency, locale) }}
@@ -199,13 +204,17 @@ async function confirmDelete() {
                 :description="$t('subscription.detail.totalPaidHint')"
               />
             </template>
-            <div class="font-numbers text-3xl font-semibold text-highlighted tabular-nums">
+            <div
+              class="font-numbers text-3xl font-semibold text-highlighted tabular-nums"
+            >
               {{ formatCurrency(totalPersonal, sub.currency, locale) }}
             </div>
             <div v-if="shared" class="mt-1 text-sm text-muted">
-              {{ $t('subscription.detail.fullCost', {
-                amount: formatCurrency(totalFull, sub.currency, locale)
-              }) }}
+              {{
+                $t('subscription.detail.fullCost', {
+                  amount: formatCurrency(totalFull, sub.currency, locale)
+                })
+              }}
             </div>
           </UCard>
 
@@ -225,13 +234,22 @@ async function confirmDelete() {
               class="mb-4 text-sm text-muted"
             >
               <template #from>
-                <span class="font-numbers text-default">{{ formatCurrency(evolution.first, sub.currency, locale) }}</span>
+                <span class="font-numbers text-default">{{
+                  formatCurrency(evolution.first, sub.currency, locale)
+                }}</span>
               </template>
               <template #to>
-                <span class="font-numbers text-default">{{ formatCurrency(evolution.current, sub.currency, locale) }}</span>
+                <span class="font-numbers text-default">{{
+                  formatCurrency(evolution.current, sub.currency, locale)
+                }}</span>
               </template>
               <template #pct>
-                <span :class="evolution.pctChange >= 0 ? 'text-warning' : 'text-success'">{{ evolutionPct }}</span>
+                <span
+                  :class="
+                    evolution.pctChange >= 0 ? 'text-warning' : 'text-success'
+                  "
+                  >{{ evolutionPct }}</span
+                >
               </template>
               <template #date>
                 {{ formatDate(evolution.since, locale) }}
@@ -246,10 +264,14 @@ async function confirmDelete() {
               >
                 <div class="min-w-0 flex-1">
                   <div class="flex items-center gap-2">
-                    <span class="font-numbers text-sm font-medium text-highlighted tabular-nums">
+                    <span
+                      class="font-numbers text-sm font-medium text-highlighted tabular-nums"
+                    >
                       {{ formatCurrency(row.amount, row.currency, locale) }}
                     </span>
-                    <span class="text-xs text-dimmed">{{ cycleLabel(row.cycle) }}</span>
+                    <span class="text-xs text-dimmed">{{
+                      cycleLabel(row.cycle)
+                    }}</span>
                     <UBadge
                       v-if="row.source === 'correction'"
                       color="neutral"
@@ -264,7 +286,9 @@ async function confirmDelete() {
                     <template v-if="row.effectiveTo">
                       {{ formatDate(row.effectiveTo, locale) }}
                     </template>
-                    <span v-else class="text-primary">{{ $t('subscription.history.current') }}</span>
+                    <span v-else class="text-primary">{{
+                      $t('subscription.history.current')
+                    }}</span>
                   </div>
                 </div>
               </div>

@@ -16,10 +16,9 @@ function initials(name: string): string {
 
 const horizon = computed(() => props.windowDays ?? 30)
 
-const { renewals, total } = useUpcomingRenewals(
-  () => props.subscriptions,
-  { windowDays: horizon }
-)
+const { renewals, total } = useUpcomingRenewals(() => props.subscriptions, {
+  windowDays: horizon
+})
 
 function relativeLabel(inDays: number): string {
   if (inDays === 0) return t('relative.today')
@@ -61,7 +60,9 @@ function relativeLabel(inDays: number): string {
         />
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-1.5">
-            <span class="truncate text-sm font-medium">{{ r.sub.service }}</span>
+            <span class="truncate text-sm font-medium">{{
+              r.sub.service
+            }}</span>
             <UIcon
               v-if="r.isTrialEnd && r.sub.automaticConversion"
               name="i-lucide-alert-triangle"
@@ -69,8 +70,13 @@ function relativeLabel(inDays: number): string {
               :title="$t('dashboard.upcomingRenewals.trialConverts')"
             />
           </div>
-          <div class="text-xs" :class="r.isTrialEnd ? 'text-warning' : 'text-muted'">
-            <span v-if="r.isTrialEnd">{{ $t('dashboard.upcomingRenewals.trialEnds') }}</span>
+          <div
+            class="text-xs"
+            :class="r.isTrialEnd ? 'text-warning' : 'text-muted'"
+          >
+            <span v-if="r.isTrialEnd">{{
+              $t('dashboard.upcomingRenewals.trialEnds')
+            }}</span>
             {{ formatDate(r.date, locale) }} · {{ relativeLabel(r.inDays) }}
           </div>
         </div>
@@ -79,8 +85,15 @@ function relativeLabel(inDays: number): string {
           <div v-if="r.isTrialEnd" class="text-xs font-normal text-muted">
             {{ $t('dashboard.upcomingRenewals.firstCharge') }}
           </div>
-          <div v-else-if="isShared(r.sub)" class="text-xs font-normal text-muted">
-            {{ $t('dashboard.upcomingRenewals.of', { amount: formatCurrency(r.sub.amount, r.sub.currency, locale) }) }}
+          <div
+            v-else-if="isShared(r.sub)"
+            class="text-xs font-normal text-muted"
+          >
+            {{
+              $t('dashboard.upcomingRenewals.of', {
+                amount: formatCurrency(r.sub.amount, r.sub.currency, locale)
+              })
+            }}
           </div>
         </div>
       </div>

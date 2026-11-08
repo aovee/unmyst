@@ -42,7 +42,10 @@ const state = reactive<Partial<SubscriptionInput>>({
   description: props.subscription?.description ?? '',
   category: props.subscription?.category ?? null,
   amount: props.subscription ? props.subscription.amount / 100 : undefined,
-  annualPrice: props.subscription?.annualPrice != null ? props.subscription.annualPrice / 100 : null,
+  annualPrice:
+    props.subscription?.annualPrice != null
+      ? props.subscription.annualPrice / 100
+      : null,
   currency: props.subscription?.currency ?? 'EUR',
   cycle: props.subscription?.cycle ?? 'monthly',
   intervalCount: props.subscription?.intervalCount ?? 1,
@@ -72,7 +75,10 @@ watch(hasTrial, (on) => {
 const yourShare = computed(() => {
   const shares = state.shareCount && state.shareCount > 0 ? state.shareCount : 1
   if (shares <= 1 || !state.amount) return null
-  return formatCurrency(Math.round((state.amount * 100) / shares), state.currency)
+  return formatCurrency(
+    Math.round((state.amount * 100) / shares),
+    state.currency
+  )
 })
 
 // Bridge the nullable state field to UInput, which models `string | undefined`.
@@ -85,9 +91,12 @@ const descriptionModel = computed({
 
 // Optional annual price only makes sense for monthly plans; drop any stale value
 // when the cycle changes so it's never submitted for a non-monthly plan.
-watch(() => state.cycle, (cycle) => {
-  if (cycle !== 'monthly') state.annualPrice = null
-})
+watch(
+  () => state.cycle,
+  (cycle) => {
+    if (cycle !== 'monthly') state.annualPrice = null
+  }
+)
 
 // Bridge the nullable annual-price field to UInput (`number | undefined`).
 const annualPriceModel = computed({
@@ -123,10 +132,13 @@ const priceEffectiveFrom = ref<string>(new Date().toISOString().slice(0, 10))
 
 const priceFieldsChanged = computed(() => {
   if (!props.subscription) return false
-  const amountCents = state.amount != null ? Math.round(state.amount * 100) : null
-  return amountCents !== props.subscription.amount
-    || state.cycle !== props.subscription.cycle
-    || state.currency !== props.subscription.currency
+  const amountCents =
+    state.amount != null ? Math.round(state.amount * 100) : null
+  return (
+    amountCents !== props.subscription.amount ||
+    state.cycle !== props.subscription.cycle ||
+    state.currency !== props.subscription.currency
+  )
 })
 
 const priceChangeItems = computed(() => [
@@ -145,7 +157,9 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
             ...event.data,
             priceChangeIntent: priceChangeIntent.value,
             effectiveFrom:
-              priceChangeIntent.value === 'change' ? priceEffectiveFrom.value : undefined
+              priceChangeIntent.value === 'change'
+                ? priceEffectiveFrom.value
+                : undefined
           }
         : event.data
       await $fetch(`/api/subscriptions/${props.subscription!.id}`, {
@@ -156,14 +170,17 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
       await $fetch('/api/subscriptions', { method: 'POST', body: event.data })
     }
     toast.add({
-      title: isEdit.value ? t('subscription.form.saved') : t('subscription.form.created'),
+      title: isEdit.value
+        ? t('subscription.form.saved')
+        : t('subscription.form.created'),
       color: 'success'
     })
     emit('success')
   } catch (e) {
-    const err = e as { data?: { message?: string }, statusMessage?: string }
+    const err = e as { data?: { message?: string }; statusMessage?: string }
     toast.add({
-      title: err.data?.message ?? err.statusMessage ?? t('subscription.form.error'),
+      title:
+        err.data?.message ?? err.statusMessage ?? t('subscription.form.error'),
       color: 'error'
     })
   } finally {
@@ -180,7 +197,11 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
     @submit="onSubmit"
   >
     <UFormField :label="$t('subscription.form.service')" name="service">
-      <UInput v-model="state.service" :placeholder="$t('subscription.form.servicePlaceholder')" class="w-full" />
+      <UInput
+        v-model="state.service"
+        :placeholder="$t('subscription.form.servicePlaceholder')"
+        class="w-full"
+      />
     </UFormField>
 
     <UFormField :label="$t('subscription.form.description')" name="description">
@@ -216,7 +237,10 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
       <USelect v-model="state.cycle" :items="cycleOptions" class="w-full" />
     </UFormField>
 
-    <UFormField :label="$t('subscription.form.intervalCount')" name="intervalCount">
+    <UFormField
+      :label="$t('subscription.form.intervalCount')"
+      name="intervalCount"
+    >
       <UInput
         v-model.number="state.intervalCount"
         type="number"
@@ -270,12 +294,17 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
         class="w-full"
       />
       <p v-if="yourShare" class="mt-1 text-xs text-muted">
-        {{ $t('subscription.form.yourShare') }} <span class="font-medium text-default">{{ yourShare }}</span>
+        {{ $t('subscription.form.yourShare') }}
+        <span class="font-medium text-default">{{ yourShare }}</span>
       </p>
     </UFormField>
 
     <UFormField
-      :label="hasTrial ? $t('subscription.form.trialStartDate') : $t('subscription.form.firstBillingDate')"
+      :label="
+        hasTrial
+          ? $t('subscription.form.trialStartDate')
+          : $t('subscription.form.firstBillingDate')
+      "
       name="anchorDate"
     >
       <UInput v-model="state.anchorDate" type="date" class="w-full" />
@@ -289,7 +318,10 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
       />
 
       <div v-if="hasTrial" class="mt-3 space-y-3">
-        <UFormField :label="$t('subscription.form.trialLength')" name="trialDurationDays">
+        <UFormField
+          :label="$t('subscription.form.trialLength')"
+          name="trialDurationDays"
+        >
           <UInput
             v-model.number="trialDurationModel"
             type="number"
@@ -304,7 +336,9 @@ async function onSubmit(event: FormSubmitEvent<SubscriptionInput>) {
             class="mt-1 text-xs text-muted"
           >
             <template #date>
-              <span class="font-medium text-default">{{ trialEndPreview }}</span>
+              <span class="font-medium text-default">{{
+                trialEndPreview
+              }}</span>
             </template>
           </i18n-t>
         </UFormField>

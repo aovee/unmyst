@@ -13,7 +13,10 @@ const billed = computed(() => {
       (acc, s) => {
         if (s.cycle !== cycle) return acc
         // Trials contribute 0 to what's actually billed right now.
-        return { total: acc.total + currentAmount(s) / s.intervalCount, count: acc.count + 1 }
+        return {
+          total: acc.total + currentAmount(s) / s.intervalCount,
+          count: acc.count + 1
+        }
       },
       { total: 0, count: 0 }
     )
@@ -44,9 +47,13 @@ const billed = computed(() => {
           <UCard
             v-for="card in billed"
             :key="card.title"
-            :class="card.hero ? 'bg-primary/30 dark:bg-primary-900' : 'bg-transparent'"
+            :class="
+              card.hero ? 'bg-primary/30 dark:bg-primary-900' : 'bg-transparent'
+            "
           >
-            <div class="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-4 items-center justify-between">
+            <div
+              class="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-4 items-center justify-between"
+            >
               <div class="text-2xl font-semibold md:text-3xl text-highlighted">
                 {{ card.value }}
               </div>

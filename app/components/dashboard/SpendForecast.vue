@@ -37,9 +37,9 @@ const forecast = computed<MonthBucket[]>(() => {
     }
     // Accumulate every renewal that lands before the horizon ends.
     while (isBefore(date, horizonEnd)) {
-      const idx
-        = (date.getFullYear() - start.getFullYear()) * 12
-          + (date.getMonth() - start.getMonth())
+      const idx =
+        (date.getFullYear() - start.getFullYear()) * 12 +
+        (date.getMonth() - start.getMonth())
       if (idx >= 0 && idx < 12) buckets[idx]!.amount += personalAmount(s)
       k += s.intervalCount
       date = addCycles(base, s.cycle, k)
@@ -50,7 +50,10 @@ const forecast = computed<MonthBucket[]>(() => {
 })
 
 const categories = computed<Record<string, BulletLegendItemInterface>>(() => ({
-  amount: { name: t('dashboard.spendForecast.series'), color: 'var(--color-unmyst-500)' }
+  amount: {
+    name: t('dashboard.spendForecast.series'),
+    color: 'var(--color-unmyst-500)'
+  }
 }))
 
 const axisFormatter = (v: number) =>

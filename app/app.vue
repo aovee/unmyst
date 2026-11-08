@@ -2,9 +2,11 @@
 const colorMode = useColorMode()
 const { t, locale } = useI18n()
 const route = useRoute()
-const { public: { siteUrl } } = useRuntimeConfig()
+const {
+  public: { siteUrl }
+} = useRuntimeConfig()
 
-const color = computed(() => colorMode.value === 'dark' ? '#1b1718' : 'white')
+const color = computed(() => (colorMode.value === 'dark' ? '#1b1718' : 'white'))
 
 const ogImage = `${siteUrl}/og.png`
 // Absolute URL of the current (already locale-prefixed) path for og:url.
