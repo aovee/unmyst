@@ -89,7 +89,8 @@ The app runs at `http://localhost:3000`. Database migrations under `server/db/mi
 | `pnpm dev`       | Start the development server.         |
 | `pnpm build`     | Build for production.                 |
 | `pnpm preview`   | Preview the production build locally. |
-| `pnpm lint`      | Run ESLint.                           |
+| `pnpm lint`      | Run Oxlint.                           |
+| `pnpm fmt`       | Run Oxfmt.                            |
 | `pnpm typecheck` | Type-check with `vue-tsc`.            |
 
 ## Database
