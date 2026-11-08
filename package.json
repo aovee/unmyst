@@ -7,8 +7,11 @@
     "dev": "nuxt dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint .",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.4",
@@ -40,9 +43,9 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^1.16.0",
     "@types/node": "^26.2.0",
-    "eslint": "^10.8.0",
+    "oxfmt": "^0.77.0",
+    "oxlint": "^1.92.0",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.9"
   },
