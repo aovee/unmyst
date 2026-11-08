@@ -9,7 +9,10 @@ export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing subscription id' })
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Missing subscription id'
+    })
   }
 
   const [subscription] = await db
@@ -18,7 +21,10 @@ export default defineEventHandler(async (event) => {
     .where(and(eq(subscriptions.id, id), eq(subscriptions.userId, user.id)))
     .limit(1)
   if (!subscription) {
-    throw createError({ statusCode: 404, statusMessage: 'Subscription not found' })
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Subscription not found'
+    })
   }
 
   const history = await db

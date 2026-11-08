@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
-    '@nuxt/eslint',
     '@nuxt/ui',
     '@vueuse/nuxt',
     '@nuxthub/core',
@@ -40,7 +39,6 @@ export default defineNuxtConfig({
     },
     session: {
       name: process.env.SESSION_COOKIE_NAME || 'unmyst_session',
-      password: process.env.NUXT_SESSION_PASSWORD || '',
       maxAge: 60 * 60 * 24 * 7, // 7 days
       cookie: {
         maxAge: 60 * 60 * 24 * 7 // persist cookie across browser restarts
@@ -59,15 +57,6 @@ export default defineNuxtConfig({
   hub: {
     db: {
       dialect: 'postgresql'
-    }
-  },
-
-  eslint: {
-    config: {
-      stylistic: {
-        commaDangle: 'never',
-        braceStyle: '1tbs'
-      }
     }
   },
 

@@ -15,7 +15,10 @@ export function formatCurrency(
   }).format(amountInCents / 100)
 }
 
-export function formatDate(date: Date, locale: string = DEFAULT_LOCALE): string {
+export function formatDate(
+  date: Date,
+  locale: string = DEFAULT_LOCALE
+): string {
   return Intl.DateTimeFormat(locale).format(new Date(date))
 }
 
@@ -28,7 +31,8 @@ export function formatRelativeDate(
     new Date(d.getFullYear(), d.getMonth(), d.getDate())
   const msPerDay = 86_400_000
   const days = Math.round(
-    (startOfDay(new Date(date)).getTime() - startOfDay(now).getTime()) / msPerDay
+    (startOfDay(new Date(date)).getTime() - startOfDay(now).getTime()) /
+      msPerDay
   )
 
   const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ email: string, redirectTo?: string }>()
+const props = defineProps<{ email: string; redirectTo?: string }>()
 
 const { t } = useI18n()
 
@@ -18,7 +18,7 @@ async function resend() {
     })
     sent.value = true
   } catch (e) {
-    const err = e as { data?: { message?: string }, statusMessage?: string }
+    const err = e as { data?: { message?: string }; statusMessage?: string }
     error.value = err.data?.message ?? err.statusMessage ?? t('verify.error')
   } finally {
     pending.value = false

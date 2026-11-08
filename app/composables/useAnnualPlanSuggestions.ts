@@ -24,12 +24,12 @@ export function useAnnualPlanSuggestions(
   const suggestions = computed<AnnualPlanSuggestion[]>(() => {
     const now = new Date()
     return toValue(subscriptions)
-      .filter(sub => isAnnualPlanCandidate(sub, now))
+      .filter((sub) => isAnnualPlanCandidate(sub, now))
       .map((sub) => {
         const { saving, isEstimate } = annualPlanSaving(sub)
         return { sub, saving, isEstimate }
       })
-      .filter(s => s.saving > 0)
+      .filter((s) => s.saving > 0)
       .sort((a, b) => b.saving - a.saving)
   })
 

@@ -39,12 +39,17 @@ export default defineEventHandler(async (event) => {
       MAGIC_LINK_PER_EMAIL,
       MAGIC_LINK_WINDOW_SECONDS
     ),
-    checkRateLimit(`magic-link:ip:${ip}`, MAGIC_LINK_PER_IP, MAGIC_LINK_WINDOW_SECONDS)
+    checkRateLimit(
+      `magic-link:ip:${ip}`,
+      MAGIC_LINK_PER_IP,
+      MAGIC_LINK_WINDOW_SECONDS
+    )
   ])
   if (!byEmail.ok || !byIp.ok) {
     throw createError({
       statusCode: 429,
-      statusMessage: 'Too many requests. Please wait a few minutes and try again.'
+      statusMessage:
+        'Too many requests. Please wait a few minutes and try again.'
     })
   }
 
@@ -80,7 +85,7 @@ export default defineEventHandler(async (event) => {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${resendKey}`,
+        Authorization: `Bearer ${resendKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ from, to: email, subject, html, text })

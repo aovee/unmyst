@@ -27,7 +27,10 @@ const slices = computed(() => {
     .sort((a, b) => b[1] - a[1])
     .map(([name, amount], i) => ({
       key: name,
-      name: name === UNCATEGORIZED ? t('dashboard.categoryBreakdown.uncategorized') : name,
+      name:
+        name === UNCATEGORIZED
+          ? t('dashboard.categoryBreakdown.uncategorized')
+          : name,
       isUncategorized: name === UNCATEGORIZED,
       amount,
       share: amount / total,
@@ -69,7 +72,10 @@ const arcs = computed(() => {
       />
     </template>
 
-    <div v-if="arcs.length" class="flex flex-col items-center gap-6 sm:flex-row sm:gap-8">
+    <div
+      v-if="arcs.length"
+      class="flex flex-col items-center gap-6 sm:flex-row sm:gap-8"
+    >
       <div class="relative shrink-0">
         <svg
           :viewBox="`0 0 ${RADIUS * 2 + 20} ${RADIUS * 2 + 20}`"
@@ -92,7 +98,9 @@ const arcs = computed(() => {
           <span class="text-lg font-semibold tabular-nums text-highlighted">
             {{ formatCurrency(total, currency, locale) }}
           </span>
-          <span class="text-xs text-muted">{{ $t('dashboard.categoryBreakdown.perMonth') }}</span>
+          <span class="text-xs text-muted">{{
+            $t('dashboard.categoryBreakdown.perMonth')
+          }}</span>
         </div>
       </div>
 
@@ -106,13 +114,18 @@ const arcs = computed(() => {
             class="size-2.5 shrink-0 rounded-full"
             :style="{ backgroundColor: slice.color }"
           />
-          <span class="truncate" :class="slice.isUncategorized ? 'text-muted' : ''">
+          <span
+            class="truncate"
+            :class="slice.isUncategorized ? 'text-muted' : ''"
+          >
             {{ slice.name }}
           </span>
           <span class="ml-auto shrink-0 tabular-nums font-medium">
             {{ formatCurrency(slice.amount, currency, locale) }}
           </span>
-          <span class="w-10 shrink-0 text-right tabular-nums text-xs text-muted">
+          <span
+            class="w-10 shrink-0 text-right tabular-nums text-xs text-muted"
+          >
             {{ Math.round(slice.share * 100) }}%
           </span>
         </li>

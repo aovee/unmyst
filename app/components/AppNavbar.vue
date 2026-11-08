@@ -7,7 +7,10 @@ defineProps<{
 
 <template>
   <UDashboardNavbar
-    :ui="{ title: 'flex flex-col items-start gap-1 py-3', right: 'justify-start' }"
+    :ui="{
+      title: 'flex flex-col items-start gap-1 py-3',
+      right: 'justify-start'
+    }"
   >
     <template #title>
       <span class="text-xl md:text-2xl">

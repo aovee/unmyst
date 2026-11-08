@@ -14,13 +14,15 @@ import type { Subscription } from '~~/server/db/schema'
  * friendlier object (`subscriptions` rather than `data`).
  */
 export async function useSubscriptions() {
-  const { data: subscriptions, refresh, status, error } = await useFetch<Subscription[]>(
-    '/api/subscriptions',
-    {
-      key: 'subscriptions',
-      default: () => []
-    }
-  )
+  const {
+    data: subscriptions,
+    refresh,
+    status,
+    error
+  } = await useFetch<Subscription[]>('/api/subscriptions', {
+    key: 'subscriptions',
+    default: () => []
+  })
 
   return { subscriptions, refresh, status, error }
 }

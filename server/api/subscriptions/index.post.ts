@@ -3,7 +3,7 @@ import { subscriptions, subscriptionPriceHistory } from '@nuxthub/db/schema'
 export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)
 
-  const result = await readValidatedBody(event, b =>
+  const result = await readValidatedBody(event, (b) =>
     SubscriptionInputSchema.safeParse(b)
   )
   if (!result.success) {

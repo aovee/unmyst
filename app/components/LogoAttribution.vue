@@ -7,7 +7,8 @@
           target="_blank"
           rel="noopener"
           class="underline hover:text-default"
-        >Logo.dev</a>
+          >Logo.dev</a
+        >
       </template>
     </i18n-t>
   </p>

@@ -22,7 +22,9 @@ async function dismiss(sub: Subscription) {
   if (dismissing.value.has(sub.id)) return
   dismissing.value = new Set(dismissing.value).add(sub.id)
   try {
-    await $fetch(`/api/subscriptions/${sub.id}/suggestion-dismiss`, { method: 'POST' })
+    await $fetch(`/api/subscriptions/${sub.id}/suggestion-dismiss`, {
+      method: 'POST'
+    })
     emit('refresh')
   } catch {
     toast.add({ title: t('dashboard.savings.dismissError'), color: 'error' })
@@ -44,7 +46,10 @@ async function dismiss(sub: Subscription) {
       />
     </template>
 
-    <div v-if="suggestions.length" class="flex flex-col divide-y divide-default">
+    <div
+      v-if="suggestions.length"
+      class="flex flex-col divide-y divide-default"
+    >
       <div
         v-for="s in suggestions"
         :key="s.sub.id"
@@ -62,17 +67,25 @@ async function dismiss(sub: Subscription) {
             {{ s.sub.service }}
           </div>
           <div class="text-xs text-muted tabular-nums">
-            {{ $t('dashboard.savings.currentMonthly', {
-              amount: formatCurrency(personalAmount(s.sub), s.sub.currency, locale)
-            }) }}
+            {{
+              $t('dashboard.savings.currentMonthly', {
+                amount: formatCurrency(
+                  personalAmount(s.sub),
+                  s.sub.currency,
+                  locale
+                )
+              })
+            }}
           </div>
         </div>
 
         <div class="shrink-0 text-right">
           <div class="text-sm font-semibold text-success tabular-nums">
-            {{ $t('dashboard.savings.save', {
-              amount: formatCurrency(s.saving, s.sub.currency, locale)
-            }) }}
+            {{
+              $t('dashboard.savings.save', {
+                amount: formatCurrency(s.saving, s.sub.currency, locale)
+              })
+            }}
           </div>
           <div v-if="s.isEstimate" class="text-xs text-dimmed">
             {{ $t('dashboard.savings.estimate') }}

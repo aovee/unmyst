@@ -33,7 +33,10 @@ export function useSubscriptionLifecycle() {
     }
   }
 
-  async function cancel(id: string, canceledAt: string | null): Promise<boolean> {
+  async function cancel(
+    id: string,
+    canceledAt: string | null
+  ): Promise<boolean> {
     try {
       await $fetch(`/api/subscriptions/${id}/cancel`, {
         method: 'POST',
@@ -50,7 +53,10 @@ export function useSubscriptionLifecycle() {
   async function reactivate(id: string): Promise<boolean> {
     try {
       await $fetch(`/api/subscriptions/${id}/reactivate`, { method: 'POST' })
-      toast.add({ title: t('subscription.reactivate.success'), color: 'success' })
+      toast.add({
+        title: t('subscription.reactivate.success'),
+        color: 'success'
+      })
       return true
     } catch {
       toast.add({ title: t('subscription.reactivate.error'), color: 'error' })

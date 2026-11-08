@@ -48,7 +48,7 @@ pnpm drizzle-kit generate
 
 1. Fork the repo and create a branch from `main` (e.g. `feat/renewal-reminders` or `fix/forecast-rounding`).
 2. Keep PRs focused — one logical change per PR is easier to review.
-3. Match the existing code style; ESLint (with the project's stylistic rules) is the source of truth.
+3. Match the existing code style; Oxlint and Oxfmt (with the project's stylistic rules) is the source of truth.
 4. Write a clear description of **what** changed and **why**. Link the issue it closes (`Closes #123`).
 5. Make sure `pnpm lint` and `pnpm typecheck` pass.
 

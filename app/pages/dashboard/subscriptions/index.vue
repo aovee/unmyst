@@ -15,12 +15,13 @@ const currency = computed(() => subs.value[0]?.currency ?? 'EUR')
 
 // Only currently-billing plans count toward the run-rate; paused and canceled
 // subscriptions are excluded (but still listed below).
-const billingSubs = computed(() => subs.value.filter(s => isBillingActive(s)))
+const billingSubs = computed(() => subs.value.filter((s) => isBillingActive(s)))
 
 // Per-person run-rate, every plan levelled to a common cycle.
 const perMonth = computed(() =>
   billingSubs.value.reduce(
-    (sum, s) => sum + monthlyAmount(personalAmount(s), s.cycle, s.intervalCount),
+    (sum, s) =>
+      sum + monthlyAmount(personalAmount(s), s.cycle, s.intervalCount),
     0
   )
 )
@@ -32,15 +33,21 @@ const perYear = computed(() =>
 )
 
 const categoryCount = computed(
-  () => new Set(subs.value.map(s => s.category).filter(Boolean)).size
+  () => new Set(subs.value.map((s) => s.category).filter(Boolean)).size
 )
 
 // Next charge (any horizon) + the next-30-days window, from the shared helper.
-const { nextCharge, renewals: next30, total: next30Total } = useUpcomingRenewals(subs, {
+const {
+  nextCharge,
+  renewals: next30,
+  total: next30Total
+} = useUpcomingRenewals(subs, {
   windowDays: 30
 })
 
-const next30Max = computed(() => Math.max(1, ...next30.value.map(r => r.amount)))
+const next30Max = computed(() =>
+  Math.max(1, ...next30.value.map((r) => r.amount))
+)
 
 function chargeLabel(inDays: number): string {
   if (inDays === 0) return t('relative.today').toLowerCase()
@@ -49,8 +56,10 @@ function chargeLabel(inDays: number): string {
 }
 
 function formatChargeDate(date: Date): string {
-  return new Intl.DateTimeFormat(locale.value, { day: 'numeric', month: 'short' })
-    .format(date)
+  return new Intl.DateTimeFormat(locale.value, {
+    day: 'numeric',
+    month: 'short'
+  }).format(date)
 }
 
 const searchTerm = ref<string>('')
@@ -77,12 +86,14 @@ const periodFilters = computed<PeriodFilter[]>(() => [
 
 type StatusFilterValue = SubscriptionStatus | 'all'
 const statusFilter = ref<StatusFilterValue>('all')
-const statusFilters = computed<{ label: string, value: StatusFilterValue }[]>(() => [
-  { label: t('filters.all'), value: 'all' },
-  { label: t('subscription.status.active'), value: 'active' },
-  { label: t('subscription.status.paused'), value: 'paused' },
-  { label: t('subscription.status.canceled'), value: 'canceled' }
-])
+const statusFilters = computed<{ label: string; value: StatusFilterValue }[]>(
+  () => [
+    { label: t('filters.all'), value: 'all' },
+    { label: t('subscription.status.active'), value: 'active' },
+    { label: t('subscription.status.paused'), value: 'paused' },
+    { label: t('subscription.status.canceled'), value: 'canceled' }
+  ]
+)
 
 // Client-side filtering. The period tab (FilterTabs) always applies; the text
 // query narrows further only when something has been typed.
@@ -99,7 +110,7 @@ const filteredSubs = computed(() => {
     if (query.value) {
       return [s.service, s.description, s.category]
         .filter(Boolean)
-        .some(field => field!.toLowerCase().includes(query.value))
+        .some((field) => field!.toLowerCase().includes(query.value))
     }
 
     return true
@@ -112,7 +123,9 @@ const filteredSubs = computed(() => {
     <template #header>
       <AppNavbar
         :title="$t('subscriptions.title')"
-        :description="$t('subscriptions.headerDescription', { count: subs.length })"
+        :description="
+          $t('subscriptions.headerDescription', { count: subs.length })
+        "
       >
         <template #right>
           <SubscriptionAddDialog @saved="refresh" />
@@ -129,22 +142,32 @@ const filteredSubs = computed(() => {
         <DataToolbarCard
           :title="$t('subscriptions.cards.perYear')"
           :value="formatCurrency(perYear, currency, locale)"
-          :description="$t('subscriptions.cards.perYearDescription', {
-            services: $t('subscriptions.cards.services', subs.length),
-            categories: $t('subscriptions.cards.categories', categoryCount)
-          })"
+          :description="
+            $t('subscriptions.cards.perYearDescription', {
+              services: $t('subscriptions.cards.services', subs.length),
+              categories: $t('subscriptions.cards.categories', categoryCount)
+            })
+          "
         />
 
         <DataToolbarCard
           :title="$t('subscriptions.cards.nextCharge')"
-          :value="nextCharge ? formatCurrency(nextCharge.amount, nextCharge.sub.currency, locale) : '—'"
+          :value="
+            nextCharge
+              ? formatCurrency(
+                  nextCharge.amount,
+                  nextCharge.sub.currency,
+                  locale
+                )
+              : '—'
+          "
           :description="
             nextCharge
               ? $t('subscriptions.cards.nextChargeDescription', {
-                service: nextCharge.sub.service,
-                when: chargeLabel(nextCharge.inDays),
-                date: formatChargeDate(nextCharge.date)
-              })
+                  service: nextCharge.sub.service,
+                  when: chargeLabel(nextCharge.inDays),
+                  date: formatChargeDate(nextCharge.date)
+                })
               : $t('subscriptions.cards.nextChargeEmpty')
           "
         />
@@ -160,7 +183,9 @@ const filteredSubs = computed(() => {
                 v-for="u in next30"
                 :key="u.sub.id"
                 class="flex-1 min-w-0 rounded-sm bg-primary"
-                :style="{ height: `${Math.max(12, (u.amount / next30Max) * 100)}%` }"
+                :style="{
+                  height: `${Math.max(12, (u.amount / next30Max) * 100)}%`
+                }"
                 :title="`${u.sub.service} · ${formatCurrency(u.amount, u.sub.currency, locale)}`"
               />
             </div>
@@ -170,10 +195,12 @@ const filteredSubs = computed(() => {
 
             <div class="text-xs text-muted">
               <template v-if="next30.length">
-                {{ $t('subscriptions.cards.next30Due', {
-                  amount: formatCurrency(next30Total, currency, locale),
-                  count: $t('subscriptions.cards.renewals', next30.length)
-                }) }}
+                {{
+                  $t('subscriptions.cards.next30Due', {
+                    amount: formatCurrency(next30Total, currency, locale),
+                    count: $t('subscriptions.cards.renewals', next30.length)
+                  })
+                }}
               </template>
               <template v-else>
                 {{ $t('subscriptions.cards.nothingDue') }}
@@ -186,7 +213,9 @@ const filteredSubs = computed(() => {
       <DataToolbar>
         <DataToolbarCard full-width>
           <template #content>
-            <div class="flex flex-col items-start sm:flex-row sm:items-center justify-between gap-4 w-full">
+            <div
+              class="flex flex-col items-start sm:flex-row sm:items-center justify-between gap-4 w-full"
+            >
               <UInput
                 v-model="searchTerm"
                 :loading="loading"

@@ -47,15 +47,15 @@ async function onSubmit() {
       path: localePath('/verify-request'),
       query: {
         email: email.value,
-        ...(redirectTo.value !== localePath('/dashboard') ? { redirectTo: redirectTo.value } : {})
+        ...(redirectTo.value !== localePath('/dashboard')
+          ? { redirectTo: redirectTo.value }
+          : {})
       }
     })
   } catch (e) {
-    const err = e as { data?: { message?: string }, statusMessage?: string }
-    error.value
-      = err.data?.message
-        ?? err.statusMessage
-        ?? t('auth.genericError')
+    const err = e as { data?: { message?: string }; statusMessage?: string }
+    error.value =
+      err.data?.message ?? err.statusMessage ?? t('auth.genericError')
   } finally {
     pending.value = false
   }
@@ -81,7 +81,11 @@ async function onSubmit() {
       </div>
 
       <fieldset :disabled="pending" class="flex flex-col gap-2">
-        <UFormField :label="$t('auth.emailLabel')" :error="error ?? undefined" name="email">
+        <UFormField
+          :label="$t('auth.emailLabel')"
+          :error="error ?? undefined"
+          name="email"
+        >
           <UInput
             v-model="email"
             type="email"
@@ -91,12 +95,7 @@ async function onSubmit() {
             class="w-full"
           />
         </UFormField>
-        <UButton
-          type="submit"
-          block
-          :loading="pending"
-          class="mt-2"
-        >
+        <UButton type="submit" block :loading="pending" class="mt-2">
           {{ pending ? $t('common.sending') : copy.submit }}
         </UButton>
       </fieldset>
@@ -118,10 +117,14 @@ async function onSubmit() {
     <p class="px-6 text-center text-xs text-muted-foreground">
       <i18n-t keypath="auth.terms" tag="span">
         <template #terms>
-          <a href="#" class="underline underline-offset-4">{{ $t('auth.termsOfService') }}</a>
+          <a href="#" class="underline underline-offset-4">{{
+            $t('auth.termsOfService')
+          }}</a>
         </template>
         <template #privacy>
-          <a href="#" class="underline underline-offset-4">{{ $t('auth.privacyPolicy') }}</a>
+          <a href="#" class="underline underline-offset-4">{{
+            $t('auth.privacyPolicy')
+          }}</a>
         </template>
       </i18n-t>
     </p>

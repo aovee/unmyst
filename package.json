@@ -7,8 +7,11 @@
     "dev": "nuxt dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint .",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.4",
@@ -17,7 +20,7 @@
     "@internationalized/date": "^3.12.3",
     "@neondatabase/serverless": "^1.1.0",
     "@nuxt/ui": "^4.10.0",
-    "@nuxthub/core": "0.10.8",
+    "@nuxthub/core": "0.10.12",
     "@nuxtjs/i18n": "10.6.0",
     "@tanstack/table-core": "^8.21.3",
     "@unovis/ts": "^1.6.7",
@@ -29,8 +32,8 @@
     "date-fns": "^4.4.0",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
-    "nuxt": "^4.5.1",
-    "nuxt-auth-utils": "0.5.30",
+    "nuxt": "^4.6.3",
+    "nuxt-auth-utils": "0.6.1",
     "nuxt-charts": "^2.2.0",
     "nuxt-email-renderer": "^2.11.0",
     "postgres": "^3.4.9",
@@ -40,9 +43,9 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^1.16.0",
     "@types/node": "^26.2.0",
-    "eslint": "^10.8.0",
+    "oxfmt": "^0.77.0",
+    "oxlint": "^1.92.0",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.9"
   },

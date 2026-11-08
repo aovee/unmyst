@@ -20,23 +20,28 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   heading: 'Sign in to your account',
-  intro: 'Click the button below to sign in to Unmyst. This link expires in 24 hours and can only be used once.',
+  intro:
+    'Click the button below to sign in to Unmyst. This link expires in 24 hours and can only be used once.',
   buttonLabel: 'Sign in',
   url: 'https://unmyst.app/api/auth/verify?token=preview',
-  outro: 'For your security, this link works only in the browser you requested it from.',
+  outro:
+    'For your security, this link works only in the browser you requested it from.',
   host: 'unmyst.app'
 })
 
 const APP_NAME = 'Unmyst'
 const BRAND = '#41aea6'
 
-const logoSrc = computed(() => `${new URL(props.url).origin}/unmyst-lockup-light.png`)
+const logoSrc = computed(
+  () => `${new URL(props.url).origin}/unmyst-lockup-light.png`
+)
 
 const main = {
   margin: '0',
   padding: '0',
   background: '#f4f4f5',
-  fontFamily: '-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif'
+  fontFamily:
+    "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"
 }
 const card = {
   maxWidth: '480px',
@@ -51,7 +56,12 @@ const headingStyle = {
   color: '#18181b',
   margin: '20px 0 12px'
 }
-const introStyle = { fontSize: '14px', lineHeight: '22px', color: '#52525b', margin: '0 0 24px' }
+const introStyle = {
+  fontSize: '14px',
+  lineHeight: '22px',
+  color: '#52525b',
+  margin: '0 0 24px'
+}
 const buttonStyle = {
   background: BRAND,
   color: '#ffffff',
@@ -60,7 +70,12 @@ const buttonStyle = {
   borderRadius: '8px',
   padding: '12px 24px'
 }
-const outroStyle = { fontSize: '13px', lineHeight: '20px', color: '#71717a', margin: '24px 0 0' }
+const outroStyle = {
+  fontSize: '13px',
+  lineHeight: '20px',
+  color: '#71717a',
+  margin: '24px 0 0'
+}
 const fallbackStyle = {
   fontSize: '12px',
   lineHeight: '18px',
@@ -78,13 +93,9 @@ const footerStyle = { fontSize: '12px', color: '#a1a1aa', margin: '24px 0 0' }
     <EHead />
     <EPreview>{{ intro }}</EPreview>
     <EBody :style="main">
-      <ESection style="padding: 32px 0;">
+      <ESection style="padding: 32px 0">
         <EContainer :style="card">
-          <EImg
-            :src="logoSrc"
-            :alt="APP_NAME"
-            height="50"
-          />
+          <EImg :src="logoSrc" :alt="APP_NAME" height="50" />
 
           <EHeading :style="headingStyle">
             {{ heading }}
@@ -103,14 +114,15 @@ const footerStyle = { fontSize: '12px', color: '#a1a1aa', margin: '24px 0 0' }
           </EText>
 
           <EText :style="fallbackStyle">
-            Or paste this link into your browser:<br>
+            Or paste this link into your browser:<br />
             <ELink :href="url" :style="linkStyle">
               {{ url }}
             </ELink>
           </EText>
 
           <EText :style="footerStyle">
-            If you didn't request this, you can safely ignore this email. Sent for {{ host }}.
+            If you didn't request this, you can safely ignore this email. Sent
+            for {{ host }}.
           </EText>
         </EContainer>
       </ESection>

@@ -18,19 +18,20 @@ const heroPreview = {
 <template>
   <div class="relative mx-auto w-full max-w-md">
     <!-- soft glow behind the card -->
-    <div class="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-primary/10 blur-3xl" />
+    <div
+      class="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-primary/10 blur-3xl"
+    />
 
-    <div class="overflow-hidden rounded-xl border border-default bg-elevated/50 shadow-2xl backdrop-blur-sm">
+    <div
+      class="overflow-hidden rounded-xl border border-default bg-elevated/50 shadow-2xl backdrop-blur-sm"
+    >
       <!-- window bar -->
       <div class="flex items-center gap-2 border-b border-default px-4 py-2.5">
-        <img
-          src="/unmyst-mark-dark.svg"
-          alt=""
-          width="18"
-          height="18"
-        >
+        <img src="/unmyst-mark-dark.svg" alt="" width="18" height="18" />
         <span class="font-title text-sm text-highlighted">unmyst</span>
-        <span class="ml-auto text-[10px] uppercase tracking-[0.14em] text-dimmed">
+        <span
+          class="ml-auto text-[10px] uppercase tracking-[0.14em] text-dimmed"
+        >
           {{ $t('nav.dashboard') }}
         </span>
       </div>
@@ -42,7 +43,9 @@ const heroPreview = {
             <div class="text-[10px] uppercase tracking-[0.12em] text-dimmed">
               {{ $t('dashboard.actuallyBilled.billedEach.monthly') }}
             </div>
-            <div class="mt-1 font-numbers text-lg font-semibold text-highlighted tabular-nums">
+            <div
+              class="mt-1 font-numbers text-lg font-semibold text-highlighted tabular-nums"
+            >
               {{ formatCurrency(heroPreview.billedMonthly, 'EUR', locale) }}
             </div>
           </div>
@@ -50,7 +53,9 @@ const heroPreview = {
             <div class="text-[10px] uppercase tracking-[0.12em] text-dimmed">
               {{ $t('dashboard.averaged.perWeek') }}
             </div>
-            <div class="mt-1 font-numbers text-lg font-semibold text-primary tabular-nums">
+            <div
+              class="mt-1 font-numbers text-lg font-semibold text-primary tabular-nums"
+            >
               ≈ {{ formatCurrency(heroPreview.averagedWeek, 'EUR', locale) }}
             </div>
           </div>
@@ -70,7 +75,9 @@ const heroPreview = {
               :key="r.service"
               class="flex items-center gap-3 py-2 first:pt-0 last:pb-0"
             >
-              <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-elevated text-[11px] font-medium text-muted">
+              <span
+                class="flex size-7 shrink-0 items-center justify-center rounded-full bg-elevated text-[11px] font-medium text-muted"
+              >
                 {{ r.service.charAt(0) }}
               </span>
               <div class="min-w-0 flex-1">

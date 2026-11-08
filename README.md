@@ -20,17 +20,17 @@ Take the mystery out of your subscriptions. Unmyst is a self-hostable web app th
 
 ## Tech stack
 
-| Concern        | Choice                                                                 |
-| -------------- | --------------------------------------------------------------------- |
-| Framework      | [Nuxt 4](https://nuxt.com) / [Vue 3](https://vuejs.org)               |
-| UI             | [Nuxt UI 4](https://ui.nuxt.com) + [Tailwind CSS 4](https://tailwindcss.com) |
-| Hosting/runtime| [NuxtHub](https://hub.nuxt.com)                                        |
-| Database       | PostgreSQL via [Drizzle ORM](https://orm.drizzle.team)                 |
-| Auth           | [nuxt-auth-utils](https://github.com/atinux/nuxt-auth-utils) (magic link + Google OAuth) |
-| Email          | [Resend](https://resend.com) + Vue email templates                    |
-| Charts         | [Unovis](https://unovis.dev) via `nuxt-charts`                         |
-| i18n           | [@nuxtjs/i18n](https://i18n.nuxtjs.org)                                |
-| Validation     | [Zod](https://zod.dev)                                                 |
+| Concern         | Choice                                                                                   |
+| --------------- | ---------------------------------------------------------------------------------------- |
+| Framework       | [Nuxt 4](https://nuxt.com) / [Vue 3](https://vuejs.org)                                  |
+| UI              | [Nuxt UI 4](https://ui.nuxt.com) + [Tailwind CSS 4](https://tailwindcss.com)             |
+| Hosting/runtime | [NuxtHub](https://hub.nuxt.com)                                                          |
+| Database        | PostgreSQL via [Drizzle ORM](https://orm.drizzle.team)                                   |
+| Auth            | [nuxt-auth-utils](https://github.com/atinux/nuxt-auth-utils) (magic link + Google OAuth) |
+| Email           | [Resend](https://resend.com) + Vue email templates                                       |
+| Charts          | [Unovis](https://unovis.dev) via `nuxt-charts`                                           |
+| i18n            | [@nuxtjs/i18n](https://i18n.nuxtjs.org)                                                  |
+| Validation      | [Zod](https://zod.dev)                                                                   |
 
 ## Getting started
 
@@ -40,7 +40,7 @@ Take the mystery out of your subscriptions. Unmyst is a self-hostable web app th
 - [pnpm](https://pnpm.io) 11+ (`corepack enable` to use the pinned version)
 - A PostgreSQL database (e.g. [Neon](https://neon.tech) or any Postgres instance)
 - A [Resend](https://resend.com) account for magic-link emails
-- *(optional)* Google OAuth credentials for social sign-in
+- _(optional)_ Google OAuth credentials for social sign-in
 
 ### Install
 
@@ -68,29 +68,30 @@ The app runs at `http://localhost:3000`. Database migrations under `server/db/mi
 
 ## Environment variables
 
-| Variable                          | Required | Description                                                                 |
-| --------------------------------- | :------: | --------------------------------------------------------------------------- |
-| `DATABASE_URL`                    |    ✅    | PostgreSQL connection string.                                               |
-| `NUXT_SESSION_PASSWORD`           |    ✅    | Secret ≥ 32 chars used to seal the session cookie.                          |
-| `RESEND_KEY`                      |    ✅    | Resend API key, used to send magic-link emails.                             |
-| `RESEND_EMAIL_FROM`               |    ✅    | Verified "from" address, e.g. `"Unmyst <contact@example.com>"`.             |
-| `NUXT_OAUTH_GOOGLE_CLIENT_ID`     |    –     | Google OAuth client ID (enables Google sign-in).                            |
-| `NUXT_OAUTH_GOOGLE_CLIENT_SECRET` |    –     | Google OAuth client secret.                                                 |
-| `NUXT_SESSION_COOKIE_NAME`        |    –     | Override the session cookie name (default `unmyst_session`).                |
-| `NUXT_PUBLIC_SITE_URL`            |    –     | Canonical origin for absolute URLs (canonical, OG, sitemap).                |
-| `NUXT_PUBLIC_LOGO_DEV_TOKEN`      |    –     | [Logo.dev](https://logo.dev) publishable key (`pk_…`) for service logos.    |
+| Variable                          | Required | Description                                                              |
+| --------------------------------- | :------: | ------------------------------------------------------------------------ |
+| `DATABASE_URL`                    |    ✅    | PostgreSQL connection string.                                            |
+| `NUXT_SESSION_PASSWORD`           |    ✅    | Secret ≥ 32 chars used to seal the session cookie.                       |
+| `RESEND_KEY`                      |    ✅    | Resend API key, used to send magic-link emails.                          |
+| `RESEND_EMAIL_FROM`               |    ✅    | Verified "from" address, e.g. `"Unmyst <contact@example.com>"`.          |
+| `NUXT_OAUTH_GOOGLE_CLIENT_ID`     |    –     | Google OAuth client ID (enables Google sign-in).                         |
+| `NUXT_OAUTH_GOOGLE_CLIENT_SECRET` |    –     | Google OAuth client secret.                                              |
+| `NUXT_SESSION_COOKIE_NAME`        |    –     | Override the session cookie name (default `unmyst_session`).             |
+| `NUXT_PUBLIC_SITE_URL`            |    –     | Canonical origin for absolute URLs (canonical, OG, sitemap).             |
+| `NUXT_PUBLIC_LOGO_DEV_TOKEN`      |    –     | [Logo.dev](https://logo.dev) publishable key (`pk_…`) for service logos. |
 
 > Never commit `.env`. It is gitignored — only `.env.example` (with placeholder values) belongs in the repo.
 
 ## Scripts
 
-| Command            | Description                                    |
-| ------------------ | ---------------------------------------------- |
-| `pnpm dev`         | Start the development server.                  |
-| `pnpm build`       | Build for production.                          |
-| `pnpm preview`     | Preview the production build locally.          |
-| `pnpm lint`        | Run ESLint.                                    |
-| `pnpm typecheck`   | Type-check with `vue-tsc`.                     |
+| Command          | Description                           |
+| ---------------- | ------------------------------------- |
+| `pnpm dev`       | Start the development server.         |
+| `pnpm build`     | Build for production.                 |
+| `pnpm preview`   | Preview the production build locally. |
+| `pnpm lint`      | Run Oxlint.                           |
+| `pnpm fmt`       | Run Oxfmt.                            |
+| `pnpm typecheck` | Type-check with `vue-tsc`.            |
 
 ## Database
 
