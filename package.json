@@ -33,7 +33,7 @@
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
     "nuxt": "^4.6.3",
-    "nuxt-auth-utils": "0.6.1",
+    "nuxt-auth-utils": "0.6.2",
     "nuxt-charts": "^2.2.0",
     "nuxt-email-renderer": "^2.11.0",
     "postgres": "^3.4.9",
