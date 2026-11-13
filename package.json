@@ -14,9 +14,9 @@
     "fmt:check": "oxfmt --check"
   },
   "dependencies": {
-    "@electric-sql/pglite": "^0.5.4",
-    "@iconify-json/lucide": "^1.2.121",
-    "@iconify-json/simple-icons": "^1.2.92",
+    "@electric-sql/pglite": "^0.5.16",
+    "@iconify-json/lucide": "^1.2.153",
+    "@iconify-json/simple-icons": "^1.2.102",
     "@internationalized/date": "^3.12.3",
     "@neondatabase/serverless": "^1.1.0",
     "@nuxt/ui": "^4.10.0",
@@ -44,8 +44,8 @@
   },
   "devDependencies": {
     "@types/node": "^26.2.0",
-    "oxfmt": "^0.77.0",
-    "oxlint": "^1.92.0",
+    "oxfmt": "^0.78.0",
+    "oxlint": "^1.93.0",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.9"
   },
