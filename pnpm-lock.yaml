@@ -170,8 +170,8 @@ importers:
         specifier: ^0.5.16
         version: 0.5.16
       '@iconify-json/lucide':
-        specifier: ^1.2.153
-        version: 1.2.153
+        specifier: ^1.2.154
+        version: 1.2.154
       '@iconify-json/simple-icons':
         specifier: ^1.2.102
         version: 1.2.102
@@ -194,11 +194,11 @@ importers:
         specifier: ^8.21.3
         version: 8.21.3
       '@unovis/ts':
-        specifier: ^1.6.7
-        version: 1.8.0
+        specifier: ^1.8.1
+        version: 1.8.1
       '@unovis/vue':
-        specifier: ^1.6.7
-        version: 1.8.0(@unovis/ts@1.8.0)(vue@3.5.45(typescript@6.0.3))
+        specifier: ^1.8.1
+        version: 1.8.1(@unovis/ts@1.8.1)(vue@3.5.45(typescript@6.0.3))
       '@vercel/analytics':
         specifier: ^2.0.1
         version: 2.0.1(nuxt@4.6.4(5da803b3e2361345178f352b3b1336c1))(vue@3.5.45(typescript@6.0.3))
@@ -1097,8 +1097,8 @@ packages:
     peerDependencies:
       vue: '>=3.3.0'
 
-  '@iconify-json/lucide@1.2.153':
-    resolution: {integrity: sha512-fvb2SSbCxsj6CPUl2adKGWavwV90GvCd8zT/SnW0kd4Eg/Jc/ISQPbYuFjPFOiK7ohOgDWUMGeTIzxMDDMEoHQ==}
+  '@iconify-json/lucide@1.2.154':
+    resolution: {integrity: sha512-8+fuquLzqefUqEsnQSn77laDESOd9AX5ZM9zQzL5HT9DN58DtzwMIkLXxDjX77GAQ8PF4HTMuxhShQCOynwADg==}
 
   '@iconify-json/simple-icons@1.2.102':
     resolution: {integrity: sha512-IwbAj1ZI6LBy+qU7sVYxB1wgbSSIDKjY9I0BnnpjfIdlqfXoYnBb80UvYA0WkodUFWfQyL4AjaKMg48fqX8sIw==}
@@ -3158,13 +3158,13 @@ packages:
   '@unovis/graphlibrary@2.2.0-3':
     resolution: {integrity: sha512-ReEjk/cDih+q+z0U0EluHpPWlfj31v+nIglmfCNUuNuTv5FtGOKTYHbUSISX6SxHR1RZMLfP/kNniPr0H9KRIw==}
 
-  '@unovis/ts@1.8.0':
-    resolution: {integrity: sha512-ddTwgeJaHN7ysxZoQ8ROs9qdSKwuMW65soMGeXHspWIiNUkYxdpDmbzoiqVAAQVPJwa1dZO0s/LAa0jX8riiCA==}
+  '@unovis/ts@1.8.1':
+    resolution: {integrity: sha512-PQHaRc38OQOaPnaS2TjyUMup+knpu/134JcWOQ451zX/GRETHEuUfZxUHRqeLULhXDcQn2umTaMyExI6zegOdA==}
 
-  '@unovis/vue@1.8.0':
-    resolution: {integrity: sha512-K8+pXHPAG0ez7RHg/wa9BxL4m0QjJvmcQysQr5HnrAdfWJpXNT/ogG4qBbdisRx7tnHG9/ylv74vNkJzRLl5tw==}
+  '@unovis/vue@1.8.1':
+    resolution: {integrity: sha512-Kt/HfYvIq6fJfTMXHg1rdusmd2JdzQpF6ln9EAb59n+GrVn7Qb+vscjJ5ckrCqv+AhxAbeBew1W8+tt+VmnWZQ==}
     peerDependencies:
-      '@unovis/ts': 1.8.0
+      '@unovis/ts': 1.8.1
       vue: ^3
 
   '@uploadthing/mime-types@0.3.6':
@@ -7129,7 +7129,7 @@ snapshots:
       '@floating-ui/utils': 0.2.12
       vue: 3.5.45(typescript@6.0.3)
 
-  '@iconify-json/lucide@1.2.153':
+  '@iconify-json/lucide@1.2.154':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -9368,7 +9368,7 @@ snapshots:
     dependencies:
       lodash-es: 4.18.1
 
-  '@unovis/ts@1.8.0':
+  '@unovis/ts@1.8.1':
     dependencies:
       '@maplibre/maplibre-gl-style-spec': 26.4.1
       '@types/d3-array': 3.2.2
@@ -9432,9 +9432,9 @@ snapshots:
       throttle-debounce: 5.0.2
       topojson-client: 3.1.0
 
-  '@unovis/vue@1.8.0(@unovis/ts@1.8.0)(vue@3.5.45(typescript@6.0.3))':
+  '@unovis/vue@1.8.1(@unovis/ts@1.8.1)(vue@3.5.45(typescript@6.0.3))':
     dependencies:
-      '@unovis/ts': 1.8.0
+      '@unovis/ts': 1.8.1
       vue: 3.5.45(typescript@6.0.3)
 
   '@uploadthing/mime-types@0.3.6': {}
@@ -12895,8 +12895,8 @@ snapshots:
   vue-chrts@2.2.3(vue@3.5.45(typescript@6.0.3)):
     dependencies:
       '@turf/boolean-point-in-polygon': 7.4.0
-      '@unovis/ts': 1.8.0
-      '@unovis/vue': 1.8.0(@unovis/ts@1.8.0)(vue@3.5.45(typescript@6.0.3))
+      '@unovis/ts': 1.8.1
+      '@unovis/vue': 1.8.1(@unovis/ts@1.8.1)(vue@3.5.45(typescript@6.0.3))
       d3-geo: 3.1.2
       proj4: 2.22.0
       vue: 3.5.45(typescript@6.0.3)
