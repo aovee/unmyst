@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.16",
-    "@iconify-json/lucide": "^1.2.154",
+    "@iconify-json/lucide": "^1.2.155",
     "@iconify-json/simple-icons": "^1.2.102",
     "@internationalized/date": "^3.12.3",
     "@neondatabase/serverless": "^1.2.1",
