@@ -170,8 +170,8 @@ importers:
         specifier: ^0.5.17
         version: 0.5.17
       '@iconify-json/lucide':
-        specifier: ^1.2.157
-        version: 1.2.157
+        specifier: ^1.2.158
+        version: 1.2.158
       '@iconify-json/simple-icons':
         specifier: ^1.2.103
         version: 1.2.103
@@ -941,8 +941,8 @@ packages:
     peerDependencies:
       vue: '>=3.3.0'
 
-  '@iconify-json/lucide@1.2.157':
-    resolution: {integrity: sha512-hFOoLrhzbDkDfWdLhrEWHTyUXUkBxV5jrY00XgtI6zDKrwh5jANu0BLXb6xfCS/FeQ6A/9XDvEk4aJovNbOslg==}
+  '@iconify-json/lucide@1.2.158':
+    resolution: {integrity: sha512-odd13G5/Jv4W+yomId3BjCQ/a1k7QemC0mi+CBvvpl18JBO+sQajKl4F3WtPvFHMnkOQ4d3/BFKShTmBlbG0dg==}
 
   '@iconify-json/simple-icons@1.2.103':
     resolution: {integrity: sha512-FMn+aVTsqQdYOwf5reCXXtfWapb+4ijI6WrU8ej1spWXWfA+d41TBXcKagHFwiHZyqt7kP7F04AiG1dYj2R06w==}
@@ -6973,7 +6973,7 @@ snapshots:
       '@floating-ui/utils': 0.2.12
       vue: 3.5.46(typescript@6.0.3)
 
-  '@iconify-json/lucide@1.2.157':
+  '@iconify-json/lucide@1.2.158':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -7601,7 +7601,7 @@ snapshots:
 
   '@nuxt/schema@4.6.4':
     dependencies:
-      '@vue/shared': 3.5.45
+      '@vue/shared': 3.5.46
       defu: 6.1.7
       nostics: 1.4.0
       pathe: 2.0.3
@@ -9413,7 +9413,7 @@ snapshots:
       '@vue/shared': 3.5.45
       entities: 7.0.1
       estree-walker: 2.0.2
-      source-map-js: 1.2.2
+      source-map-js: 1.2.4
 
   '@vue/compiler-core@3.5.46':
     dependencies:
@@ -9443,7 +9443,7 @@ snapshots:
       estree-walker: 2.0.2
       magic-string: 0.30.21
       postcss: 8.5.32
-      source-map-js: 1.2.2
+      source-map-js: 1.2.4
 
   '@vue/compiler-sfc@3.5.46':
     dependencies:
@@ -10957,7 +10957,7 @@ snapshots:
     dependencies:
       '@babel/parser': 7.29.13
       '@babel/types': 7.29.11
-      source-map-js: 1.2.2
+      source-map-js: 1.2.4
 
   maplibre-gl@6.16.0:
     dependencies:
@@ -11705,7 +11705,7 @@ snapshots:
     dependencies:
       nanoid: 3.3.20
       picocolors: 1.1.1
-      source-map-js: 1.2.2
+      source-map-js: 1.2.4
 
   postgres@3.4.9: {}
 
